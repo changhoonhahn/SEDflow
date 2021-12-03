@@ -11,15 +11,16 @@ import numpy as np
 
 
 def load_data(train_or_test, version=1, sample='toy', params='props', cuts=None, whiten=False, flux_space=False): 
-    ''' training and validation data based on specified split 
-
-    returns
-        x_train, y_train, x_valid, y_valid
+    ''' load training or test data
     '''
-    assert np.sum(split) == 1.
     assert train_or_test in ['train', 'test'] 
+    
 
-    x_all, y_all = _load_data(train_or_test, version=version, sample=sample, params=params, flux_space=False) 
+    x_all, y_all = _load_data({'train': 'data', 'test':'test'}[train_or_test], 
+            version=version, 
+            sample=sample, 
+            params=params, 
+            flux_space=False) 
     
     if cuts is not None: 
         x_all = x_all[cuts, :]
@@ -45,8 +46,9 @@ def _load_data(train_or_test, version=1, sample='toy', params='props', flux_spac
     
     str_v       = 'v%i' % version 
     str_sample  = {'toy': 'toy_noise', 'flow': 'nsa_flow'}[sample]
-
-    fnpy = lambda s: '%s.%s.%s.%s.npy' % (train_or_test, str_v, s, str_sample)
+    
+    dat_dir = data_dir()
+    fnpy = lambda s: os.path.join(dat_dir, '%s.%s.%s.%s.npy' % (train_or_test, str_v, s, str_sample))
     
     # read in galaxy properties or theta_SPS 
     thetas = np.load(fnpy(params)) 
@@ -188,10 +190,9 @@ def data_dir():
     ''' get main data directory where the files are stored for whichever machine I'm on 
     '''
     dat_dirs = [
-            '/global/cscratch1/sd/chahah/arcoiris/sedflow/', # nersc 
-            '/tigress/chhahn/arcoiris/sedflow/', # tiger
-            '/scratch/network/chhahn/arcoiris/sedflow/', # adroit 
-            '/Users/chahah/data/arcoiris/sedflow/' # mbp
+            '/tigress/chhahn/sedflow/', # tiger
+            '/scratch/network/chhahn/sedflow/', # adroit 
+            '/Users/chahah/data/sedflow/' # mbp
             ]
     for _dir in dat_dirs: 
         if os.path.isdir(_dir): return _dir
