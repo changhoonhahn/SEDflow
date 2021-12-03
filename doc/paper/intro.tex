@@ -1,0 +1,25 @@
+\section{Introduction} \label{sec:intro} 
+
+\todo{paragraph on SED modeling}
+
+\todo{paragraph on SED Modeling with a full Bayesian approach}
+- marginalize over nuisance parameters
+- accurately capture degeneracies among model parameters
+- allows informative priors based on prior observations
+
+\todo{limitation of Bayesian SED modeling} 
+- These methods involve sampling a high dimensional space of SED model
+parameters. 
+- The dimensionality only increases as SED models become more sophisticated
+both in terms of stellar population synthesis modeling and accounting for
+observational effects.  
+- State-of-the-art methods use MCMC or HMC to efficiently sample a high
+dimensional parameter space. Go through all the latest works and detail their
+dimensionality and setups. 
+- Despite the use of modern sampling techniques, SED modeling take hundreds of
+hours per galaxy. Even for $\sim 4000$ galaxies in the LEGA-C ESO Public
+Spectroscopic Survey~\cite{}, this required 3.5 million CPU hours {\sc
+Bagpipes}. 
+
+\todo{simulation based inference}
+provide an overview of simulation based inference 

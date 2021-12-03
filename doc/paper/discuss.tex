@@ -1,0 +1,42 @@
+\subsection{Discussion}  
+\todo{caveats}
+extending past the $p(\theta, x)$ space.
+
+accuracy near the edges of the $p(\theta, x)$ space. same infrastructure can be
+used to construt a normalizing flow for the likelihood in order to sanity check
+all the results 
+
+\todo{extending to higher dimensions}
+our sed models have a lot of dimensions but it's actually not enough. 
+we don't have sed model parameters that account for uncertainties in stellar
+evolution, IMF, etc. 
+They should also include more nuisance parameters to deal with uncertainties in
+the observations. 
+Go through some of the caveats in \url{http://nsatlas.org/caveats}. 
+% something about zero-point calibration by Rachel during the discussion
+As dimensionality increases, current methods will get worse and worse. 
+Fortunately, conditional normalizing flows have been shown to accurately
+estimate far higher dimensional distributions (cite some examples from machine
+learning). 
+
+\todo{extra advantages of faster posteriors}
+reemphasize that we can meet the needs of DESI, PFS, Rubin, JWST, and Roman. 
+
+recently works have demonstrated that model priors play an exigent role in the
+derived galaxy properties. 
+Even ``uniformative'' uniform priors on SED model parameters can impose
+undesirable priors on derived galaxy properties such as $M_*$, SFR, SFH, or
+ZH.
+This underscores the importance of carefully selecting priors and validating
+results using multiple different priors. 
+Our SBI-based approach, can easily include different priors without
+reevaluating the training set.
+For a different prior, we can adjust the training set so that the set of SED
+model parameters $p(\theta^{\rm train})$ follows the prior distribution. 
+The CNF can be re-trained and deployed to rapidly reanalyze the entire dataset
+in a matter of hours. 
+
+%In Hahn (in prep), I demonstrate that priors on the SED model parameters can be adjusted to impose uniform priors on derived properties based on the maximum-entorpy method from \cite{handley2019}. 
+
+
+\todo{coming soon}

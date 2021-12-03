@@ -1,0 +1,56 @@
+\section{NASA-Sloan Atlas} \label{sec:obs}
+As a demonstration of its accuracy and speed, we apply our SBI-based SED
+modeling method on panchromatic photometry from the NASA-Sloan
+Atlas\footnote{\url{http://nsatlas.org/}} (NSA) with some additional quality
+cuts.
+The NSA catalog is a re-reduction of SDSS DR8~\citep{aihara2011} that includes
+an improved background subtraction~\citep{blanton2011} and near and far UV
+photometry from GALEX~\citep{}.
+For optical photometry, we use SDSS photometry in the $u$, $g$, $r$, $i$, and
+$z$ bands, which are corrected for galactic extinction using \cite{schlegel1997}.
+For UV photometry, we use GALEX photometry in the $W1$ and $W2$ bands
+based on DR6\footnote{\url{http://galex.stsci.edu/GR6/}}.
+\todo{details about the GALEX force photometry} 
+
+We impose a number of additional quality cuts to the NSA photometry.
+The SDSS photometric pipeline can struggle to accurately define the center
+of objects near the edge or at low signal-to-noise. 
+In some cases, the centroiding algorithm will report the position of the peak
+pixel in a given band as the centroid. 
+These cases are often associated with spurious objects, so we exclude them
+from our sample. 
+We also exclude objects that have pixels, which were not checked for peaks
+by the deblender. % ; deblending can be problematic in these cases. 
+The SDSS pipeline interpolates over pixels classified as bad (\eg~cosmic ray).
+We exclude objects where more than 20\% of point-spread function (PSF) flux is
+interpolated over as well as objects where the interpolation affected many
+pixels and the PSF flux error is inaccurate. 
+We also exclude objects where the interpolated pixels fall within 3 pixels of
+their center and they contain a cosmic ray that was interpolated over.
+Lastly, we exclude any objects that were not detected at $\ge5\sigma$ in the
+original frame, that contain saturated pixels, or where their radial profile 
+could not be extracted.
+By imposing these quality cuts, we avoid complications from artificats in the
+photometry that we do not model. 
+In principle, we can relax the cuts if we were to include observational effects
+in our model.
+For additional details on the quality flags, we refer readers to the SDSS
+documentation\footnote{\url{https://www.sdss.org/dr16/algorithms/flags_detail}}.
+After the quality cuts, we have 33,887 galaxies in our NSA sample.
+
+In Figure~\ref{fig:sbi}, we present the distribution of optical and UV
+magnitudes of the NSA catalog (color). 
+
+
+
+%For each such galaxy, we have created image mosaics from SDSS and GALEX and rephotometered the ugriz bands plus the far and near ultraviolet bands in a self-consistent manne0i
+
+% quality cuts that we impose 
+% - not peak center: did not use brightest pixel as centroid; hint that an object may not be real
+% - not notchecked: object contains pixels which were not checked for peaks by deblender; deblending may be unreliable
+% - not PSF_FLUX_INTERP: more than 20% of PSF flux is interpolated over. May cause outliers in color-color plots, e.g.
+% - BAD_COUNTS_ERROR: 	interpolation affected many pixels; PSF flux error is inaccurate and likely underestimated.
+% - not both INTERP_CENTER and CR: 	interpolated pixel(s) within 3 pix of the center. Photometry may be affected. 	object contains cosmic rays which have been interpolated over; should not affect photometry
+% - BINNED1: detected at ≥ 5σ in original imaging frame
+% - not SATURATED: contains saturated pixels; affects star-galaxy separation
+% - not NOPROFILE : 	only 0 or 1 entries for the radial flux profile; photometric quantities derived from profile are suspect

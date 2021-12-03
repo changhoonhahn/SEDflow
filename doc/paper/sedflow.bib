@@ -1,0 +1,265 @@
+
+@article{alsing2018,
+  title = {Massive Optimal Data Compression and Density Estimation for Scalable, Likelihood-Free Inference in Cosmology},
+  author = {Alsing, Justin and Wandelt, Benjamin and Feeney, Stephen},
+  year = {2018},
+  month = jan,
+  abstract = {Many statistical models in cosmology can be simulated forwards but have intractable likelihood functions. Likelihood-free inference methods allow us to perform Bayesian inference from these models using only forward simulations, free from any likelihood assumptions or approximations. Likelihood-free inference generically involves simulating mock data and comparing to the observed data; this comparison in data-space suffers from the curse of dimensionality and requires compression of the data to a small number of summary statistics to be tractable. In this paper we use massive optimal data compression to reduce the dimensionality of the data-space to just one number per parameter, providing a natural and optimal framework for summary statistic choice for likelihood-free inference. Secondly, we introduce density estimation likelihood-free inference, which learns a parameterized model for joint distribution of data and parameters, yielding both the parameter posterior and the model evidence. This approach is conceptually simple, requires less tuning than traditional Approximate Bayesian Computation approaches to likelihood-free inference and can give high-fidelity posteriors from orders of magnitude fewer forward simulations. As an additional bonus, it enables parameter inference and Bayesian model comparison simultaneously. We demonstrate density estimation likelihood-free inference with massive data compression on an analysis of the joint light-curve analysis supernova data. We show that high-fidelity posterior inference is possible for full-scale cosmological data analyses with as few as \$\textbackslash sim 10\^4\$ simulations, with substantial scope for further improvement, demonstrating the scalability of likelihood-free inference to large and complex cosmological datasets.},
+  archiveprefix = {arXiv},
+  eprint = {1801.01497},
+  eprinttype = {arxiv},
+  file = {/Users/chahah/Zotero/storage/F4FBTJAK/Alsing et al. - 2018 - Massive optimal data compression and density estim.pdf;/Users/chahah/Zotero/storage/YUDBNXSM/1801.html},
+  journal = {arXiv:1801.01497 [astro-ph]},
+  keywords = {Astrophysics - Cosmology and Nongalactic Astrophysics},
+  primaryclass = {astro-ph}
+}
+
+@article{cameron2012,
+  title = {Approximate {{Bayesian Computation}} for Astronomical Model Analysis: A Case Study in Galaxy Demographics and Morphological Transformation at High Redshift},
+  shorttitle = {Approximate {{Bayesian Computation}} for Astronomical Model Analysis},
+  author = {Cameron, E. and Pettitt, A. N.},
+  year = {2012},
+  month = sep,
+  volume = {425},
+  pages = {44--65},
+  issn = {0035-8711},
+  doi = {10.1111/j.1365-2966.2012.21371.x},
+  abstract = {'Approximate Bayesian Computation' (ABC) represents a powerful  methodology for the analysis of complex stochastic systems for which the likelihood of the observed data under an arbitrary set of input parameters may be entirely intractable - the latter condition rendering useless the standard machinery of tractable likelihood-based, Bayesian statistical inference [e.g. conventional Markov chain Monte Carlo (MCMC) simulation]. In this paper, we demonstrate the potential of ABC for astronomical model analysis by application to a case study in the morphological transformation of high-redshift galaxies. To this end, we develop, first, a stochastic model for the competing processes of merging and secular evolution in the early Universe, and secondly, through an ABC-based comparison against the observed demographics of massive (Mgal {$>$} 1011 M{$\odot$}) galaxies (at 1.5 {$<$} z {$<$} 3) in the Cosmic Assembly Near-IR Deep Extragalatic Legacy Survey (CANDELS)/Extended Groth Strip (EGS) data set we derive posterior probability densities for the key parameters of this model. The 'Sequential Monte Carlo' implementation of ABC exhibited herein, featuring both a self-generating target sequence and self-refining MCMC kernel, is amongst the most efficient of contemporary approaches to this important statistical algorithm. We highlight as well through our chosen case study the value of careful summary statistic selection, and demonstrate two modern strategies for assessment and optimization in this regard. Ultimately, our ABC analysis of the high-redshift morphological mix returns tight constraints on the evolving merger rate in the early Universe and favours major merging (with disc survival or rapid reformation) over secular evolution as the mechanism most responsible for building up the first generation of bulges in early-type discs.},
+  file = {/Users/chahah/Zotero/storage/UCB9TMNL/Cameron and Pettitt - 2012 - Approximate Bayesian Computation for astronomical .pdf},
+  journal = {Monthly Notices of the Royal Astronomical Society},
+  keywords = {galaxies: evolution,galaxies: formation,methods: statistical}
+}
+
+@article{carnall2017,
+  title = {Inferring the Star-Formation Histories of Massive Quiescent Galaxies with {{BAGPIPES}}: {{Evidence}} for Multiple Quenching Mechanisms},
+  shorttitle = {Inferring the Star-Formation Histories of Massive Quiescent Galaxies with {{BAGPIPES}}},
+  author = {Carnall, A. C. and McLure, R. J. and Dunlop, J. S. and Dav{\'e}, R.},
+  year = {2017},
+  month = dec,
+  abstract = {We present Bayesian Analysis of Galaxies for Physical Inference and Parameter EStimation, or BAGPIPES, a new Python tool which can be used to rapidly generate complex model galaxy spectra and to fit these to arbitrary combinations of spectroscopic and photometric data using the MultiNest algorithm. We extensively test our ability to recover realistic star-formation histories (SFHs) with BAGPIPES by fitting mock observations of quiescent galaxies from the MUFASA simulation. We show that a double-power-law model produces better agreement with realistic SFHs than an exponentially-declining model. We then perform a detailed analysis of the SFHs of a sample of 9312 quiescent galaxies from UltraVISTA with stellar masses, \$M\_* {$>$} 10\^\{10\}\textbackslash{} \textbackslash mathrm\{M\_\textbackslash odot\}\$ and redshifts \$0.25 {$<$} z\_\textbackslash mathrm\{obs\} {$<$} 3.75\$. The majority of our quiescent sample exhibit SFHs which rise gradually then quench relatively rapidly, over \$\textbackslash sim 1\{-\}2\$ Gyr. This behaviour is consistent with recent cosmological hydrodynamic simulations, where AGN-driven feedback in the low-accretion (jet) mode is the dominant quenching mechanism. In addition, we identify two further subsets of objects with distinct SFH shapes. At \$z\_\textbackslash mathrm\{obs\} \textbackslash gtrsim 1\$ we find a class of objects with SFHs which rise and fall very rapidly, with quenching timescales of \$\textbackslash lesssim 1\$ Gyr. These objects are consistent with (potentially merger-triggered) quasar-mode AGN feedback. Also, at \$z\_\textbackslash mathrm\{obs\} \textbackslash lesssim 1\$ we find a population with SFHs which quench more slowly than they rise, over \$\textbackslash gtrsim3\$ Gyr, which we speculate to be the result of a 'natural' quenching process, where galaxy SFHs die down gradually due to the diminishing overall cosmic gas supply. Purely passive evolution of the quiescent population at \$z\_\textbackslash mathrm\{obs\} \textbackslash gtrsim 0.5\$ is disfavoured by our results.},
+  archiveprefix = {arXiv},
+  eprint = {1712.04452},
+  eprinttype = {arxiv},
+  file = {/Users/chahah/Zotero/storage/KF3XDH4M/Carnall et al. - 2017 - Inferring the star-formation histories of massive .pdf;/Users/chahah/Zotero/storage/WTUEDEKQ/1712.html},
+  journal = {arXiv:1712.04452 [astro-ph]},
+  keywords = {Astrophysics - Astrophysics of Galaxies,Astrophysics - Instrumentation and Methods for Astrophysics},
+  primaryclass = {astro-ph}
+}
+
+@article{carnall2018,
+  title = {How to Measure Galaxy Star-Formation Histories {{I}}: {{Parametric}} Models},
+  shorttitle = {How to Measure Galaxy Star-Formation Histories {{I}}},
+  author = {Carnall, A. C. and Leja, J. and Johnson, B. D. and McLure, R. J. and Dunlop, J. S. and Conroy, C.},
+  year = {2018},
+  month = nov,
+  abstract = {Parametric models for galaxy star-formation histories (SFHs) are widely used, though they are known to impose strong priors on physical parameters. This has consequences for measurements of the galaxy stellar-mass function (GSMF), star-formation-rate density (SFRD) and star-forming main sequence (SFMS). We investigate the effects of the exponentially declining, delayed exponentially declining, lognormal and double power law SFH models using BAGPIPES. We demonstrate that each of these models imposes strong priors on specific star-formation rates (sSFRs), potentially biasing the SFMS, and also imposes a strong prior preference for young stellar populations. We show that stellar mass, SFR and mass-weighted age inferences from high-quality mock photometry vary with the choice of SFH model by at least 0.1, 0.3 and 0.2 dex respectively. However the biases with respect to the true values depend more on the true SFH shape than the choice of model. We also demonstrate that photometric data cannot discriminate between SFH models, meaning it is important to perform independent tests to find well-motivated priors. We finally fit a low-redshift, volume-complete sample of galaxies from the Galaxy and Mass Assembly (GAMA) Survey with each model. We demonstrate that our stellar masses and SFRs at redshift, \$z\textbackslash sim0.05\$ are consistent with other analyses. However, our inferred cosmic SFRDs peak at \$z\textbackslash sim0.4\$, approximately 6 Gyr later than direct observations suggest, meaning our mass-weighted ages are significantly underestimated. This makes the use of parametric SFH models for understanding mass assembly in galaxies challenging. In a companion paper we consider non-parametric SFH models.},
+  archiveprefix = {arXiv},
+  eprint = {1811.03635},
+  eprinttype = {arxiv},
+  file = {/Users/chahah/Zotero/storage/5842SKVT/Carnall et al. - 2018 - How to measure galaxy star-formation histories I .pdf;/Users/chahah/Zotero/storage/N9HT2VB7/1811.html},
+  journal = {arXiv:1811.03635 [astro-ph]},
+  keywords = {Astrophysics - Astrophysics of Galaxies,Astrophysics - Instrumentation and Methods for Astrophysics},
+  primaryclass = {astro-ph}
+}
+
+@article{hahn2017b,
+  title = {Approximate {{Bayesian Computation}} in {{Large Scale Structure}}: Constraining the Galaxy-Halo Connection},
+  shorttitle = {Approximate {{Bayesian Computation}} in {{Large Scale Structure}}},
+  author = {Hahn, ChangHoon and Vakili, Mohammadjavad and Walsh, Kilian and Hearin, Andrew P. and Hogg, David W. and Campbell, Duncan},
+  year = {2017},
+  month = aug,
+  volume = {469},
+  pages = {2791--2805},
+  issn = {0035-8711, 1365-2966},
+  doi = {10.1093/mnras/stx894},
+  abstract = {Standard approaches to Bayesian parameter inference in large scale structure assume a Gaussian functional form (chi-squared form) for the likelihood. This assumption, in detail, cannot be correct. Likelihood free inferences such as Approximate Bayesian Computation (ABC) relax these restrictions and make inference possible without making any assumptions on the likelihood. Instead ABC relies on a forward generative model of the data and a metric for measuring the distance between the model and data. In this work, we demonstrate that ABC is feasible for LSS parameter inference by using it to constrain parameters of the halo occupation distribution (HOD) model for populating dark matter halos with galaxies. Using specific implementation of ABC supplemented with Population Monte Carlo importance sampling, a generative forward model using HOD, and a distance metric based on galaxy number density, two-point correlation function, and galaxy group multiplicity function, we constrain the HOD parameters of mock observation generated from selected "true" HOD parameters. The parameter constraints we obtain from ABC are consistent with the "true" HOD parameters, demonstrating that ABC can be reliably used for parameter inference in LSS. Furthermore, we compare our ABC constraints to constraints we obtain using a pseudo-likelihood function of Gaussian form with MCMC and find consistent HOD parameter constraints. Ultimately our results suggest that ABC can and should be applied in parameter inference for LSS analyses.},
+  archiveprefix = {arXiv},
+  eprint = {1607.01782},
+  eprinttype = {arxiv},
+  file = {/Users/chahah/Zotero/storage/7PC9B39G/Hahn et al. - 2017 - Approximate Bayesian Computation in Large Scale St.pdf;/Users/chahah/Zotero/storage/HPNZWAZN/1607.html},
+  journal = {Monthly Notices of the Royal Astronomical Society},
+  keywords = {Astrophysics - Cosmology and Nongalactic Astrophysics},
+  number = {3}
+}
+
+@article{hahn2019c,
+  title = {Likelihood Non-{{Gaussianity}} in Large-Scale Structure Analyses},
+  author = {Hahn, ChangHoon and Beutler, Florian and Sinha, Manodeep and Berlind, Andreas and Ho, Shirley and Hogg, David W.},
+  year = {2019},
+  month = may,
+  volume = {485},
+  pages = {2956--2969},
+  issn = {0035-8711},
+  doi = {10.1093/mnras/stz558},
+  abstract = {Standard present-day large-scale structure (LSS) analyses make a major assumption in their Bayesian parameter inference - that the likelihood has a Gaussian form. For summary statistics currently used in LSS, this assumption, even if the underlying density field is Gaussian, cannot be correct in detail. We investigate the impact of this assumption on two recent LSS analyses: the Beutler et al. power spectrum multipole (P{$\mathscr{l}$}) analysis and the Sinha et al. group multiplicity function ({$\zeta$}) analysis. Using non-parametric divergence estimators on mock catalogues originally constructed for covariance matrix estimation, we identify significant non-Gaussianity in both the P{$\mathscr{l}$} and {$\zeta$} likelihoods. We then use Gaussian mixture density estimation and independent component analysis on the same mocks to construct likelihood estimates that approximate the true likelihood better than the Gaussian pseudo-likelihood. Using these likelihood estimates, we accurately estimate the true posterior probability distribution of the Beutler et al. and Sinha et al. parameters. Likelihood non-Gaussianity shifts the f{$\sigma$}8 constraint by -0.44{$\sigma$}, but otherwise does not significantly impact the overall parameter constraints of Beutler et al. For the {$\zeta$} analysis, using the pseudo-likelihood significantly underestimates the uncertainties and biases the constraints of the Sinha et al. halo occupation parameters. For log M\_1 and {$\alpha$}, the posteriors are shifted by +0.43{$\sigma$} and -0.51{$\sigma$} and broadened by 42\{\{ per cent\}\} and 66\{\{ per cent\}\}, respectively. The divergence and likelihood estimation methods we present provide a straightforward framework for quantifying the impact of likelihood non-Gaussianity and deriving more accurate parameter constraints.},
+  file = {/Users/chahah/Zotero/storage/3PJRJ6RV/Hahn et al. - 2019 - Likelihood non-Gaussianity in large-scale structur.pdf},
+  journal = {Monthly Notices of the Royal Astronomical Society},
+  keywords = {cosmological parameters,cosmology: observations,galaxies: statistics,large-scale structure of Universe,methods: data analysis,methods: statistical}
+}
+
+@article{handley2019,
+  title = {Maximum-{{Entropy Priors}} with {{Derived Parameters}} in a {{Specified Distribution}}},
+  author = {Handley, Will and Millea, Marius},
+  year = {2019},
+  month = mar,
+  volume = {21},
+  pages = {272},
+  issn = {1099-4300},
+  doi = {10.3390/e21030272},
+  abstract = {We propose a method for transforming probability distributions so that parameters of interest are forced into a specified distribution. We prove that this approach is the maximum entropy choice, and provide a motivating example applicable to neutrino hierarchy inference.},
+  archiveprefix = {arXiv},
+  eprint = {1804.08143},
+  eprinttype = {arxiv},
+  file = {/Users/chahah/Zotero/storage/QKP49984/Handley and Millea - 2019 - Maximum-Entropy Priors with Derived Parameters in .pdf;/Users/chahah/Zotero/storage/4YA53UR5/1804.html},
+  journal = {Entropy},
+  keywords = {Astrophysics - Cosmology and Nongalactic Astrophysics,Astrophysics - Instrumentation and Methods for Astrophysics,High Energy Physics - Phenomenology,Mathematics - Statistics Theory},
+  number = {3}
+}
+
+@article{iyer2017,
+  title = {Reconstruction of {{Galaxy Star Formation Histories}} through {{SED Fitting}}: {{The Dense Basis Approach}}},
+  shorttitle = {Reconstruction of {{Galaxy Star Formation Histories}} through {{SED Fitting}}},
+  author = {Iyer, Kartheik G. and Gawiser, Eric},
+  year = {2017},
+  month = apr,
+  volume = {838},
+  pages = {127},
+  issn = {1538-4357},
+  doi = {10.3847/1538-4357/aa63f0},
+  abstract = {We introduce the Dense Basis method for Spectral Energy Distribution (SED) fitting. It accurately recovers traditional SED parameters, including M\$\_*\$, SFR and dust attenuation, and reveals previously inaccessible information about the number and duration of star formation episodes and the timing of stellar mass assembly, as well as uncertainties in these quantities. This is done using basis Star Formation Histories (SFHs) chosen by comparing the goodness-of-fit of mock galaxy SEDs to the goodness-of-reconstruction of their SFHs. We train and validate the method using a sample of realistic SFHs at \$z =1\$ drawn from stochastic realisations, semi-analytic models, and a cosmological hydrodynamical galaxy formation simulation. The method is then applied to a sample of 1100 CANDELS GOODS-S galaxies at \$1},
+  archiveprefix = {arXiv},
+  eprint = {1702.04371},
+  eprinttype = {arxiv},
+  file = {/Users/chahah/Zotero/storage/YDAXZXZP/Iyer and Gawiser - 2017 - Reconstruction of Galaxy Star Formation Histories .pdf;/Users/chahah/Zotero/storage/VZPMY39Z/1702.html},
+  journal = {The Astrophysical Journal},
+  keywords = {Astrophysics - Astrophysics of Galaxies},
+  number = {2}
+}
+
+@article{kacprzak2018,
+  title = {Accelerating {{Approximate Bayesian Computation}} with {{Quantile Regression}}: Application to Cosmological Redshift Distributions},
+  shorttitle = {Accelerating {{Approximate Bayesian Computation}} with {{Quantile Regression}}},
+  author = {Kacprzak, T. and Herbel, J. and Amara, A. and R{\'e}fr{\'e}gier, A.},
+  year = {2018},
+  month = feb,
+  volume = {2018},
+  pages = {042},
+  doi = {10.1088/1475-7516/2018/02/042},
+  abstract = {Approximate Bayesian Computation (ABC) is a method to obtain a posterior distribution without a likelihood function, using simulations and a set of distance metrics. For that reason, it has recently been gaining popularity as an analysis tool in cosmology and astrophysics. Its drawback, however, is a slow convergence rate. We propose a novel method, which we call qABC, to accelerate ABC with Quantile Regression. In this method, we create a model of quantiles of distance measure as a function of input parameters. This model is trained on a small number of simulations and estimates which regions of the prior space are likely to be accepted into the posterior. Other regions are then immediately rejected. This procedure is then repeated as more simulations are available. We apply it to the practical problem of estimation of redshift distribution of cosmological samples, using forward modelling developed in previous work. The qABC method converges to nearly same posterior as the basic ABC. It uses, however, only 20\% of the number of simulations compared to basic ABC, achieving a fivefold gain in execution time for our problem. For other problems the acceleration rate may vary; it depends on how close the prior is to the final posterior. We discuss possible improvements and extensions to this method.},
+  file = {/Users/chahah/Zotero/storage/4W6WZY2W/Kacprzak et al. - 2018 - Accelerating Approximate Bayesian Computation with.pdf;/Users/chahah/Zotero/storage/CCHF448Q/abstract.html},
+  journal = {Journal of Cosmology and Astro-Particle Physics},
+  language = {en}
+}
+
+@article{leja2019,
+  title = {How to {{Measure Galaxy Star Formation Histories}}. {{II}}. {{Nonparametric Models}}},
+  author = {Leja, Joel and Carnall, Adam C. and Johnson, Benjamin D. and Conroy, Charlie and Speagle, Joshua S.},
+  year = {2019},
+  month = may,
+  volume = {876},
+  pages = {3},
+  issn = {0004-637X},
+  doi = {10.3847/1538-4357/ab133c},
+  abstract = {Nonparametric star formation histories (SFHs) have long promised to be the ``gold standard'' for galaxy spectral energy distribution (SED) modeling as they are flexible enough to describe the full diversity of SFH shapes, whereas parametric models rule out a significant fraction of these shapes a priori. However, this flexibility is not fully constrained even with high-quality observations, making it critical to choose a well-motivated prior. Here, we use the SED-fitting code Prospector to explore the effect of different nonparametric priors by fitting SFHs to mock UV-IR photometry generated from a diverse set of input SFHs. First, we confirm that nonparametric SFHs recover input SFHs with less bias and return more accurate errors than do parametric SFHs. We further find that, while nonparametric SFHs robustly recover the overall shape of the input SFH, the primary determinant of the size and shape of the posterior star formation rate as a function of time (SFR(t)) is the choice of prior, rather than the photometric noise. As a practical demonstration, we fit the UV-IR photometry of{\~ }6000 galaxies from the Galaxy and Mass Assembly survey and measure scatters between priors to be 0.1 dex in mass, 0.8 dex in SFR\textsubscript{100 Myr}, and 0.2 dex in mass-weighted ages, with the bluest star-forming galaxies showing the most sensitivity. An important distinguishing characteristic for nonparametric models is the characteristic timescale for changes in SFR(t). This difference controls whether galaxies are assembled in bursts or in steady-state star formation, corresponding respectively to (feedback-dominated/accretion-dominated) models of galaxy formation and to (larger/smaller) confidence intervals derived from SED fitting. High-quality spectroscopy has the potential to further distinguish between these proposed models of SFR(t).},
+  file = {/Users/chahah/Zotero/storage/HZPMS7B5/Leja et al. - 2019 - How to Measure Galaxy Star Formation Histories. II.pdf;/Users/chahah/Zotero/storage/WUZ8Q3VM/abstract.html},
+  journal = {ApJ},
+  language = {en},
+  number = {1}
+}
+
+@article{leja2019a,
+  title = {A {{New Census}} of the 0.2 \&lt; z \&lt; 3.0 {{Universe}}, {{Part I}}: {{The Stellar Mass Function}}},
+  shorttitle = {A {{New Census}} of the 0.2 \&lt; z \&lt; 3.0 {{Universe}}, {{Part I}}},
+  author = {Leja, Joel and Speagle, Joshua S. and Johnson, Benjamin D. and Conroy, Charlie and {van Dokkum}, Pieter and Franx, Marijn},
+  year = {2019},
+  month = oct,
+  pages = {arXiv:1910.04168},
+  abstract = {There has been a long-standing factor-of-two tension between the observed star formation rate density and the observed stellar mass buildup after \$z\textbackslash sim2\$. Recently we have proposed that sophisticated panchromatic SED models can resolve this tension, as these methods infer systematically higher masses and lower star formation rates than standard approaches. In a series of papers we now extend this analysis and present a complete, self-consistent census of galaxy formation over \$0.2 \&lt; z \&lt; 3\$ inferred with the \textbackslash texttt\{Prospector\} galaxy SED-fitting code. In this work, Paper I, we present the evolution of the galaxy stellar mass function using new mass measurements of \$\textbackslash sim\$10\$\^5\$ galaxies in the 3D-HST and COSMOS-2015 surveys. We employ a new methodology to infer the mass function from the observed stellar masses: instead of fitting independent mass functions in a series of fixed redshift intervals, we construct a continuity model that directly fits for the redshift evolution of the mass function. This approach ensures a smooth picture of galaxy assembly and makes use of the full, non-Gaussian uncertainty contours in our stellar mass inferences. The resulting mass function has higher number densities at a fixed stellar mass than almost any other measurement in the literature, largely owing to the older stellar ages inferred by \textbackslash texttt\{Prospector\}. The stellar mass density is \$\textbackslash sim\$50\% higher than previous measurements, with the offset peaking at \$z\textbackslash sim1\$. The next two papers in this series will present the new measurements of star-forming main sequence and the cosmic star formation rate density, respectively. {$<$}P /{$>$}},
+  file = {/Users/chahah/Zotero/storage/4TV3QZSU/Leja et al. - A New Census of the 0.2  z  3.0 Universe, Part I.pdf;/Users/chahah/Zotero/storage/BEHHHLAD/abstract.html},
+  journal = {arXiv},
+  language = {en}
+}
+
+@article{papamakarios2017,
+  title = {Masked {{Autoregressive Flow}} for {{Density Estimation}}},
+  author = {Papamakarios, George and Pavlakou, Theo and Murray, Iain},
+  year = {2017},
+  month = may,
+  volume = {1705},
+  pages = {arXiv:1705.07057},
+  abstract = {Autoregressive models are among the best performing neural density estimators. We describe an approach for increasing the flexibility of an autoregressive model, based on modelling the random numbers that the model uses internally when generating data. By constructing a stack of autoregressive models, each modelling the random numbers of the next model in the stack, we obtain a type of normalizing flow suitable for density estimation, which we call Masked Autoregressive Flow. This type of flow is closely related to Inverse Autoregressive Flow and is a generalization of Real NVP. Masked Autoregressive Flow achieves state-of-the-art performance in a range of general-purpose density estimation tasks.},
+  file = {/Users/chahah/Zotero/storage/VCZVEKYM/Papamakarios et al. - 2017 - Masked Autoregressive Flow for Density Estimation.pdf},
+  journal = {arXiv e-prints},
+  keywords = {Computer Science - Machine Learning,Statistics - Machine Learning}
+}
+
+@article{papamakarios2019,
+  title = {Neural {{Density Estimation}} and {{Likelihood}}-Free {{Inference}}},
+  author = {Papamakarios, George},
+  year = {2019},
+  month = oct,
+  volume = {1910},
+  pages = {arXiv:1910.13233},
+  abstract = {I consider two problems in machine learning and statistics: the problem of estimating the joint probability density of a collection of random variables, known as density estimation, and the problem of inferring model parameters when their likelihood is intractable, known as likelihood-free inference. The contribution of the thesis is a set of new methods for addressing these problems that are based on recent advances in neural networks and deep learning.},
+  file = {/Users/chahah/Zotero/storage/86W9WXW2/Papamakarios - 2019 - Neural Density Estimation and Likelihood-free Infe.pdf},
+  journal = {arXiv e-prints},
+  keywords = {Computer Science - Machine Learning,Statistics - Machine Learning}
+}
+
+@article{schlegel1997,
+  title = {Maps of {{Dust IR Emission}} for {{Use}} in {{Estimation}} of {{Reddening}} and {{CMBR Foregrounds}}},
+  author = {Schlegel, D. J. and Finkbeiner, D. P. and Davis, Marc},
+  year = {1997},
+  month = dec,
+  volume = {191},
+  pages = {87.04},
+  abstract = {We present a full sky 100micron map that is a reprocessed composite of  the COBE/DIRBE and IRAS/ISSA maps, with the zodiacal foreground and confirmed point sources removed. We have constructed a map of the dust temperature, so that the 100micron map can be converted to a map proportional to dust column density. The dust temperature varies from 17 K to 21 K, which is modest but does modify the estimate of the dust column by a factor of 5. The result of these manipulations is a map with DIRBE-quality calibration and IRAS resolution. A wealth of filamentary detail is apparent on many different scales at all Galactic latitudes. In high latitude regions, the dust map correlates well with maps of HI emission, but deviations are significant. To generate the full sky dust maps, we must first remove zodiacal light contamination as well as a possible cosmic infrared background (CIB). For the 100micron map no signficant CIB is detected, but in the 140micron and 240micron maps, where the zodiacal contamination is weaker, we detect the CIB at surprisingly high flux levels of 30 +/- 8 \{nW/m\}(2/sr) at 140\textbackslash micron, and 16 \textbackslash pm 3.4 \{nW/m\}\^2/sr at 240micron (95\% confidence), which is an integrated flux \textasciitilde{} 2 times that extrapolated from optical galaxies in the Hubble Deep Field. The primary use of these maps is likely to be as a new estimator of Galactic extinction. To calibrate our maps, we assume a standard reddening law, and use the colors of elliptical galaxies. We demonstrate that the new maps are twice as accurate as the older Burstein-Heiles reddening estimates in regions of low and moderate reddening. The maps are expected to be significantly more accurate in regions of high reddening. These dust maps will also be useful for estimating millimeter emission that contaminates CMBR experiments and for estimating soft X-ray absorption.}
+}
+
+@article{tacchella2021,
+  title = {Fast, {{Slow}}, {{Early}}, {{Late}}: {{Quenching Massive Galaxies}} at \$z\textbackslash sim0.8\$},
+  shorttitle = {Fast, {{Slow}}, {{Early}}, {{Late}}},
+  author = {Tacchella, Sandro and Conroy, Charlie and Faber, S. M. and Johnson, Benjamin D. and Leja, Joel and Barro, Guillermo and Cunningham, Emily C. and Deason, Alis J. and Guhathakurta, Puragra and Guo, Yicheng and Hernquist, Lars and Koo, David C. and McKinnon, Kevin and Rockosi, Constance M. and Speagle, Joshua S. and {van Dokkum}, Pieter and Yesuf, Hassen M.},
+  year = {2021},
+  month = feb,
+  volume = {2102},
+  pages = {arXiv:2102.12494},
+  abstract = {We investigate the stellar populations for a sample of 161 massive, mainly quiescent galaxies at \$\textbackslash langle z\_\{\textbackslash rm obs\} \textbackslash rangle=0.8\$ with deep Keck/DEIMOS rest-frame optical spectroscopy (HALO7D survey). With the fully Bayesian framework Prospector, we simultaneously fit the spectroscopic and photometric data with an advanced physical model (including non-parametric star-formation histories, emission lines, variable dust attenuation law, and dust and AGN emission) together with an uncertainty and outlier model. We show that both spectroscopy and photometry are needed to break the dust-age-metallicity degeneracy. We find a large diversity of star-formation histories: although the most massive (\$M\_\{\textbackslash star\}{$>$}2\textbackslash times10\^\{11\}\textasciitilde M\_\{\textbackslash odot\}\$) galaxies formed the earliest (formation redshift of \$z\_\{\textbackslash rm f\}\textbackslash approx5-10\$ with a short star-formation timescale of \$\textbackslash tau\_\{\textbackslash rm SF\}\textbackslash lesssim1\textasciitilde\textbackslash mathrm\{Gyr\}\$), lower-mass galaxies have a wide range of formation redshifts, leading to only a weak trend of \$z\_\{\textbackslash rm f\}\$ with \$M\_\{\textbackslash star\}\$. Interestingly, several low-mass galaxies with have formation redshifts of \$z\_\{\textbackslash rm f\}\textbackslash approx5-8\$. Star-forming galaxies evolve about the star-forming main sequence, crossing the ridgeline several times in their past. Quiescent galaxies show a wide range and continuous distribution of quenching timescales (\$\textbackslash tau\_\{\textbackslash rm quench\}\textbackslash approx0-5\textasciitilde\textbackslash mathrm\{Gyr\}\$) with a median of \$\textbackslash langle\textbackslash tau\_\{\textbackslash rm quench\}\textbackslash rangle=1.0\_\{-0.9\}\^\{+0.8\}\textasciitilde\textbackslash mathrm\{Gyr\}\$ and of quenching epochs of \$z\_\{\textbackslash rm quench\}\textbackslash approx0.8-5.0\$ (\$\textbackslash langle z\_\{\textbackslash rm quench\}\textbackslash rangle=1.3\_\{-0.4\}\^\{+0.7\}\$). This large diversity of quenching timescales and epochs points toward a combination of internal and external quenching mechanisms. In our sample, rejuvenation and "late bloomers" are uncommon. In summary, our analysis supports the "grow \& quench" framework and is consistent with a wide and continuously-populated diversity of quenching timescales.},
+  file = {/Users/chahah/Zotero/storage/AK999XTA/Tacchella et al. - 2021 - Fast, Slow, Early, Late Quenching Massive Galaxie.pdf},
+  journal = {arXiv e-prints},
+  keywords = {Astrophysics - Astrophysics of Galaxies}
+}
+
+@article{webb2020,
+  title = {The {{GOGREEN}} Survey: Post-Infall Environmental Quenching Fails to Predict the Observed Age Difference between Quiescent Field and Cluster Galaxies at z {$>$} 1},
+  shorttitle = {The {{GOGREEN}} Survey},
+  author = {Webb, Kristi and Balogh, Michael L. and Leja, Joel and {van der Burg}, Remco F. J. and Rudnick, Gregory and Muzzin, Adam and Boak, Kevin and Cerulo, Pierluigi and Gilbank, David and Lidman, Chris and Old, Lyndsay J. and {Pintos-Castro}, Irene and McGee, Sean and Shipley, Heath and Biviano, Andrea and Chan, Jeffrey C. C. and Cooper, Michael and De Lucia, Gabriella and Demarco, Ricardo and Forrest, Ben and Jablonka, Pascale and Kukstas, Egidijus and McCarthy, Ian G. and McNab, Karen and Nantais, Julie and Noble, Allison and Poggianti, Bianca and Reeves, Andrew M. M. and Vulcani, Benedetta and Wilson, Gillian and Yee, Howard K. C. and Zaritsky, Dennis},
+  year = {2020},
+  month = nov,
+  volume = {498},
+  pages = {5317--5342},
+  issn = {0035-8711},
+  doi = {10.1093/mnras/staa2752},
+  abstract = {We study the star formation histories (SFHs) and mass-weighted ages of  331 UVJ-selected quiescent galaxies in 11 galaxy clusters and in the field at 1 {$<$} z {$<$} 1.5 from the Gemini Observations of Galaxies in Rich Early ENvironments (GOGREEN) survey. We determine the SFHs of individual galaxies by simultaneously fitting rest-frame optical spectroscopy and broad-band photometry to stellar population models. We confirm that the SFHs are consistent with more massive galaxies having on average earlier formation times. Comparing galaxies found in massive clusters with those in the field, we find galaxies with M* {$<$} 1011.3 M{$\odot$} in the field have more extended SFHs. From the SFHs we calculate the mass-weighted ages, and compare age distributions of galaxies between the two environments, at fixed mass. We constrain the difference in mass-weighted ages between field and cluster galaxies to \$0.31\_\{\^\{-0.33\}\}\^\{\_\{+0.51\}\}\$ Gyr, in the sense that cluster galaxies are older. We place this result in the context of two simple quenching models and show that neither environmental quenching based on time since infall (without pre-processing) nor a difference in formation times alone can reproduce both the average age difference and relative quenched fractions. This is distinctly different from local clusters, for which the majority of the quenched population is consistent with having been environmentally quenched upon infall. Our results suggest that quenched population in galaxy clusters at z {$>$} 1 has been driven by different physical processes than those at play at z = 0.},
+  file = {/Users/chahah/Zotero/storage/KWG49RA9/Webb et al. - 2020 - The GOGREEN survey post-infall environmental quen.pdf},
+  journal = {Monthly Notices of the Royal Astronomical Society},
+  keywords = {galaxies: clusters: general,galaxies: evolution}
+}
+
+@article{weyant2013,
+  title = {Likelihood-Free {{Cosmological Inference}} with {{Type Ia Supernovae}}: {{Approximate Bayesian Computation}} for a {{Complete Treatment}} of {{Uncertainty}}},
+  shorttitle = {Likelihood-Free {{Cosmological Inference}} with {{Type Ia Supernovae}}},
+  author = {Weyant, Anja and Schafer, Chad and {Wood-Vasey}, W. Michael},
+  year = {2013},
+  month = feb,
+  volume = {764},
+  pages = {116},
+  issn = {0004-637X},
+  doi = {10.1088/0004-637X/764/2/116},
+  abstract = {Cosmological inference becomes increasingly difficult when complex  data-generating processes cannot be modeled by simple probability distributions. With the ever-increasing size of data sets in cosmology, there is an increasing burden placed on adequate modeling; systematic errors in the model will dominate where previously these were swamped by statistical errors. For example, Gaussian distributions are an insufficient representation for errors in quantities like photometric redshifts. Likewise, it can be difficult to quantify analytically the distribution of errors that are introduced in complex fitting codes. Without a simple form for these distributions, it becomes difficult to accurately construct a likelihood function for the data as a function of parameters of interest. Approximate Bayesian computation (ABC) provides a means of probing the posterior distribution when direct calculation of a sufficiently accurate likelihood is intractable. ABC allows one to bypass direct calculation of the likelihood but instead relies upon the ability to simulate the forward process that generated the data. These simulations can naturally incorporate priors placed on nuisance parameters, and hence these can be marginalized in a natural way. We present and discuss ABC methods in the context of supernova cosmology using data from the SDSS-II Supernova Survey. Assuming a flat cosmology and constant dark energy equation of state, we demonstrate that ABC can recover an accurate posterior distribution. Finally, we show that ABC can still produce an accurate posterior distribution when we contaminate the sample with Type IIP supernovae.},
+  file = {/Users/chahah/Zotero/storage/PYMFC67P/Weyant et al. - 2013 - Likelihood-free Cosmological Inference with Type I.pdf},
+  journal = {The Astrophysical Journal},
+  keywords = {cosmological parameters,methods: statistical}
+}
+
+

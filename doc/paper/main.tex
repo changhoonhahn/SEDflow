@@ -1,0 +1,135 @@
+\documentclass[12pt, letterpaper, preprint, comicneue]{aastex63}
+%\usepackage[default]{comicneue} % comic sans font for editing
+\usepackage[T1]{fontenc}
+\input{vc}
+\usepackage{color}
+\usepackage{amsmath}
+\usepackage{natbib}
+\usepackage{ctable}
+\usepackage{bm}
+\usepackage[normalem]{ulem} % Added by MS for \sout -> not required for final version
+\usepackage{xspace}
+\usepackage{csvsimple} 
+
+\usepackage{graphicx}
+\usepackage{pgfkeys, pgfsys, pgfcalendar}
+
+
+% typesetting shih
+\linespread{1.08} % close to 10/13 spacing
+\setlength{\parindent}{1.08\baselineskip} % Bringhurst
+\setlength{\parskip}{0ex}
+\let\oldbibliography\thebibliography % killin' me.
+\renewcommand{\thebibliography}[1]{%
+  \oldbibliography{#1}%
+  \setlength{\itemsep}{0pt}%
+  \setlength{\parsep}{0pt}%
+  \setlength{\parskip}{0pt}%
+  \setlength{\bibsep}{0ex}
+  \raggedright
+}
+\setlength{\footnotesep}{0ex} % seriously?
+
+% citation alias
+
+% math shih
+\newcommand{\setof}[1]{\left\{{#1}\right\}}
+\newcommand{\given}{\,|\,}
+\newcommand{\lss}{{\small{LSS}}\xspace}
+
+\newcommand{\Om}{\Omega_{\rm m}} 
+\newcommand{\Ob}{\Omega_{\rm b}} 
+\newcommand{\OL}{\Omega_\Lambda}
+\newcommand{\smnu}{M_\nu}
+\newcommand{\sig}{\sigma_8} 
+\newcommand{\mmin}{M_{\rm min}}
+\newcommand{\BOk}{\widehat{B}_0} 
+\newcommand{\hmpc}{\,h/\mathrm{Mpc}}
+\newcommand{\bfi}[1]{\textbf{\textit{#1}}}
+\newcommand{\parti}[1]{\frac{\partial #1}{\partial \theta_i}}
+\newcommand{\partj}[1]{\frac{\partial #1}{\partial \theta_j}}
+\newcommand{\mpc}{{\rm Mpc}}
+\newcommand{\eg}{\emph{e.g.}}
+\newcommand{\ie}{\emph{i.e.}}
+
+\let\oldAA\AA
+\renewcommand{\AA}{\text{\normalfont\oldAA}}
+% cmds for this paper 
+\newcommand{\gr}{g{-}r}
+\newcommand{\fnuv}{FUV{-}NUV}
+\newcommand{\sfr}{{\rm SFR}}
+\newcommand{\ssfr}{{\rm SSFR}}
+\newcommand{\xobs}{{\bf x}_{\rm obs}}
+
+\newcommand{\specialcell}[2][c]{%
+  \begin{tabular}[#1]{@{}c@{}}#2\end{tabular}}
+% text shih
+\newcommand{\foreign}[1]{\textsl{#1}}
+\newcommand{\etal}{\foreign{et~al.}}
+\newcommand{\opcit}{\foreign{Op.~cit.}}
+\newcommand{\documentname}{\textsl{Article}}
+\newcommand{\equationname}{equation}
+\newcommand{\bitem}{\begin{itemize}}
+\newcommand{\eitem}{\end{itemize}}
+\newcommand{\beq}{\begin{equation}}
+\newcommand{\eeq}{\end{equation}}
+
+%% collaborating
+\newcommand{\todo}[1]{\marginpar{\color{red}TODO}{\color{red}#1}}
+\definecolor{orange}{rgb}{1,0.5,0}
+\newcommand{\chedit}[1]{{\color{orange}#1}}
+
+\begin{document} \sloppy\sloppypar\frenchspacing 
+
+\title{Accelerated Bayesian SED Modeling using Amortized Neural Posterior Esimators}
+
+\newcounter{affilcounter}
+\author[0000-0003-1197-0902]{ChangHoon Hahn}
+\altaffiliation{hahn.changhoon@gmail.com}
+\affil{Department of Astrophysical Sciences, Princeton University, Peyton Hall, Princeton NJ 08544, USA} 
+
+\author{Peter Melchior}
+\affil{Department of Astrophysical Sciences, Princeton University, Peyton Hall, Princeton NJ 08544, USA} 
+
+\begin{abstract}
+    State-of-the-art spectral energy distribution (SED) analyses use a Bayesian
+    framework to infer the physical properties of galaxies from spectroscopic
+    and photometric observations. 
+    These methods, however, require sampling a high dimensional space of SED
+    model parameters and, thus, take $>100$ CPU hours per galaxy. 
+    They are not computationally scalable and cannot be feasily used to analyze
+    {\em millions} of galaxy photometry and spectra from the next-generation galaxy surveys
+    (\eg~Rubin, James Webb, and Roman). 
+    \todo{short description of our SBI method}. 
+    We combine this SBI-based method with the {\sc provabgs} SED model, which
+    uses non-parameteric star formation and chemical enrichment histories and a
+    flexible dust attenuation model. 
+    We then analyze the multi-wavelength photometry of the NASA-Sloan Atlas
+    with our method as well as with the origin {\sc provabgs} SED model using
+    standard Markov Chain Monte Carlo (MCMC) sampling.  
+    Our method accurately recovers the posteriors for the SED model parameters
+    and inferred galaxy properties. % something more descriptive e.g.  indistinguishable from the standard MCMC sampling 
+    More importantly, while the standard MCMC sampling took 100 CPU hours,
+    our method took 0.2 secs to infer the full posterior. 
+\end{abstract}
+
+\keywords{}
+
+\input{intro}
+\input{sbi}
+\input{obs}
+\input{results}
+\input{summary}
+
+\section*{Acknowledgements}
+It's a pleasure to thank 
+    Adam Carnall, 
+    Kartheik Iyer,
+    Jenny E. Green,
+    ...
+for valuable discussions and comments.
+
+\appendix
+\bibliographystyle{mnras}
+\bibliography{sedflow} 
+\end{document}
