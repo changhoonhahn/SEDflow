@@ -48,10 +48,9 @@ anpe.append_simulations(
     torch.as_tensor(y_train.astype(np.float32)))
 p_x_y_estimator = anpe.train()#dataloader_kwargs={'num_workers': 4})
 
-valid_logprob.append(anpe._summary['best_validation_log_probs'])
-print(anpe._summary['best_validation_log_probs'])
-
-# save training summary
-pickle.dump(anpe._summary, open(fsumm, 'wb'))
 # save trained ANPE
 torch.save(p_x_y_estimator.state_dict(), fanpe)
+
+# save training summary
+print(anpe._summary['best_validation_log_probs'])
+pickle.dump(anpe._summary, open(fsumm, 'wb'))
