@@ -4,6 +4,10 @@ module for reading in observations
 
 
 '''
+import os
+import h5py
+import numpy as np 
+from . import train as Train
 
 
 
@@ -11,7 +15,7 @@ def NSA():
     ''' read in NSA catalog in dictionary form with clean photometry along with
     indices for 100 randomly selected galaxies.
     '''
-    dat_dir = data_dir()
+    dat_dir = Train.data_dir()
 
     # read in NSA data with clean photometry
     nsa = {}
@@ -50,7 +54,7 @@ def load_nsa_data(test_set=True):
 
 
 def load_nsa_mcmc(): 
-    dat_dir = data_dir() 
+    dat_dir = Train.data_dir() 
     return np.load(os.path.join(dat_dir, 'mcmc.props.nsa.npy'))
 
 
