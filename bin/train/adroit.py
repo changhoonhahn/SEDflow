@@ -14,7 +14,7 @@ def anpe(sample, itrain, nhidden, nblocks, gpu=False):
         "#!/bin/bash", 
         "#SBATCH -J anpe.%s.%ix%i.%i" % (sample, nhidden, nblocks, itrain), 
         "#SBATCH --partition=general",
-        "#SBATCH --time=23:59:59", 
+        "#SBATCH --time=47:59:59", 
         "#SBATCH --export=ALL", 
         "#SBATCH --output=o/anpe.%s.%ix%i.%i.o" % (sample, nhidden, nblocks, itrain), 
         "#SBATCH --mail-type=all", 
@@ -42,7 +42,11 @@ def anpe(sample, itrain, nhidden, nblocks, gpu=False):
     return None 
 
 
-for i in range(10): 
-    anpe('toy', i, 100, 5)
+#for i in range(5): 
+for i in [0, 3, 4]: 
+    anpe('toy', i, 500, 5)
     time.sleep(10) 
 
+#for i in range(5): 
+#    anpe('toy', i, 100, 10)
+#    time.sleep(10) 

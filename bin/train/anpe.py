@@ -1,5 +1,6 @@
 import os, sys
 import numpy as np
+import pickle 
 from sedflow import train as Train
 # torch
 import torch
