@@ -1,16 +1,15 @@
-\section{Data}
-\subsection{NASA-Sloan Atlas} \label{sec:obs}
-As a demonstration of its accuracy and speed, we apply {\sc SEDflow} to 
-optical photometry from the NASA-Sloan
-Atlas\footnote{\url{http://nsatlas.org/}} (NSA) with some additional quality
-cuts.
+\section{NASA-Sloan Atlas} \label{sec:obs}
+As a demonstration of its speed and accuracy, we apply {\sc SEDflow} to optical
+photometry from the NASA-Sloan Atlas\footnote{\url{http://nsatlas.org/}} (NSA)
+with some additional quality cuts.
 The NSA catalog is a re-reduction of SDSS DR8~\citep{aihara2011} that includes
 an improved background subtraction~\citep{blanton2011} and near and far UV
 photometry from GALEX~\citep{}.
 For optical photometry, we use SDSS photometry in the $u$, $g$, $r$, $i$, and
-$z$ bands, which are corrected for galactic extinction using \cite{schlegel1997}.
-For UV photometry, we use GALEX photometry in the $W1$ and $W2$ bands
-based on DR6\footnote{\url{http://galex.stsci.edu/GR6/}}.
+$z$ bands, which are corrected for galactic extinction using
+\cite{schlegel1997}.
+For UV photometry, we use GALEX photometry in the $W1$ and $W2$ bands based on
+DR6\footnote{\url{http://galex.stsci.edu/GR6/}}.
 \todo{details about the GALEX force photometry} 
 
 We impose a number of additional quality cuts to the NSA photometry.
@@ -57,11 +56,4 @@ magnitudes of the NSA catalog (color).
 % - not NOPROFILE : 	only 0 or 1 entries for the radial flux profile; photometric quantities derived from profile are suspect
 
 
-
-\subsection{Training Data} \label{sec:train}
-% section explaining specific SED set up 
-
-% provabgs set up 
-
-% noise model set up 
 
