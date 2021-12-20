@@ -85,13 +85,15 @@ def valid(sample, itrain, nhidden, nblocks):
 #    anpe('toy', i, 100, 10)
 #    time.sleep(10) 
 
-#for i in range(5): 
+#for i in [1]: 
 #    anpe('toy', i, 500, 10)
-#    time.sleep(10) 
 
-for i in range(5): 
-    valid('toy', i, 500, 5)
-    valid('toy', i, 100, 10)
+for i in range(5):
+    anpe('toy', i, 500, 15)
 
-for i in [0, 3, 4]: 
-    valid('toy', i, 500, 10)
+#for i in range(5): 
+#    valid('toy', i, 500, 5)
+#    valid('toy', i, 100, 10)
+
+#for i in [1]: 
+#    valid('toy', i, 500, 10)
