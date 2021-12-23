@@ -48,7 +48,7 @@ weyant2013, hahn2017b, kacprzak2018, alsing2018, wong2020, huppenkothen2021,
 zhang2021}, and more broadly in physics~\citep[\emph{e.g.}][]{brehmer2019,
 cranmer2020}
 
-One simple example of SBI is Approximate Bayesian
+One simple and pedagogical example of SBI is Approximate Bayesian
 Computation~\citep[ABC;][]{rubin1984, pritchard1999, beaumont2002}, which uses
 a rejection sampling framework to estimate the posterior. 
 First, parameter values are sampled from the prior: $\theta'\sim p(\theta)$. 
@@ -72,29 +72,26 @@ ABC produces unbiased estimates of the posterior and only requires a forward
 model of the observed data.
 It makes no assumptions on the likelihood and, therefore, relaxes the
 assumptions that go into surrogate likelihood methods. 
-However, despite its advantages, ABC has one major limitation --- it is
-computational inefficient. 
-Rejection sampling means it 
-
-
-New SBI methods, such as density estimation SBI~\citep[\eg][]{papamakarios2017,
-alsing2018, hahn2019c, greenberg2019, tejero-cantero2020},
-
-%Density estimation likelihood-free inference works by learn- ing a parameterized model for the joint density P(θ, d), from a set of samples drawn from that density (Papamakarios & Murray 2016). In its simplest form, we start by generating a set of samples {θ, d} from P(θ, d) by drawing parameters from the prior and forward simulating mock data:
-%θ ← P(θ)
-%d ← P(d|θ). (4)
-%We then write down a model for the joint density P(θ, d; η), parameterized by η, and fit this model to the samples {θ, d}. The estimated2 posterior density and Bayesian evidence can then be easily extracted from the fit to the joint density as follows:
-%Pˆ(θ|do) ∝ P(θ,d = do;η)
-%Pˆ(do) =
-%∫
-%P(θ, d = do; η) dθ, (5)
-%ie., taking a slice through the joint distribution evaluated at the observed data d = do, and subsequently integrating over the parameters for the Bayesian evidence. For many prac- tical choices of parameterized models for the joint density, eg., Gaussian mixture models (see below), the evidence in- tegral in Eq. (5) is analytically tractable. This means that the evidence comes for free, and if the parameterized model for the joint density is fit to the samples in a principled way, the uncertainties on the fit parameters can be propa- gated through to a principled uncertainty on the estimated Bayesian evidence.
-%In contrast to abc, delfi uses all of the available for- ward simulations {θ,d} to inform the inference of the joint density P(θ, d), and hence the posterior density and evidence estimation. In practice, this means that far fewer forward simulations may be needed to obtain high-fidelity posterior inferences (compared to abc that has a vanishingly small ac- ceptance rate as ε → 0), as demonstrated by Papamakarios & Murray (2016).
-
-
-
+Nevertheless, ABC is based on rejection sampling and thus requires comparable
+number of model evaluations as standard MCMC sampling based techniques. 
+ABC is only the simplest SBI method; new SBI methods can infer posteriors with
+much fewer model evaluations.
+Density estimaiton-based SBI methods~\citep[\eg][]{papamakarios2017,
+alsing2018, hahn2019c, greenberg2019, tejero-cantero2020}, for instance, use
+model evaluations to fit estimates of $p(\theta\given\xobs)$, $p({\bf
+x}\given \theta$, or $p(\theta, {\bf x})$ probability distributions.  
+They can exploit recent advances in neural density estimation (NDE) that
+increasingly enable high-fidelity density estimation with fewer samples of the
+distribution.
+For instance, the NDE in \cite{papamakarios2017} accurately estimates the
+$28\times28=784$-dimensional distribution of the MNIST
+dataset\footnote{http://yann.lecun.com/exdb/mnist/} with only tens of thousands
+of samples. 
 
 \subsection{Amortized Neural Posterior Estimation} \label{sec:flow}
+Density estimation SBI provides a key advantage over MCMC sampling-based
+inference methods --- it enables \emph{amortized inference}. 
+
 % section explaining conditional normalizing flows and how we condition on the
 
 % citation for SBI package 
