@@ -1,10 +1,20 @@
-\subsection{Discussion}  
+\subsection{Discussion} \label{sec:discuss}
 \todo{caveats}
 extending past the $p(\theta, x)$ space.
 
 accuracy near the edges of the $p(\theta, x)$ space. same infrastructure can be
 used to construt a normalizing flow for the likelihood in order to sanity check
 all the results 
+
+
+
+Overall, we use a crude Gaussian estimate of $p(\sigma_X | f_X)$ and treat each
+photometric band separately, ignoring any covariance. 
+In our ANPE, $\sigma_X$ is included in the conditional statement. 
+As a result, the accuracy of the posteriors from our ANPE is \emph{not}
+sensitive to accurately sampling $\sigma_X$ as long as the assigned $\sigma'_X$
+of the training data spans the observations.  
+
 
 \todo{extending to higher dimensions}
 our sed models have a lot of dimensions but it's actually not enough. 

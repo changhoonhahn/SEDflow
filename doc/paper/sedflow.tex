@@ -43,7 +43,7 @@ MILES~\citep{sanchez-blazquez2006} and BaSeL~\citep{lejeune1997, lejeune1998,
 westera2002} libraries.
 The SFH and ZH are binned into 43 logarithmically-space time bin and SSPs are
 evalulated at each time bin using FSPS. 
-The SSPs are summed up to get the unattenuated galaxy SED. 
+The SSPs are summed up to get the unattenuated rest-frame galaxy SED. 
 
 Finally, PROVABGS attenuates the light from the composite stellar population
 using the two component \cite{charlot2000} dust attenuation model with
@@ -58,6 +58,28 @@ burst}$), two ZH parameters ($\gamma_1, \gamma2$), and three dust attenuation
 parameters ($\tau_{\rm BC}, \tau_{\rm ISM}, n_{\rm dust}$). 
 Each PROVABGS model evaluation takes \chedit{X} seconds. 
 
+
+\begin{figure}
+\begin{center}
+\includegraphics[width=0.9\textwidth]{figs/training.pdf}
+    \caption{\label{fig:data}
+    Joint distribution of SED model parameters ($\log M_*$, $\beta_1$,
+    redshift) and photometric magnitudes ($g$, $r$, $z$) for our training set.
+    The training set was constructed by sampling parameter values from the
+    prior, constructing SEDs using a theoretical SPS
+    model, and applying our noise model. 
+    For details, we refer readers to Section~\ref{sec:sedflow}.
+    For comparison, we present the distribution of magnitudes for galaxies in
+    the NSA catalog (blue). 
+    \emph{The training set fully encompasses the observations, thus, our 
+    {\sc SEDflow} method can be used to infer the posterior for all NSA
+    galaxies}.
+    }
+\end{center}
+\end{figure}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% training data 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Training Data} \label{sec:training}
 In this section, we describe how to we construct the training data using our
 SED model.
@@ -68,23 +90,64 @@ n_{\rm dust}$ and Dirichlet prior over $\beta_1, \beta_2, \beta_3, \beta_4$.
 The Dirichlet prior is chosen for the normalization of the NMF SFH while the
 rest are chosen to span an extensive range of galaxy SEDs. 
 
-For each of the sampled SED parameters, we construct mock observables. 
-In this work, our observables are optical photometry of the NASA-Sloan Atlas
-(Section~\ref{sec:obs}).
-We first input $\theta'$ into the SED model to construct galaxy SEDs: 
+For each sampled SED parameters, we construct mock observables --- \emph{i.e.}
+NSA optical photometry (Section~\ref{sec:obs}) --- 
+We first construct the rest-frame galaxy SED using the SED model,
 $F(\lambda;\theta')$. 
-Afterwards, we convolve the SEDs with optical broadband filters, $R_X$ to
-generate noiseless photometric fluxes:
+Then, for a given redshift, $z$, we redshift the SED and convolve it with
+optical broadband filters, $R_X$ to generate noiseless photometric fluxes:
 \begin{equation}
     f_X(\theta') = \int F(\lambda;\theta') \, R_X(\lambda) \, {\rm d}\lambda
 \end{equation}
+Next, we apply a noise model.
 
-Next, to generate synthetic photometry, we must apply a realistic noise model.
+In our noise model, we first assign photometric uncertainties, $\sigma'_X$, to
+the training data by sampling an estimate of $p(\sigma_X | f_X)$. 
+Then, we apply Gaussian noise
+\begin{equation}
+    \hat{f}_X(\theta') = f_X(\theta') + n_X  \quad {\rm where}~n_X \sim \mathcal{N}(0, \sigma'_X)
+\end{equation}
+to derive photometric flux.
+We emphasize that the accuracy of the posteriors from our ANPE is not
+particularly sensitive to the noise model. 
+This is because $\sigma_X$ is included in the conditional statement of our
+posterior. 
+Hence,  we only require that $\sigma'_X$ of the training data spans the observed
+$\sigma_X$ values. 
+We discuss this further in Section~\ref{sec:discuss}.
 
+Since we do not require a high fidelity estimate of $p(\sigma_X | f_X)$, we use
+a simple empirical estimate of $p(\sigma_X | f_X)$ based on NSA photometry and
+uncertainties. 
+For each band, we separately estimate  
+\begin{equation}
+    \hat{p}(\sigma_X | f_X) = \mathcal{N}( \mu_{\sigma_X}(f_X), \sigma_{\sigma_X}(f_X))
+\end{equation}
+as a Gaussian in magnitude-space. 
+$\mu_{\sigma_X}$ and $\sigma_{\sigma_X}$ are the median and standard deviation
+of $\sigma_X$ as a function of $f_X$ that we estimate by evaluating them in
+$f_X$ bin and interpolating over the bins. 
+Any $\theta'$ that is assigned a negative $\sigma'_X$ is removed from our
+training data. 
+We also remove any training data with $f_X(\theta'$ outside the range of NSA
+photometry. 
 
-\begin{itemize}
-    \item noise model 
-\end{itemize}
+In total, we constuct $N_{\rm train} = 1,131,561$ sets of SED parameters,
+redshift, photometric uncertainty, and mock NSA photometry: 
+$\{(\theta', z, \sigma'_X, \hat{f}_X(\theta') \}$.
+There are 12 SED parameters and photometry and uncertainties in each of the 5
+NSA bands. 
+In Figure~\ref{fig:data}, we present the joint distribution of select SED model
+parameters ($\log M_*$, $\beta_1$), redshift, photometry ($g$ and $r$ bands),
+and photometric uncertainty ($r$ band) of our training data (black).
+We also include the distribution of redshift, photometry, and uncertainty of
+NSA galaxies (blue).
+The photometry and uncertainties are in magnitude-space. 
+The distribution of the training data fully spans the distribution of NSA
+galaxies.
+Hence, the training data provides support over the full $(f_X, \sigma_X, z)$
+space of the NSA observations and the trained ANPE can accurately estimate
+posteriors for all NSA galaxies. 
 
 \subsection{Training ANPE} \label{sec:anpe}
 description of the ANPE training
@@ -92,22 +155,3 @@ description of the ANPE training
     \item architecture
     \item validation 
 \end{itemize}
-
-\begin{figure}
-\begin{center}
-\includegraphics[width=0.9\textwidth]{figs/training.pdf}
-    \caption{\label{fig:data}
-    Joint distribution of SED model parameters ($\log M_*$, $\beta_1$,
-    redshift) and photometric magnitudes ($g$, $r$, $z$) for our training set.
-    The training set was constructed by sampling parameter values from the
-    prior (Table~\ref{tab:prior}), constructing SEDs using a theoretical SPS
-    model, and applying our noise model. 
-    For details, we refer readers to Section~\ref{sec:sbi_sed}.
-    For comparison, we present the distribution of magnitudes for galaxies in
-    the NSA catalog (blue). 
-    \emph{The training set fully encompasses the observations, thus, our 
-    {\sc SEDflow} method can be used to infer the posterior for all NSA
-    galaxies}.
-    }
-\end{center}
-\end{figure}
