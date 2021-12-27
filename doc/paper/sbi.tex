@@ -39,9 +39,9 @@ require {\em billions of CPU hours}.
 Simulation-based inference (SBI; also known as ``likelihood-free'' inference)
 offers a more scalable approach to Bayesian SED modeling.
 At its core, SBI involves any method that uses a forward model of the observed
-data to directly estimate the posterior ($p(\theta\given\xobs)$), the
-likelihood ($p({\bf x}\given \theta$), or the joint distribution of the
-parameters and data ($p(\theta, {\bf x})$). 
+data to directly estimate the posterior --- $p(\theta\given {\bf x})$, the
+likelihood --- $p({\bf x}\given \theta)$, or the joint distribution of the
+parameters and data --- $p(\theta, {\bf x})$. 
 SBI methods have already been successfully applied to a number of Bayesian
 parameter inference problems in astronomy~\citep[\emph{e.g.}][]{cameron2012, 
 weyant2013, hahn2017b, kacprzak2018, alsing2018, wong2020, huppenkothen2021,
@@ -85,23 +85,82 @@ increasingly enable high-fidelity density estimation with fewer samples of the
 distribution.
 For instance, the NDE in \cite{papamakarios2017} accurately estimates the
 $28\times28=784$-dimensional distribution of the MNIST
-dataset\footnote{http://yann.lecun.com/exdb/mnist/} with only tens of thousands
-of samples. 
+dataset\footnote{\url{http://yann.lecun.com/exdb/mnist/}} with only tens of
+thousands of samples. 
 
 \subsection{Amortized Neural Posterior Estimation} \label{sec:flow}
-Density estimation SBI provides a key advantage over MCMC sampling-based
+Density estimation SBI provides a critical advantage over MCMC sampling-based
 inference methods --- it enables \emph{amortized inference}. 
+With SED modeling using MCMC sampling, each galaxy requires >$10^5$ model
+evaluations to accurately estimate $p(\theta \given \xobs)$. 
+Moreover, model evaluations for calculating the posterior of one galaxy cannot
+be used for another, so for large galaxy surveys with >$10^6$
+galaxies~\citep[\emph{e.g.}][]{ahumada2020} this would require >100 billion
+model evalulations.
+Upcoming galaxy surveys will observe orders of magnitude more galaxies
+(\emph{e.g.} DESI, PFS, Rubin, Roman).
+Bayesian SED modeling with MCMC sampling for these large galaxy surveys is
+utterly \emph{computationally infeasible}.
 
-% section explaining conditional normalizing flows and how we condition on the
+On the other hand, if we use density estimation SBI for SED modeling, we do not
+require a large number of model evaluations for each galaxy. 
+An initial set of model evaluations (${\sim}10^6$) is necessary to train an NDE
+to accurately estimate $\hat{p}(\theta \given \xobs)$ --- \emph{i.e.} Neural
+Posterior Estimation (NPE).
+Once trained, $\hat{p}(\theta \given \xobs)$ is over the full $\theta$ and
+$\xobs$-space so we can sample $\hat{p}(\theta \given {\bf x}_{{\rm obs}, i})$
+for each galaxy with minimal computational cost. 
+Hence, the inference is now amortized and no additional model evaluations are
+needed to generate the posterior for each galaxy. 
+In total, SED modeling with SBI for >$10^6$ galaxies requires the same number
+of model evaluations as analyzing tens of galaxies using the MCMC sampling. 
 
-% citation for SBI package 
-sbi~\citep{greenberg2019, tejero-cantero2020}
+Amoritzed inference using density esimation SBI has recently been applied to a
+broad range of astronomical applications from analyzing gravitational
+waves~\citep[\emph{e.g.}][]{wong2020,dax2021} to binary microlensing
+lensing~\citep{zhang2021}.
+They primarily use a class of NDE called normalizing flows~\citep{tabak2010,
+tabak2013}.
+Normalizing flow models use an invertible bijective transformation, $f$, to map
+a complex target distribution to a simple base distribution, $\pi(z)$, that is
+fast to evaluate.
+In the case of NPE, the target distribution is $p(\theta \given {\bf x})$ and
+the $\pi(z)$ is typically a simple multivariate Gaussian, or mixutre of
+Gaussians. 
 
-% examples of ANPE 
-\cite{wong2020}
-\cite{dax2021}
-\cite{zhang2021}
+The transformation $f: z \rightarrow \theta$ must be invertible and have a
+tractable Jacobian. 
+This is so that we can evaluate the target distribution from $\pi(z)$ using
+change of variable:  
+\begin{equation}
+    p(\theta \given {\bf x}) = \pi(z) \Bigl|{\rm det} \left(\frac{\partial
+    f^{-1}}{\partial \theta} \right)\Bigr|.
+\end{equation} 
+The base distribution is easy to evaluate so we can also easily evaluate the
+target distribution.  
+A neural network is trained to obtain $f$.
+The network typically consists of a series of simple transforms (\emph{e.g.}
+shift and scale transforms) that are each invertible and whose Jacobians are
+easily calculated. 
+By stringing together many transforms, $f$ provides an extremely flexible
+mapping from the base distribution.
+%Rather than a single complicated transformation, the network is typically restricted to a series of simple transforms that are each invertible and whose Jacobians are easily calculated. 
+There are now many different normalizing flow models available in the
+literature such as Masked Autoregressive for Distribution
+Estimation~\citep[MADE;][]{germain2015} or Neural Spline
+Flows~\citep{durkan2019}. 
 
-\begin{itemize}
-    \item example normalizing flows and MAF 
-\end{itemize}
+In this work, we use Masked Autoregressive
+Flow~\citep[MAF;][]{papamakarios2017}. 
+The autoregressive design~\citep{uria2016} of MAF is particularly well-suited
+for modeling conditional probability distributions \emph{i.e.} the posterior. 
+% explain autoregressive
+Autoregressive models exploit chain rule to expand a joint probability of a set
+of random variables as products of one-dimensional conditional probabilities:
+$p(x) = \prod_i p(x_i\given x_{1:i-1})$. 
+In this context, we can add another conditional variable $y$ to get 
+$p(x\given y) = \prod_i p(x_i\given x_{1:i-1}, y)$. 
+% explain MADE 
+MAF is built by stacking multiple MADEs. 
+In practice, we use the MAF implementation in the $\mathtt{sbi}$ Python
+package~\citep{greenberg2019, tejero-cantero2020}.
