@@ -136,8 +136,8 @@ change of variable:
     p(\theta \given {\bf x}) = \pi(z) \Bigl|{\rm det} \left(\frac{\partial
     f^{-1}}{\partial \theta} \right)\Bigr|.
 \end{equation} 
-The base distribution is easy to evaluate so we can also easily evaluate the
-target distribution.  
+Since the base distribution is easy to evaluate, we can also easily evaluate
+the target distribution.  
 A neural network is trained to obtain $f$.
 The network typically consists of a series of simple transforms (\emph{e.g.}
 shift and scale transforms) that are each invertible and whose Jacobians are
@@ -145,22 +145,31 @@ easily calculated.
 By stringing together many transforms, $f$ provides an extremely flexible
 mapping from the base distribution.
 %Rather than a single complicated transformation, the network is typically restricted to a series of simple transforms that are each invertible and whose Jacobians are easily calculated. 
-There are now many different normalizing flow models available in the
-literature such as Masked Autoregressive for Distribution
-Estimation~\citep[MADE;][]{germain2015} or Neural Spline
-Flows~\citep{durkan2019}. 
 
+Many different normalizing flow models are now available in the
+literature~\citep[\emph{e.g.}][]{germain2015, durkan2019}.
 In this work, we use Masked Autoregressive
 Flow~\citep[MAF;][]{papamakarios2017}. 
 The autoregressive design~\citep{uria2016} of MAF is particularly well-suited
 for modeling conditional probability distributions \emph{i.e.} the posterior. 
-% explain autoregressive
 Autoregressive models exploit chain rule to expand a joint probability of a set
-of random variables as products of one-dimensional conditional probabilities:
-$p(x) = \prod_i p(x_i\given x_{1:i-1})$. 
-In this context, we can add another conditional variable $y$ to get 
-$p(x\given y) = \prod_i p(x_i\given x_{1:i-1}, y)$. 
-% explain MADE 
-MAF is built by stacking multiple MADEs. 
+of random variables as products of one-dimensional conditional
+probabilities: $p(x) = \prod_i p(x_i\given x_{1:i-1})$. 
+They then use neural networks to describe each conditional probability,
+$p(x_i\given x_{1:i-1}$. 
+In this context, we can add a conditional variable $y$ on both sides of the
+equation, $p(x\given y) = \prod_i p(x_i\given x_{1:i-1}, y)$, so that the
+autoregressive model describes a conditional probability $p(x\given y)$. 
+One drawback of autoregressive models is their sensitivity to the ordering of
+the variables. 
+Masked Autoencoder for Distribution Estimation~\citep[MADE;][]{germain2015}
+models address this limitation by dropping out connections of a
+fully-connected autoencoder using weight matricies with binary masks. 
+This ensures that the MADE model is autoregressive and can be efficiently
+calculated on a GPU. 
+A MAF model is built by stacking multiple MADE models, where each MADE models
+the random numbers of the next MADE in the stack. 
+MAF has the autoregressive structure of MADE but with more flexibility to
+describe complex probability distributions.  
 In practice, we use the MAF implementation in the $\mathtt{sbi}$ Python
 package~\citep{greenberg2019, tejero-cantero2020}.
