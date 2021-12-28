@@ -149,11 +149,29 @@ Hence, the training data provides support over the full $(f_X, \sigma_X, z)$
 space of the NSA observations and the trained ANPE can accurately estimate
 posteriors for all NSA galaxies. 
 
-\subsection{Training ANPE} \label{sec:anpe}
-For our ANPE, we use a MAF with 
+\subsection{Training ANPE} \label{sec:anpe_train}
+For our ANPE, we use a MAF normalizing flow model (Section~\ref{sec:flow}) with 
+\chedit{10 MADE blocks, each with 2 hidden layers and 500 hidden units}.
+In total, the model has \chedit{X} free hyperparameters, ${\bf h}$. 
+Our goal is to determine ${\bf h}$ of the MAF model, 
+$q(\theta\given {\bf x}, {\bf h})$, so that it accurately estimates the
+posterior probability distribution $p(\theta\given {\bf x})$. 
+Here, $\theta$ represent the SED parameters and ${\bf x} = (f_X, \sigma_X, z)$.
+We do this by minimizing the KL divergence between 
+$q(\theta\given{\bf x}, {\bf h})$ and $p(\theta\given{\bf x})$:
+$D_{\rm KL} (p\,||\,q)$. 
 
-description of the ANPE training
-\begin{itemize}
-    \item architecture
-    \item validation 
-\end{itemize}
+In practice, we first split the simulated data from Section~\ref{sec:training}
+into a training and validation data set with a 90/10 split. 
+Afterwards, we maximize the total log likelihood $\sum_i \log q(\theta_i\given
+{\bf x}_i)$ on training data $\{(\theta_i, {\bf x}_i)\}$. 
+Maximizing the total log likelidhood is equivalent to minimizing 
+$D_{\rm KL} (p\,||\,q)$, which is difficult to directly compute.
+We use the {\sc Adam} optimizer~\citep{kingma2017} with a learning rate of $5\times10^{-4}$. 
+To prevent overfitting, we evaluate the total log likelihood on the validation
+data at every training epoch and stop the training when the validation log
+likelihood fails to increase after 20 training epochs.  
+Training our model with a training batch size of 50 takes roughly a day on a
+single 2.6 GHz Intel Skylake CPU. 
+Given our small batch size, we find similar training times when using CPUs or
+GPUs. 
