@@ -1,13 +1,6 @@
 \subsection{Discussion} \label{sec:discuss}
-\todo{caveats}
-extending past the $p(\theta, x)$ space.
 
-accuracy near the edges of the $p(\theta, x)$ space. same infrastructure can be
-used to construt a normalizing flow for the likelihood in order to sanity check
-all the results 
-
-
-
+\chedit{discuss the accuracy requirements of the noise model}
 Overall, we use a crude Gaussian estimate of $p(\sigma_X | f_X)$ and treat each
 photometric band separately, ignoring any covariance. 
 In our ANPE, $\sigma_X$ is included in the conditional statement. 
@@ -15,6 +8,23 @@ As a result, the accuracy of the posteriors from our ANPE is \emph{not}
 sensitive to accurately sampling $\sigma_X$ as long as the assigned $\sigma'_X$
 of the training data spans the observations.  
 
+\chedit{what happens if the data}
+extends past the $p(\theta, x)$ space.
+in principle we could train it well beyond the $p(\theta, x)$ space so that
+there's support everywhere. 
+But of course that won't be possible if say the SED model is inaccurate and
+cannot describe the full data space.  
+mention data-driven modeling. 
+Expanding the flexiblity and descriptiveness of SED models is beyond the scope
+of this work. 
+However, we emphasize that limitations of the SED model impacts the
+conventional approach with MCMC. 
+
+\chedit{assessing accuracy of the posteriors} 
+chi2 calculation using best-fit as a first pass. 
+accuracy near the edges of the $p(\theta, x)$ space. same infrastructure can be
+used to construt a normalizing flow for the likelihood in order to sanity check
+all the results 
 
 \todo{extending to higher dimensions}
 our sed models have a lot of dimensions but it's actually not enough. 
@@ -48,5 +58,3 @@ in a matter of hours.
 
 %In Hahn (in prep), I demonstrate that priors on the SED model parameters can be adjusted to impose uniform priors on derived properties based on the maximum-entorpy method from \cite{handley2019}. 
 
-
-\todo{coming soon}
