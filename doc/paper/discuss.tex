@@ -1,17 +1,56 @@
 \subsection{Discussion} \label{sec:discuss}
+With ANPE, we can generate posteriors for SED modeling >$10^5$ faster than
+conventional MCMC-based methods. 
+The primarily concern for ANPE is the accuracy of the posteriors.
+One of the key factors that determines the accuracy of the ANPE is the training
+data.  
+To construct our training data, we use simple noise model with a Gaussian
+estimate of $p(\sigma_X\given f_X)$ and treat each photometric band separately,
+ignoring any covariance (Section~\ref{sec:traiing}). 
+The actual $p(\sigma_X\given f_x)$ distrubiton for NSA, as
+Figure~\ref{fig:data} illustrates, is not Gaussian. 
+There are also significant covariances among the photometry in different bands.
+Despite the shortcomings of our training data, our ANPE is \emph{not}
+sensitive to the accuracy of our noise model. 
+This is because we include $\sigma_X$ as a conditional variable in our ANPE 
+(Section~\ref{sec:anpe_train}).
+Hence, as long as the observed ${\bf x}_{\rm obs} = (f_X, \sigma_X, z)$ is
+sufficiently within the ${\bf x}$-space support of the training data, the ANPE
+produces accurate posteriors. 
 
-\chedit{discuss the accuracy requirements of the noise model}
-Overall, we use a crude Gaussian estimate of $p(\sigma_X | f_X)$ and treat each
-photometric band separately, ignoring any covariance. 
-In our ANPE, $\sigma_X$ is included in the conditional statement. 
-As a result, the accuracy of the posteriors from our ANPE is \emph{not}
-sensitive to accurately sampling $\sigma_X$ as long as the assigned $\sigma'_X$
-of the training data spans the observations.  
+A more accurate noise model would in principle improve the performance of ANPEs
+since the ${\bf x}$-space of the training data will more effectively span the
+observations. 
+In other words, there will be fewer training data expended in regions of 
+${\bf x}$-space that are not occupied by observations.  
+However, for our application to SED modeling, we do not find significantly  
+better performance when we replace the noise model to a more sophisticated one.
+Instead, we find that having a sufficient number of training data is a more
+important factor for the ANPE's accuracy. 
+\chedit{comment on the number of training data versus accuracy.}
 
-\chedit{what happens if the data}
-extends past the $p(\theta, x)$ space.
-in principle we could train it well beyond the $p(\theta, x)$ space so that
-there's support everywhere. 
+Although the ANPE produces accurate posteriors for ${\bf x}_{\rm obs}$ within
+the ${\bf x}$ support of the training data, some objects in the NSA catalog
+that are outside of the support (Figure~\ref{fig:obs}). 
+For these objects, the ANPE cannot produce accurate posteriors. 
+\chedit{
+The $g$, $r$, $\sigma_r$ panels of Figure~\ref{fig:data} reveals, for instance,
+that there are galaxies outside of the training data in $g-r$ color space.  
+Meanwhile $g-\sigma_r$ and $r-\sigma_r$ distribution of observations are within
+that of training data. 
+This means that the noise model is not the problem. 
+}
+Some of these objects are likely observational artifacts. 
+Even after imposing the selection criteria in Section~\ref{sec:obs}, there
+are objects in our samples with problematic photometry.  
+\chedit{list a few typical examples of problematic photometry}. 
+Since, the SEDs of such artifcats cannot be modeled using an SPS model combined
+with noise, they can lie outside of the training ${\bf x}$ support.
+
+% 0. observational artifacts
+% 1. noise model is shitty --- this is not the case
+% 2. SED model is shitty --- this is definitely partly the case 
+Another reason 
 But of course that won't be possible if say the SED model is inaccurate and
 cannot describe the full data space.  
 mention data-driven modeling. 
@@ -20,6 +59,7 @@ of this work.
 However, we emphasize that limitations of the SED model impacts the
 conventional approach with MCMC. 
 
+In Section~\ref{sec:results}
 \chedit{assessing accuracy of the posteriors} 
 chi2 calculation using best-fit as a first pass. 
 accuracy near the edges of the $p(\theta, x)$ space. same infrastructure can be
@@ -56,5 +96,5 @@ model parameters $p(\theta^{\rm train})$ follows the prior distribution.
 The CNF can be re-trained and deployed to rapidly reanalyze the entire dataset
 in a matter of hours. 
 
+\todo{next steps: extending to spectroscopy}
 %In Hahn (in prep), I demonstrate that priors on the SED model parameters can be adjusted to impose uniform priors on derived properties based on the maximum-entorpy method from \cite{handley2019}. 
-
