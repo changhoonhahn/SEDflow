@@ -3,14 +3,9 @@ As a demonstration of its speed and accuracy, we apply {\sc SEDflow} to optical
 photometry from the NASA-Sloan Atlas\footnote{\url{http://nsatlas.org/}} (NSA)
 with some additional quality cuts.
 The NSA catalog is a re-reduction of SDSS DR8~\citep{aihara2011} that includes
-an improved background subtraction~\citep{blanton2011} and near and far UV
-photometry from GALEX~\citep{}.
-For optical photometry, we use SDSS photometry in the $u$, $g$, $r$, $i$, and
-$z$ bands, which are corrected for galactic extinction using
-\cite{schlegel1998}.
-For UV photometry, we use GALEX photometry in the $W1$ and $W2$ bands based on
-DR6\footnote{\url{http://galex.stsci.edu/GR6/}}.
-\todo{details about the GALEX force photometry} 
+an improved background subtraction~\citep{blanton2011}.
+We use SDSS photometry in the $u$, $g$, $r$, $i$, and $z$ bands, which are
+corrected for galactic extinction using \cite{schlegel1998}.
 
 We impose a number of additional quality cuts to the NSA photometry.
 The SDSS photometric pipeline can struggle to accurately define the center
@@ -36,13 +31,7 @@ In principle, we can relax the cuts if we were to include observational effects
 in our model.
 For additional details on the quality flags, we refer readers to the SDSS
 documentation\footnote{\url{https://www.sdss.org/dr16/algorithms/flags_detail}}.
-After the quality cuts, we have 33,887 galaxies in our NSA sample.
-
-%In Figure~\ref{fig:sbi}, we present the distribution of optical and UV magnitudes of the NSA catalog (color). 
-
-
-
-%For each such galaxy, we have created image mosaics from SDSS and GALEX and rephotometered the ugriz bands plus the far and near ultraviolet bands in a self-consistent manne0i
+After the quality cuts, we have a total of 33,887 galaxies in our NSA sample.
 
 % quality cuts that we impose 
 % - not peak center: did not use brightest pixel as centroid; hint that an object may not be real
