@@ -481,6 +481,23 @@
   file = {/Users/chahah/Zotero/storage/QKP49984/Handley and Millea - 2019 - Maximum-Entropy Priors with Derived Parameters in .pdf;/Users/chahah/Zotero/storage/4YA53UR5/1804.html}
 }
 
+@article{hogg2016,
+  title = {Chemical Tagging Can Work: {{Identification}} of Stellar Phase-Space Structures Purely by Chemical-Abundance Similarity},
+  shorttitle = {Chemical Tagging Can Work},
+  author = {Hogg, David W. and Casey, Andrew R. and Ness, Melissa and Rix, Hans-Walter and {Foreman-Mackey}, Daniel and Hasselquist, Sten and Ho, Anna Y. Q. and Holtzman, Jon A. and Majewski, Steven R. and Martell, Sarah L. and Meszaros, Szabolcs and NIdever, David L. and Shetrone, Matthew},
+  year = {2016},
+  month = aug,
+  journal = {arXiv:1601.05413 [astro-ph]},
+  eprint = {1601.05413},
+  eprinttype = {arxiv},
+  primaryclass = {astro-ph},
+  doi = {10.3847/1538-4357/833/2/262},
+  abstract = {Chemical tagging promises to use detailed abundance measurements to identify spatially separated stars that were in fact born together (in the same molecular cloud), long ago. This idea has not yielded much practical success, presumably because of the noise and incompleteness in chemical-abundance measurements. We have succeeded in substantially improving spectroscopic measurements with The Cannon, which has now delivered 15 individual abundances for \textasciitilde 100,000 stars observed as part of the APOGEE spectroscopic survey, with precisions around 0.04 dex. We test the chemical-tagging hypothesis by looking at clusters in abundance space and confirming that they are clustered in phase space. We identify (by the k-means algorithm) overdensities of stars in the 15-dimensional chemical-abundance space delivered by The Cannon, and plot the associated stars in phase space. We use only abundance-space information (no positional information) to identify stellar groups. We find that clusters in abundance space are indeed clusters in phase space. We recover some known phase-space clusters and find other interesting structures. This is the first-ever project to identify phase-space structures at survey-scale by blind search purely in abundance space; it verifies the precision of the abundance measurements delivered by The Cannon; the prospects for future data sets appear very good.},
+  archiveprefix = {arXiv},
+  keywords = {Astrophysics - Astrophysics of Galaxies,Astrophysics - Solar and Stellar Astrophysics},
+  file = {/Users/chahah/Zotero/storage/HNY9FDAL/Hogg et al. - 2016 - Chemical tagging can work Identification of stell.pdf;/Users/chahah/Zotero/storage/B5I7P9TI/1601.html}
+}
+
 @misc{huppenkothen2021,
   title = {Accurate {{X-ray Timing}} in the {{Presence}} of {{Systematic Biases With Simulation-Based Inference}}},
   author = {Huppenkothen, D. and Bachetti, M.},
@@ -526,6 +543,18 @@
   abstract = {Approximate Bayesian Computation (ABC) is a method to obtain a posterior distribution without a likelihood function, using simulations and a set of distance metrics. For that reason, it has recently been gaining popularity as an analysis tool in cosmology and astrophysics. Its drawback, however, is a slow convergence rate. We propose a novel method, which we call qABC, to accelerate ABC with Quantile Regression. In this method, we create a model of quantiles of distance measure as a function of input parameters. This model is trained on a small number of simulations and estimates which regions of the prior space are likely to be accepted into the posterior. Other regions are then immediately rejected. This procedure is then repeated as more simulations are available. We apply it to the practical problem of estimation of redshift distribution of cosmological samples, using forward modelling developed in previous work. The qABC method converges to nearly same posterior as the basic ABC. It uses, however, only 20\% of the number of simulations compared to basic ABC, achieving a fivefold gain in execution time for our problem. For other problems the acceleration rate may vary; it depends on how close the prior is to the final posterior. We discuss possible improvements and extensions to this method.},
   langid = {english},
   file = {/Users/chahah/Zotero/storage/4W6WZY2W/Kacprzak et al. - 2018 - Accelerating Approximate Bayesian Computation with.pdf;/Users/chahah/Zotero/storage/CCHF448Q/abstract.html}
+}
+
+@article{karamanis2020,
+  title = {Ensemble {{Slice Sampling}}},
+  author = {Karamanis, Minas and Beutler, Florian},
+  year = {2020},
+  month = feb,
+  journal = {arXiv e-prints},
+  pages = {arXiv:2002.06212},
+  abstract = {Slice Sampling has emerged as a powerful Markov Chain Monte Carlo algorithm that adapts to the characteristics of the target distribution with minimal hand-tuning. However, Slice Sampling's performance is highly sensitive to the user-specified initial length scale hyperparameter. Moreover, Slice Sampling generally struggles with poorly scaled or strongly correlated distributions. This paper introduces Ensemble Slice Sampling, a new class of algorithms that bypasses such difficulties by adaptively tuning the length scale. Furthermore, Ensemble Slice Sampling's performance is immune to linear correlations by exploiting an ensemble of parallel walkers. These algorithms are trivial to construct, require no hand-tuning, and can easily be implemented in parallel computing environments. Empirical tests show that Ensemble Slice Sampling can improve efficiency by more than an order of magnitude compared to conventional MCMC methods on highly correlated target distributions such as the Autoregressive Process of Order 1 and the Correlated Funnel distribution.},
+  keywords = {Astrophysics - Cosmology and Nongalactic Astrophysics,Astrophysics - Instrumentation and Methods for Astrophysics,Computer Science - Machine Learning,Statistics - Computation,Statistics - Machine Learning},
+  file = {/Users/chahah/Zotero/storage/Z3QPZNEU/Karamanis and Beutler - 2020 - Ensemble Slice Sampling.pdf}
 }
 
 @article{kingma2017,
@@ -749,6 +778,25 @@
   abstract = {We substantially update the capabilities of the open-source software  instrument Modules for Experiments in Stellar Astrophysics (MESA). MESA can now simultaneously evolve an interacting pair of differentially rotating stars undergoing transfer and loss of mass and angular momentum, greatly enhancing the prior ability to model binary evolution. New MESA capabilities in fully coupled calculation of nuclear networks with hundreds of isotopes now allow MESA to accurately simulate the advanced burning stages needed to construct supernova progenitor models. Implicit hydrodynamics with shocks can now be treated with MESA, enabling modeling of the entire massive star lifecycle, from pre-main-sequence evolution to the onset of core collapse and nucleosynthesis from the resulting explosion. Coupling of the GYRE non-adiabatic pulsation instrument with MESA allows for new explorations of the instability strips for massive stars while also accelerating the astrophysical use of asteroseismology data. We improve the treatment of mass accretion, giving more accurate and robust near-surface profiles. A new MESA capability to calculate weak reaction rates ``on-the-fly'' from input nuclear data allows better simulation of accretion induced collapse of massive white dwarfs and the fate of some massive stars. We discuss the ongoing challenge of chemical diffusion in the strongly coupled plasma regime, and exhibit improvements in MESA that now allow for the simulation of radiative levitation of heavy elements in hot stars. We close by noting that the MESA software infrastructure provides bit-for-bit consistency for all results across all the supported platforms, a profound enabling capability for accelerating MESA's development.},
   keywords = {abundances,binaries: general,methods: numerical,nuclear reactions,nucleosynthesis,shock waves,stars: evolution,stars: oscillations},
   file = {/Users/chahah/Zotero/storage/CHIWIALE/Paxton et al. - 2015 - Modules for Experiments in Stellar Astrophysics (M.pdf}
+}
+
+@article{portillo2020,
+  title = {Dimensionality {{Reduction}} of {{SDSS Spectra}} with {{Variational Autoencoders}}},
+  author = {Portillo, Stephen K. N. and Parejko, John K. and Vergara, Jorge R. and Connolly, Andrew J.},
+  year = {2020},
+  month = jun,
+  journal = {The Astronomical Journal},
+  volume = {160},
+  number = {1},
+  eprint = {2002.10464},
+  eprinttype = {arxiv},
+  pages = {45},
+  issn = {1538-3881},
+  doi = {10.3847/1538-3881/ab9644},
+  abstract = {High resolution galaxy spectra contain much information about galactic physics, but the high dimensionality of these spectra makes it difficult to fully utilize the information they contain. We apply variational autoencoders (VAEs), a non-linear dimensionality reduction technique, to a sample of spectra from the Sloan Digital Sky Survey. In contrast to Principal Component Analysis (PCA), a widely used technique, VAEs can capture non-linear relationships between latent parameters and the data. We find that a VAE can reconstruct the SDSS spectra well with only six latent parameters, outperforming PCA with the same number of components. Different galaxy classes are naturally separated in this latent space, without class labels having been given to the VAE. The VAE latent space is interpretable because the VAE can be used to make synthetic spectra at any point in latent space. For example, making synthetic spectra along tracks in latent space yields sequences of realistic spectra that interpolate between two different types of galaxies. Using the latent space to find outliers may yield interesting spectra: in our small sample, we immediately find unusual data artifacts and stars misclassified as galaxies. In this exploratory work, we show that VAEs create compact, interpretable latent spaces that capture non-linear features of the data. While a VAE takes substantial time to train (\textasciitilde 1 day for 48000 spectra), once trained, VAEs can enable the fast exploration of large astronomical data sets.},
+  archiveprefix = {arXiv},
+  keywords = {Astrophysics - Astrophysics of Galaxies,Astrophysics - Instrumentation and Methods for Astrophysics},
+  file = {/Users/chahah/Zotero/storage/YKWCQL57/Portillo et al. - 2020 - Dimensionality Reduction of SDSS Spectra with Vari.pdf;/Users/chahah/Zotero/storage/8W9A4QQ8/2002.html}
 }
 
 @article{pritchard1999,
