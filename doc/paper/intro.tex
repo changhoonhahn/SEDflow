@@ -5,19 +5,19 @@ COSMOS and zCOSMOS~\citep{scoville2007, lilly2007}, and GAMA~\citep{baldry2018}
 have transformed our understanding of how galaxies form and evolve. 
 The building blocks of our physical insight into galaxies are their 
 physical properties, \emph{e.g.} stellar mass ($M_*$), star formation rate
-(SFR), and metallicity ($Z$), measured from observations.
-The primary way for doing this is by analyzing their spectral energy
-distribution (SED).
+(SFR), and metallicity ($Z$), measured from these observations.
+The primary way for measuring these galaxy properties is by analyzing their
+spectral energy distribution (SED).
 
 % primer on SED modeling 
 All of the physical processes in a galaxy leave an imprint on its SED:
 \emph{e.g.} its star formation history, chemical enrichment history, dust
 content. 
-For instance, the SED over the ultraviolet to infrared wavelengths primarily
-comes from the galaxy's stellar populations. 
+For instance, the SED over the ultraviolet to infrared wavelengths is
+primarily composed of light from the galaxy's stellar populations. 
 Some of this stellar light is reprocessed by the gas and dust in its
 interstellar medium.
-The goal of SED modeling is to extract the detailed physical properties of
+The goal of SED modeling is to extract these detailed physical properties of
 galaxies that are encoded in observed SEDs. 
 SED modeling involves three key components: the observations, a physical SED
 model, and a statistical inference framework for deriving physical properties 
@@ -30,50 +30,88 @@ population constructed based on isocrhones, stellar spectra, an initial mass
 function (IMF), a star formation and chemical evolution history, and dust
 attenuation~\citep[\emph{e.g.}][]{bruzual2003, maraston2005, conroy2009,
 eldridge2017}.
-Some models further include dust and nebular emissions as well as emissions
-from active galactic nuclei (AGN)~\citep[\emph{e.g.}][]{johnson2021}.
+Some models also include dust and nebular emissions as well as emissions from
+active galactic nuclei (AGN)~\citep[\emph{e.g.}][]{johnson2021}.
 For a comprehensive review on SPS and SED modeling, we refer readers to
 \cite{walcher2011} and \cite{conroy2013}. 
-%The physical models are typically chosen to be stellar population synthesis codes, which combine  dust and nebular emission to create the SEDs of complex stellar popu- lations. There are many publicly available stellar pop-
 
-In this work, we focus on the statistical framework used by current methods to
-infer the galaxy properties from observations. 
+% parameter inference for SED modeling
+In this work, we focus on the third component of SED modeling: the statistical
+framework for comparing SED models to observations and inferring galaxy
+properties. 
+State-of-the-art SED modeling use a Bayesian parameter inference framework.
+This approach has a number of key advantages over maximum-likelihood 
+approaches~\citep[\emph{e.g.}][]{cidfernandes2005, tojeiro2007, koleva2008} 
+that were often used in the past.
+In Bayesian inference, the goal is to estimate $p(\theta\given {\bf x})$, the
+probability distribution of parameters $\theta$, in our case galaxy
+properties, given observation ${\bf x}$. 
+Inferring $p(\theta\given {\bf x})$ provides an accurate estimate of parameter 
+uncertainties and any degerancies among them.
+These uncertainties can then be propagated to for more accurate statistical
+analyses. 
+The Bayesian framework also enables marginalization over nuisance parameters,
+which are necessary to model the effects of observational systematics
+(\emph{e.g.} flux calibration).
+In principle, informative priors based on previous observations can also be
+exploited in Bayesian inference to derive more precise constraints on galaxy
+properties 
 
-State-of-the-art SED modeling 
-For the statistical framework 
+In practice, current methods use Markov Chain Monte Carlo (MCMC) based sampling
+techniques to explore and estimate the
+posterior~\citep[\emph{e.g.}][]{acquaviva2011, chevallard2016, carnall2017,
+leja2017}. 
+MCMC sampling enables more accurate posterior estimation and addresses the
+curse of dimensionailty that restricts grid-based techniques used in the
+past~\citep{kauffmann2003a, burgarella2005, salim2007, dacunha2008}.
+Grid-based techniques require SED models to be pre-computed over a grid in
+parameter space.
+Hence, as the dimensionality of parameter space increases for more
+sophisticated models, these techniques require exponentially large number of
+model evaluations. 
+For MCMC, the number of evaluations scales roughly linearly with the number of
+parameters so they can be used to efficiently sample high dimensional parameter
+spaces. 
+The \cite{johnson2021} SED modeling, for instance, uses MCMC to sample a
+16-dimensional parameter space. 
 
-Bayesian parameter
-inference framework to statistically infer galaxy properties from observations.
-\todo{why is the Bayesian inference good:
-allows informative priors based on prior observations,etc.}
-Furthermore, the Bayesian framework allows us to marginalize over nuisance
-parameters and accurately capture degeneracies among model parameters. 
-To infer posteriors of high dimensional parameter space of SED model
-parameters, state-of-the-art methods use MCMC or HMC to efficiently sample a
-high dimensional parameter space. 
-\todo{Go through all the latest works and detail their dimensionality and
-setups.}
-
-Despite these advantages, the current Bayesian SED modeling methods have a
-major limitation: they are not scalable. 
-SED modeling takes hundreds of hour per galaxy. 
-For example in \cite{}, analyzing $\sim 4000$ galaxies in the LEGA-C ESO
-Public Spectroscopic Survey~\cite{} using {\sc Bagpipes}required 3.5 million
-CPU hours.
-\todo{another example here}.
-This limitation will only become more restrictive. 
-SED models will become more sophisticated both in terms of stellar population
-synthesis modeling and accounting for observational effects.  
-The parameter space of SED models will only increase and make sampling
-techniques less efficient. 
-Moreover, upcoming surveys will increasing galaxy observations by
-orders-of-magnitude.
+Despite these advantages, current Bayesian SED modeling methods are \emph{not
+scalable} as upcoming galaxy surveys will observe an unprecedented number of
+galaxies.
 The Dark Energy Spectroscopic Survey~\citep[DESI;][]{desicollaboration2016},
 the Prime Focus Spectrograph~\citep[PFS;][]{takada2014},
-Rubin~\chedit{CITATION}, and Roman~\chedit{CITATION} will observe SEDs of
-millions of galaxies. 
-Without a way to scale Bayesian SED modeling to millions of galaxies, the field
-is left with doing shitty analyses or blowing huge computational resourcse. 
+Rubin observatory~\citep{ivezic2019}, and Roman Space
+Telescope~\citep{spergel2015} will all observe \emph{millions} of galaxy SEDs. 
+Meanwhile, current SED modeling takes 10-100 CPU hours per
+galaxy~\citep[\emph{e.g.}][]{carnall2019, tacchella2020}.
+With current methods, inferring galaxy properties from rigorous Bayesian SED
+modeling for upcoming surveys  would require \emph{billions} of CPU hours. 
+%For example, in \cite{}, analyzing just ${\sim}4000$ galaxies in the LEGA-C ESO Public Spectroscopic Survey~\cite{} using {\sc Bagpipes} required 3.5 million CPU hours.
+
+The computational challenge is further exacerbated by additional factors. 
+First, more accurate and sophisticated SED models require additional
+parameters. 
+For instance, modeling any additional physical processes (\emph{e.g.} nebular
+emission) requires additional parameters. 
+More accurate modeling of observational effects also requires additional
+parameters. 
+As the parameter space expands, conventional sampling techniques become less
+efficient. 
+Second, it has recently come to light that the prior, used to evaluate the
+posterior, can significantly impact the inferred galaxy
+properties~\citep{carnall2017, leja2017, hahn2022}. 
+This is a consequence of the fact that galaxy properties are not directly SED
+model parameters but rather derived properties.
+Hence, deriving robust galaxy properties requires validating the properties
+using multiple different priors. 
+For MCMC-based SED modeling, posteriors would need to be entirely re-evaluated
+for each prior.
+Lastly, current SED modeling make explicit choices for its stellar spectral
+library and initial mass function, even though there is no consensus. 
+Incorporating the uncertainties and variations in these choices would either
+require including them in the SED model or exploring multiple different choices.
+Both approaches dramatically increases the computational costs of current SED
+modeling.  
 
 Simulation-based inference (SBI) using Amortized Neural Posterior Estimation
 (ANPE) provides a life line. 
