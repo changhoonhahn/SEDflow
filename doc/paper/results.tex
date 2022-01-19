@@ -42,14 +42,14 @@ We derive the MCMC posterior using the {\sc Zeus} ensemble
 slice-sampler~\citep{karamanis2020} with 30 walkers and 10,000 iterations.
 2,000 of the iterations are discarded for burn-in. 
 In total, the MCMC posterior requires >100,000 SED model evaluations. 
-Since each evaluation takes \chedit{X} seconds, it takes >\chedit{Y} hours for
+Since each evaluation takes ${\sim}340$ ms, it ${\sim}10$ CPU hours for
 a single MCMC posterior. 
 SED modeling has recently adopted neural emulators to accelerate SED model
 evaluations. 
 In \chedit{Hahn~\etal~(2022)}, for instance, the PROVABGS emulator takes
-\chedit{Z} seconds to evaluate, $100\times$ faster than the original model. 
+${\sim}2.9$ ms to evaluate, $>100\times$ faster than the original model. 
 Yet, even with emulators, due to the number of evaluations necessary for
-convergence, an MCMC posterior takes >\chedit{ZZ} hours. 
+convergence, an MCMC posterior takes ${\sim}10$ CPU minutes. 
 Meanwhile, after training, \emph{the ANPE posterior takes $1$ second ---
 >$10^5\times$ faster than MCMC}. 
 
