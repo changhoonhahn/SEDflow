@@ -1,6 +1,16 @@
 \section{SEDflow} \label{sec:sedflow}
-In this work we apply ANPE to SED modeling of galaxy spectra. 
-tl;dr of intro 
+The goal of this work is to demonstrate that we can exploit ANPE to to
+accelerate Bayesian galaxy SED modeling.  
+For our SED model, we use the state-of-the-art PROVABGS SED model from
+\cite{hahn2022}. 
+Although many SED models have been recently used in the
+literature~(\emph{e.g.} {\sc Bagpipes}, \citealt{carnall2017}; 
+{\sc Prospector}, \citealt{leja2017, johnson2021}), we choose PROVABGS because
+it will used to analyze >10 million galaxy spectrophotometry that will be
+measured by the DESI Bright Galaxy Survey~\citep{ruiz-macias2021, hahn2022a}.
+Below, we describe the PROVABGS model in further detail.
+We also present how we construct the training data for the ANPE using PROVABGS
+and any additional details for training the ANPE. 
 
 % section explaining specific SED set up 
 \subsection{SED Modeling: PROVABGS} \label{sec:provabgs}
@@ -56,7 +66,7 @@ In total the PROVABGS SED model has 12 free parameters: stellar mass ($M_*$),
 six SFH parameters ($\beta_1, \beta_2, \beta_3, \beta_4, t_{\rm burst}, f_{\rm
 burst}$), two ZH parameters ($\gamma_1, \gamma2$), and three dust attenuation
 parameters ($\tau_{\rm BC}, \tau_{\rm ISM}, n_{\rm dust}$). 
-Each PROVABGS model evaluation takes \chedit{X} seconds. 
+Each PROVABGS model evaluation takes ${\sim}340$ ms. 
 
 
 \begin{figure}
@@ -151,7 +161,7 @@ posteriors for all NSA galaxies.
 
 \subsection{Training ANPE} \label{sec:anpe_train}
 For our ANPE, we use a MAF normalizing flow model (Section~\ref{sec:flow}) with 
-\chedit{10 MADE blocks, each with 2 hidden layers and 500 hidden units}.
+15 MADE blocks, each with 2 hidden layers and 500 hidden units.
 In total, the model has \chedit{X} free hyperparameters, ${\bf h}$. 
 Our goal is to determine ${\bf h}$ of the MAF model, 
 $q(\theta\given {\bf x}, {\bf h})$, so that it accurately estimates the
