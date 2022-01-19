@@ -43,10 +43,10 @@ State-of-the-art SED modeling use a Bayesian parameter inference framework.
 This approach has a number of key advantages over maximum-likelihood 
 approaches~\citep[\emph{e.g.}][]{cidfernandes2005, tojeiro2007, koleva2008} 
 that were often used in the past.
-In Bayesian inference, the goal is to estimate $p(\theta\given {\bf x})$, the
+In Bayesian inference, the goal is to estimate $p(\theta\given\bfi{x})$, the
 probability distribution of parameters $\theta$, in our case galaxy
-properties, given observation ${\bf x}$. 
-Inferring $p(\theta\given {\bf x})$ provides an accurate estimate of parameter 
+properties, given observation $\bfi{x}$. 
+Inferring $p(\theta\given\bfi{x})$ provides an accurate estimate of parameter 
 uncertainties and any degerancies among them.
 These uncertainties can then be propagated to for more accurate statistical
 analyses. 
@@ -59,8 +59,7 @@ properties
 
 In practice, current methods use Markov Chain Monte Carlo (MCMC) based sampling
 techniques to explore and estimate the
-posterior~\citep[\emph{e.g.}][]{acquaviva2011, chevallard2016, carnall2017,
-leja2017}. 
+posterior~\citep{acquaviva2011, chevallard2016, carnall2017, leja2017}. 
 MCMC sampling enables more accurate posterior estimation and addresses the
 curse of dimensionailty that restricts grid-based techniques used in the
 past~\citep{kauffmann2003a, burgarella2005, salim2007, dacunha2008}.
@@ -83,7 +82,7 @@ the Prime Focus Spectrograph~\citep[PFS;][]{takada2014},
 Rubin observatory~\citep{ivezic2019}, and Roman Space
 Telescope~\citep{spergel2015} will all observe \emph{millions} of galaxy SEDs. 
 Meanwhile, current SED modeling takes 10-100 CPU hours per
-galaxy~\citep[\emph{e.g.}][]{carnall2019, tacchella2020}.
+galaxy~\citep[\emph{e.g.}][]{carnall2019, tacchella2021}.
 With current methods, inferring galaxy properties from rigorous Bayesian SED
 modeling for upcoming surveys  would require \emph{billions} of CPU hours. 
 %For example, in \cite{}, analyzing just ${\sim}4000$ galaxies in the LEGA-C ESO Public Spectroscopic Survey~\cite{} using {\sc Bagpipes} required 3.5 million CPU hours.
@@ -110,20 +109,59 @@ Lastly, current SED modeling make explicit choices for its stellar spectral
 library and initial mass function, even though there is no consensus. 
 Incorporating the uncertainties and variations in these choices would either
 require including them in the SED model or exploring multiple different choices.
-Both approaches dramatically increases the computational costs of current SED
-modeling.  
+Both dramatically increases the computational costs of current SED modeling.  
 
-Simulation-based inference (SBI) using Amortized Neural Posterior Estimation
-(ANPE) provides a life line. 
-With ANPE, we can conduct rigorous Bayesian inference using only a fraction of
-the computational resoruces of MCMC sampling techniques.
-\todo{provide an overview of simulation based inference}. 
-\todo{list examples}
+Rigorous Bayesian inference does not require MCMC sampling of high-dimensional
+posteriors. 
+Simulation-based inference (SBI; also known as ``likelihood-free inference'')
+is a rapidly developing class of inference methods that offers better
+alternatives for many applications~\citep[see][and reference
+therein]{cranmer2020}.
+Many SBI methods leverage the latest developments in statistics and Machine
+Learning for more efficient posterior estimation~\citep{papamakarios2017,
+alsing2019a, hahn2019c, dax2021, huppenkothen2021, zhang2021}. 
+One such SBI technique optimal for scalable Bayesian inference is Amortized
+Neural Posterior Estimation (ANPE). 
+
+ANPE utilizes a density estimation approach to SBI. 
+Instead of MCMC sampling the posterior, $p(\theta \given \bf{x}_i)$, of a
+single galaxy, $i$, ANPE uses neural density estimators (NDE) and training data
+to estimate the $p(\theta\given\bf{x})$ distribution over the full space of
+observables ${\bf x}$.
+NDEs are density models parameterized by neural networks that estimate a
+density/probability distributions. 
+The training data are precomputed $\{(\theta_i, \bf{x}'_i\}$ pairs.
+For our application, $\theta$ is the SED model parameters, sampled from a 
+prior, and $\bf{x}'_i$ are mock observables, such as photometry, constructed
+from the SED model run on $\theta_i$. 
+Once the NDE is trained using this data, generating the posterior for a galaxy
+only requires plugging in the observation $\bf{x}_i$ --- this takes ${\sim}1$
+second. 
+
+ANPE addresses one of the major drawbacks of MCMC: SED model evaluations used
+for one galaxy cannot be used for another.
+This is why MCMC sampling has to be repeated for every galaxy. 
+In ANPE, models evaluations are only used to construct the training data of the
+NDE. 
+Although the training set typically requires more evaluations than for a single
+MCMC posterior, no additional evaluations are necessary after training. 
+Hence, the computational cost is \emph{amoritzed} and only a minuscule
+fraction of the cost of performing MCMC to analyze a large set of observations.
+ANPE has recently been applied to a wide range of applications in physics and
+astronomy with remarkable success~\citep{stein2020, wong2020, dax2021,
+zhang2021}.
+
 In this work, we apply SBI using ANPE to Bayesian galaxy SED modeling. 
 We demonstrate that with ANPE, we can make Bayesian SED modeling fully scalable
 for the millions of galaxies that will be observed by upcoming surveys.
-
-We begin in Section~\ref{sec:}
-
-
-
+Furthermore, as further demonstration, we apply ANPE to analyze optical
+photometry of ${\sim}33,000$ galaxies in the NASA-Sloan
+Atlas~(NSA; \url{http://www.nsatlas.org/}). 
+We begin in Section~\ref{sec:sbi} by describing SBI method using ANPE.
+We describe the NSA observations in Section~\ref{sec:obs}. 
+Then, we present {\sc SEDflow}, our SED modeling using ANPE, in
+Section~\ref{sec:sedflow}. 
+We validate the accuracy of the posteriors from {\sc SEDflow} in
+Section~\ref{sec:results} and discuss the impliciation of our results and
+future steps in Section~\ref{sec:discuss}. 
+Finally, we summarize and conclude in Section~\ref{sec:summary}. 
