@@ -1,1 +1,40 @@
 \section{Summary} \label{sec:summary}
+By analyzing the SED of a galaxy, we can infer detailed physical properties
+such as its stellar mass, star formation rate, metallicity, and dust content. 
+These properties serve as the building blocks of our understanding of how
+galaxies form and evolve. 
+Current state-of-the-art SED modeling methods use MCMC sampling to perform 
+Bayesian statistical inference. 
+They derive posterior probability distributions of galaxy properties given
+observation that accurately estimate uncertainties and parameter degeneracies. 
+Posteriors also enable marginalization over any nuisance parameters. 
+For the dimensionality of current SED models, this requires ${\gtrsim}100,000$
+model evaluations and take ${\gtrsim}10-100$ CPU hours per galaxy. 
+
+Upcoming galaxy surveys, however, will observe \emph{millions} of galaxies
+using \emph{e.g.} DESI, PFS, Rubin observatory, James Webb Space Telescope, and
+the Roman Space Telescope. 
+Analyzing all of these galaxies with current Bayesian SED models is infeasible
+and would require \emph{billions} of CPU hours. 
+Furthermore, computational costs will only multiply as SED models increase in 
+sophistication and treat theoretical uncertainties more flexibly. 
+Therefore, rigorous inference will soon be a major bottleneck for galaxy
+studies. 
+
+In this work, we present 
+\begin{itemize}
+\item we present galaxy SED modeling using ANPE and the recent provabgs sed model 
+some detail about training 
+Using a trained ANPE, we derive posteriors of galaxy properties in  1 second
+\item We demonstrate the
+We apply our ANPE SED modeling on test mock observations and compare them to
+posteriors derived using MCMC sampling. 
+\item we apply ANPE to infer posteriors of galaxy properties. 
+For each galaxy, we infer posteriors of $M_*$, SFR, mass-weighted stellar
+metallicity, mass-weighted age. 
+The catalog of posteriors is publicly available at \url{urlhere}
+\end{itemize}
+
+In this work, we focus on SED modeling of optical photometry. 
+Next step is to explore galaxy spectra. 
+some more discussions 
