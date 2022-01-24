@@ -86,28 +86,36 @@
 \affil{Department of Astrophysical Sciences, Princeton University, Peyton Hall, Princeton NJ 08544, USA} 
 
 \begin{abstract}
-    State-of-the-art spectral energy distribution (SED) analyses use a Bayesian
-    framework to infer the physical properties of galaxies from spectroscopic
-    and photometric observations. 
-    These methods, however, require sampling a high dimensional space of SED
-    model parameters and, thus, take $>100$ CPU hours per galaxy. 
-    They are not computationally scalable and cannot be feasily used to analyze
-    {\em millions} of galaxy photometry and spectra from the next-generation galaxy surveys
-    (\eg~Rubin, James Webb, and Roman). 
-    \todo{short description of our SBI method}. 
-    We combine this SBI-based method with the {\sc provabgs} SED model, which
-    uses non-parameteric star formation and chemical enrichment histories and a
-    flexible dust attenuation model. 
-    We then analyze the multi-wavelength photometry of the NASA-Sloan Atlas
-    with our method as well as with the origin {\sc provabgs} SED model using
-    standard Markov Chain Monte Carlo (MCMC) sampling.  
-    Our method accurately recovers the posteriors for the SED model parameters
-    and inferred galaxy properties. % something more descriptive e.g.  indistinguishable from the standard MCMC sampling 
-    More importantly, while the standard MCMC sampling took 100 CPU hours,
-    our method took 0.2 secs to infer the full posterior. 
+    State-of-the-art spectral energy distribution (SED) analyses use a
+    Bayesian framework to infer the physical properties of galaxies from
+    observed photometry and spectra.
+    They require sampling a high dimensional space of SED model parameters and
+    take $>10-100$ CPU hours per galaxy. 
+    As a result, they are not computationally feasible for analyzing the {\em
+    millions} of galaxy SEDs that will be observed by upcoming galaxy surveys
+    (\eg~DESI, PFS, Rubin, James Webb, and Roman). 
+    In this work, we present an alternative \emph{scalable} method for
+    conducting rigorous Bayesian inference using Amortized Neural Posterior
+    Estimation (ANPE). 
+    ANPE is a simulation-based inference method that exploit neural network
+    models to estimate the posterior probability distribution over the full
+    conditional variable space.
+    Once trained, deriving the posterior of galaxy properties takes \emph{${\sim}1$
+    second per galaxy}. 
+    To demonstrate our method, we combine ANPE with the recent \cite{hahn2022}
+    {\sc provabgs} SED model, which uses non-parameteric star formation and
+    chemical enrichment histories, to analyze SDSS optical photometry. 
+    We then validate our method using posteriors derived from standard Markov
+    Chain Monte Carlo (MCMC) sampling and mock observations, with known true
+    parameter values.  
+    The posteriors from ANPE accurately estimate the true posteriors of SED
+    model parameters and are indistinguishable from MCMC estimates.    
+    Therefore, we conclude that using ANPE we derive accurate posteriors
+    ${\sim}50,000\times$ faster than standard SED modeling methods. 
+    We apply our method to 33,887 galaxies in the NASA-Sloan Atlas and publicly
+    release the posteriors of galaxy properties for every galaxy.
 \end{abstract}
-
-\keywords{}
+\keywords{galaxies: evolution -- galaxies: statistics}
 
 \input{intro}
 \input{sbi}
@@ -120,8 +128,9 @@
 \section*{Acknowledgements}
 It's a pleasure to thank 
     Adam Carnall, 
-    Myles Cranmer, 
+    Miles Cranmer, 
     Kartheik Iyer,
+    Andy Goulding,
     Jenny E. Green,
     Uro{\u s}~Seljak,
     Michael A. Strauss, 
