@@ -94,21 +94,22 @@
     As a result, they are not computationally feasible for analyzing the {\em
     millions} of galaxy SEDs that will be observed by upcoming galaxy surveys
     (\eg~DESI, PFS, Rubin, James Webb, and Roman). 
-    In this work, we present an alternative \emph{scalable} method for
+    In this work, we present an alternative \emph{scalable} approach for
     conducting rigorous Bayesian inference using Amortized Neural Posterior
     Estimation (ANPE). 
     ANPE is a simulation-based inference method that exploit neural network
     models to estimate the posterior probability distribution over the full
     conditional variable space.
-    Once trained, deriving the posterior of galaxy properties takes \emph{${\sim}1$
-    second per galaxy}. 
-    To demonstrate our method, we combine ANPE with the recent \cite{hahn2022}
+    To demonstrate the ANPE approach, we present {\sc SEDflow}, an SED modeling
+    method that combines ANPE with the recent \cite{hahn2022}
     {\sc provabgs} SED model, which uses non-parameteric star formation and
     chemical enrichment histories, to analyze SDSS optical photometry. 
-    We then validate our method using posteriors derived from standard Markov
-    Chain Monte Carlo (MCMC) sampling and mock observations, with known true
-    parameter values.  
-    The posteriors from ANPE accurately estimate the true posteriors of SED
+    Once trained, deriving the posterior of galaxy properties with {\sc
+    SEDflow} takes \emph{${\sim}1$ second per galaxy}. 
+    Futhermore, we validate our method using posteriors derived from standard
+    Markov Chain Monte Carlo (MCMC) sampling and mock observations, with known
+    true parameter values.  
+    The {\sc SEDflow} posteriors accurately estimate the true posteriors of SED
     model parameters and are indistinguishable from MCMC estimates.    
     Therefore, we conclude that using ANPE we derive accurate posteriors
     ${\sim}50,000\times$ faster than standard SED modeling methods. 
