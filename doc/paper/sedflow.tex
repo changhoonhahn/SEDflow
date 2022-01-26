@@ -1,26 +1,26 @@
 \section{SEDflow} \label{sec:sedflow}
-The goal of this work is to demonstrate that we can exploit ANPE to to
-accelerate Bayesian galaxy SED modeling.  
-For our SED model, we use the state-of-the-art PROVABGS SED model from
+%The goal of this work is to demonstrate that we can exploit ANPE to accelerate Bayesian SED modeling.  
+In this section, we present \sedflow, which applies ANPE to SED modeling for a
+scalable and accelerated approach.
+For our SED model, we use the state-of-the-art PROVABGS model from
 \cite{hahn2022}. 
 Although many SED models have been recently used in the
-literature~(\emph{e.g.} {\sc Bagpipes}, \citealt{carnall2017}; 
+literature~(\emph{e.g.} {\sc Bagpipes}, \citealt{carnall2018}; 
 {\sc Prospector}, \citealt{leja2017, johnson2021}), we choose PROVABGS because
-it will used to analyze >10 million galaxy spectrophotometry that will be
-measured by the DESI Bright Galaxy Survey~\citep{ruiz-macias2021, hahn2022a}.
-Below, we describe the PROVABGS model in further detail.
-We also present how we construct the training data for the ANPE using PROVABGS
-and any additional details for training the ANPE. 
+it will be used to analyze >10 million galaxy spectrophotometry measured by the
+DESI Bright Galaxy Survey~\citep{ruiz-macias2021, hahn2022}.
+Below, we describe the PROVABGS model, the construction of the
+\sedflow~training data using PROVABGS, and the training procedure for \sedflow.
 
 % section explaining specific SED set up 
 \subsection{SED Modeling: PROVABGS} \label{sec:provabgs}
-To model SEDs, we use the state-of-the-art stellar population synthesis (SPS)
-model of the PROVABGS~(\chedit{Hahn~\etal~2022}). 
-With SPS modeling, we model the SED of a galaxy a as a composite of stellar
-populations defined by stellar evolution theory (in the form of isochrones,
-stellar spectral libraries, and an initial mass function) and its star
+We use the state-of-the-art SPS model of the
+PROVABGS~(\chedit{Hahn~\etal~2022}). 
+The SED of a galaxy is modeled as a composite of stellar populations defined by
+stellar evolution theory (in the form of isochrones, stellar spectral
+libraries, and an initial mass function) and its star
 formation and chemical enrichment histories (SFH and ZH), attenuated by
-dust~\citep[see][for a review]{conroy2013}. 
+dust~\citep[see][for a review]{walcher2011, conroy2013}. 
 The PROVABGS model, in particular, utilizes a non-parametric SFH with a
 starburst, a non-parametric ZH that varies with time, and a flexible dust
 attenuation prescription.
@@ -29,22 +29,17 @@ attenuation prescription.
 The SFH has two components: one based on non-negative matrix factorization
 (NMF) bases and the other, a starburst component.
 The SFH contribution from the NMF component is a linear combination of four NMF
-SFH basis functions, that are derived from performing NMF~\citep{lee1999,
-cichocki2009, fevotte2011}
-on smoothed SFHs of simulated galaxiese of the Illustris cosmological
-hydrodyanmic simulations~\citep{vogelsberger2014, genel2014, nelson2015}.
+SFH basis functions, derived from performing NMF~\citep{lee1999, cichocki2009,
+fevotte2011} on SFHs of galaxies in the Illustris cosmological hydrodynamical
+simulations~\citep{vogelsberger2014, genel2014, nelson2015}.
 The NMF SFH prescription provides a compact and flexible representation of the
-SFH, assuming that the SFHs of Illustris galaxies resemble the SFHs of real
-galaxies. 
-To add stochasticity to the SFH, we include a second star burst component that
-consists of a single stellar population (SSP). 
+SFH.
+The second starburst component consists of a single stellar population (SSP)
+and adds stochasticity to the SFH. 
 
-The ZH is similar defined using two NMF bases dervied from Illustris ZHs. 
-Most SPS models assume constant metallicity over
-time~\citep[\emph{e.g.}][]{carnall2017, leja2019}; however, this assumption can
-significantly bias inferred galaxy properties~\citep{thorne2021}. 
-Instead by using the NMF prescription, we can flexibly model a range of
-different ZHs with only two extra parameters.  
+The ZH is similar defined using two NMF bases dervied from Illustris. 
+This ZH prescription enables us to flexibly model a wide range of ZHs and
+unlike most SED models, it does not assume constant metallicity over time, whichcan significantly bias inferred galaxy properties~\citep{thorne2021}. 
 The stellar evolution theory is based on Flexible Stellar Population
 Synthesis~\citep[FSPS;][]{conroy2009, conroy2010c} with the MIST
 isochrones~\citep{paxton2011, paxton2013, paxton2015, choi2016, dotter2016},  
@@ -55,7 +50,7 @@ The SFH and ZH are binned into 43 logarithmically-space time bin and SSPs are
 evalulated at each time bin using FSPS. 
 The SSPs are summed up to get the unattenuated rest-frame galaxy SED. 
 
-Finally, PROVABGS attenuates the light from the composite stellar population
+Lastly, PROVABGS attenuates the light from the composite stellar population
 using the two component \cite{charlot2000} dust attenuation model with
 diffuse-dust (ISM) and birth cloud (BC) components. 
 All SSPs are attenuated by the diffuse dust using the \cite{kriek2013}
@@ -73,17 +68,17 @@ Each PROVABGS model evaluation takes ${\sim}340$ ms.
 \begin{center}
 \includegraphics[width=0.9\textwidth]{figs/training.pdf}
     \caption{\label{fig:data}
-    Joint distribution of SED model parameters ($\log M_*$, $\beta_1$,
-    redshift) and photometric magnitudes ($g$, $r$, $z$) for our training set.
-    The training set was constructed by sampling parameter values from the
-    prior, constructing SEDs using a theoretical SPS
-    model, and applying our noise model. 
-    For details, we refer readers to Section~\ref{sec:sedflow}.
-    For comparison, we present the distribution of magnitudes for galaxies in
-    the NSA catalog (blue). 
-    \emph{The training set fully encompasses the observations, thus, our 
-    {\sc SEDflow} method can be used to infer the posterior for all NSA
-    galaxies}.
+    Joint distribution of SED model parameters, redshift, photometric
+    magnitudes, and uncertainties of the data used to train \sedflow.
+    We plot only a subset of the parameters ($\log M_*$, $\beta_1$) and
+    photometric bands for clarity.
+    The training data was constructed by sampling SED model parameter values
+    from the prior and forward modeling optical photometry using the PROVABGS
+    and noise models (Section~\ref{sec:sedflow}). 
+    For comparison, we present the distribution of redshift, magnitudes, and
+    uncertainties for galaxies in the NSA catalog (blue). 
+    \emph{The training set fully encompasses the observations; thus, 
+    {\sc SEDflow} can be used to infer the posterior for all NSA galaxies}.
     }
 \end{center}
 \end{figure}
@@ -91,44 +86,35 @@ Each PROVABGS model evaluation takes ${\sim}340$ ms.
 % training data 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Training Data} \label{sec:training}
-In this section, we describe how to we construct the training data using our
-SED model.
+In this section, we describe how to we construct the training data for
+\sedflow~using the PROVABGS SED model.
 First, we sample $N_{\rm train}$ SED model parameters from a prior: $\theta'\sim p(\theta)$. 
 We use the same priors as \chedit{Hahn \etal~(2022)}: uniform priors over $M_*,
-t_{\rm burst}, f_{\rm burst}, \gamma_1, \gamma2, \tau_{\rm BC}, \tau_{\rm ISM},
-n_{\rm dust}$ and Dirichlet prior over $\beta_1, \beta_2, \beta_3, \beta_4$. 
-The Dirichlet prior is chosen for the normalization of the NMF SFH while the
-rest are chosen to span an extensive range of galaxy SEDs. 
-
-For each sampled SED parameters, we construct mock observables --- \emph{i.e.}
-NSA optical photometry (Section~\ref{sec:obs}) --- 
-We first construct the rest-frame galaxy SED using the SED model,
-$F(\lambda;\theta')$. 
-Then, for a given redshift, $z$, we redshift the SED and convolve it with
-optical broadband filters, $R_X$ to generate noiseless photometric fluxes:
+t_{\rm burst}, f_{\rm burst}, \gamma_1, \gamma_2, \tau_{\rm BC}, \tau_{\rm ISM},
+n_{\rm dust}$ with broad conservative ranges and Dirichlet prior over $\beta_1,
+\beta_2, \beta_3, \beta_4$, chosen to normalize the NMF SFH.
+For each $\theta'$, we also uniformly sample a redshift within the range of the
+NSA: $z' \sim \mathcal{U}(0., 0.2)$. 
+Next, we forward model mock observables --- NSA optical photometry
+(Section~\ref{sec:obs}). 
+We calculate the rest-frame galaxy SED from PROVABGS and redshift it: 
+$F(\lambda;\theta', z)$. 
+Afterwards, we convolve $F$ with optical broadband filters, $R_X$, to generate
+noiseless photometric fluxes:
 \begin{equation}
-    f_X(\theta') = \int F(\lambda;\theta') \, R_X(\lambda) \, {\rm d}\lambda
+    f_X(\theta', z') = \int F(\lambda;\theta', z') \, R_X(\lambda) \, {\rm d}\lambda
 \end{equation}
-Next, we apply a noise model.
-
-In our noise model, we first assign photometric uncertainties, $\sigma'_X$, to
-the training data by sampling an estimate of $p(\sigma_X | f_X)$. 
+The next step of the forward model is to apply noise. 
+We assign photometric uncertainties, $\sigma'_X$, by sampling an estimate of
+the true $p(\sigma_X | f_X)$ of NSA galaxies. 
 Then, we apply Gaussian noise
 \begin{equation}
-    \hat{f}_X(\theta') = f_X(\theta') + n_X  \quad {\rm where}~n_X \sim \mathcal{N}(0, \sigma'_X)
+    \hat{f}_X(\theta', z', \sigma'_x) = f_X(\theta', z') + n_X  \quad {\rm where}~n_X \sim \mathcal{N}(0, \sigma'_X)
 \end{equation}
-to derive photometric flux.
-We emphasize that the accuracy of the posteriors from our ANPE is not
-particularly sensitive to the noise model. 
-This is because $\sigma_X$ is included in the conditional statement of our
-posterior. 
-Hence,  we only require that $\sigma'_X$ of the training data spans the observed
-$\sigma_X$ values. 
-We discuss this further in Section~\ref{sec:discuss}.
+to derive the forward modeled photometric flux.
 
-Since we do not require a high fidelity estimate of $p(\sigma_X | f_X)$, we use
-a simple empirical estimate of $p(\sigma_X | f_X)$ based on NSA photometry and
-uncertainties. 
+For our estimate of $p(\sigma_X | f_X)$, we use an empirical estimate of
+$p(\sigma_X | f_X)$ based on NSA photometry and measured uncertainties. 
 For each band, we separately estimate  
 \begin{equation}
     \hat{p}(\sigma_X | f_X) = \mathcal{N}( \mu_{\sigma_X}(f_X), \sigma_{\sigma_X}(f_X))
@@ -141,48 +127,55 @@ Any $\theta'$ that is assigned a negative $\sigma'_X$ is removed from our
 training data. 
 We also remove any training data with $f_X(\theta'$ outside the range of NSA
 photometry. 
+Although this is a simplicistic noise model, we emphasize that our choice of
+noise model does not strongly affect the accuracy of the posteriors from
+\sedflow.
+This is because we design \sedflow~to include $\sigma_X$ in the conditional
+statement of the posterior. 
+Hence, our primary concern is that $\sigma'_X$ spans the observed $\sigma_X$
+values. 
+We discuss this further in Section~\ref{sec:discuss}.
 
 In total, we constuct $N_{\rm train} = 1,131,561$ sets of SED parameters,
 redshift, photometric uncertainty, and mock NSA photometry: 
-$\{(\theta', z, \sigma'_X, \hat{f}_X(\theta') \}$.
-There are 12 SED parameters and photometry and uncertainties in each of the 5
-NSA bands. 
-In Figure~\ref{fig:data}, we present the joint distribution of select SED model
-parameters ($\log M_*$, $\beta_1$), redshift, photometry ($g$ and $r$ bands),
-and photometric uncertainty ($r$ band) of our training data (black).
+$\{(\theta', z, \sigma'_X, \hat{f}_X \}$.
+There are 12 SED parameters and photometry and uncertainties in 5 NSA bands. 
+In Figure~\ref{fig:data}, we present the training data through the joint
+distribution of a subset of $\{(\theta', z, \sigma'_X, \hat{f}_X \}$ (black).
+We include select SED model parameters ($\log M_*$, $\beta_1$), redshift,
+photometry ($g$ and $r$ bands), and photometric uncertainty ($r$ band).
 We also include the distribution of redshift, photometry, and uncertainty of
 NSA galaxies (blue).
 The photometry and uncertainties are in magnitude-space. 
 The distribution of the training data fully spans the distribution of NSA
 galaxies.
 Hence, the training data provides support over the full $(f_X, \sigma_X, z)$
-space of the NSA observations and the trained ANPE can accurately estimate
-posteriors for all NSA galaxies. 
+space of the NSA observations. 
+%and the trained ANPE can accurately estimate posteriors for all NSA galaxies. 
 
-\subsection{Training ANPE} \label{sec:anpe_train}
-For our ANPE, we use a MAF normalizing flow model (Section~\ref{sec:flow}) with 
+\subsection{Training \sedflow} \label{sec:anpe_train}
+For \sedflow, we use a MAF normalizing flow model (Section~\ref{sec:flow}) with 
 15 MADE blocks, each with 2 hidden layers and 500 hidden units.
 In total, the model has \chedit{X} free hyperparameters, ${\bf h}$. 
+We detremine this architecture through random hyperparameter search. 
 Our goal is to determine ${\bf h}$ of the MAF model, 
-$q(\theta\given {\bf x}, {\bf h})$, so that it accurately estimates the
-posterior probability distribution $p(\theta\given {\bf x})$. 
-Here, $\theta$ represent the SED parameters and ${\bf x} = (f_X, \sigma_X, z)$.
+$q(\theta\given\bfi{x}, {\bf h})$, so that it accurately estimates the
+posterior probability distribution $p(\theta\given\bfi{x})$. 
+$\theta$ represent the SED parameters and ${\bf x} = (f_X, \sigma_X, z)$.
 We do this by minimizing the KL divergence between 
 $q(\theta\given{\bf x}, {\bf h})$ and $p(\theta\given{\bf x})$:
 $D_{\rm KL} (p\,||\,q)$. 
 
-In practice, we first split the simulated data from Section~\ref{sec:training}
-into a training and validation data set with a 90/10 split. 
+In practice, we split the training data (Section~\ref{sec:training}) into a
+training and validation set with a 90/10 split. 
 Afterwards, we maximize the total log likelihood $\sum_i \log q(\theta_i\given
-{\bf x}_i)$ on training data $\{(\theta_i, {\bf x}_i)\}$. 
-Maximizing the total log likelidhood is equivalent to minimizing 
-$D_{\rm KL} (p\,||\,q)$, which is difficult to directly compute.
+\bfi{x}_i, \bf{h})$ over training set, which is equivalent to minimizing 
+$D_{\rm KL} (p\,||\,q)$.
 We use the {\sc Adam} optimizer~\citep{kingma2017} with a learning rate of $5\times10^{-4}$. 
 To prevent overfitting, we evaluate the total log likelihood on the validation
 data at every training epoch and stop the training when the validation log
-likelihood fails to increase after 20 training epochs.  
-Training our model with a training batch size of 50 takes roughly a day on a
-single 2.6 GHz Intel Skylake CPU. 
+likelihood fails to increase after 20 epochs.  
+Training our model with a batch size of 50 takes roughly a day on a single 2.6
+GHz Intel Skylake CPU. 
 Given our small batch size, we find similar training times when using CPUs or
 GPUs. 
-\todo{mention that we're estimating $p(\theta \given f_X, \sigma_X, z)$.} 
