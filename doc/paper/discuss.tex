@@ -1,134 +1,114 @@
-\subsection{Discussion} \label{sec:discuss}
-With ANPE, we can generate posteriors for SED modeling >$10^5$ faster than
-conventional MCMC-based methods. 
-The primarily concern for ANPE is the accuracy of the posteriors.
-One of the key factors that determines the accuracy of the ANPE is the training
-data.  
-To construct our training data, we use simple noise model with a Gaussian
-estimate of $p(\sigma_X\given f_X)$ and treat each photometric band separately,
-ignoring any covariance (Section~\ref{sec:training}). 
-The actual $p(\sigma_X\given f_x)$ distrubiton for NSA, as
-Figure~\ref{fig:data} illustrates, is not Gaussian. 
-There are also significant covariances among the photometry in different bands.
-Despite the shortcomings of our training data, our ANPE is \emph{not}
-sensitive to the accuracy of our noise model. 
-This is because we include $\sigma_X$ as a conditional variable in our ANPE 
-(Section~\ref{sec:anpe_train}).
-Hence, as long as the observed ${\bf x}_{\rm obs} = (f_X, \sigma_X, z)$ is
-sufficiently within the ${\bf x}$-space support of the training data, the ANPE
-produces accurate posteriors. 
+\section{Discussion} \label{sec:discuss}
+In the previous section, we validated and demonstrated the accuracy of
+\sedflow~posteriors. 
+Nevertheless, a primary determining factor of \sedflow, and any ML model, is
+the quality of the training data.
+In our case, the training data is generated using a forward model with two
+components: the PROVABGS SED model and a noise model
+(Section~\ref{sec:training}).
+We first consider the noise model. 
 
-A more accurate noise model would in principle improve the performance of ANPEs
-since the ${\bf x}$-space of the training data will more effectively span the
+In our noise model, we assign noiseless photometric fluxes uncertainties based
+on an empirical estimate of $p(\sigma_X\given f_X)$ for each band
+independently. 
+Afterwards, the assigned $\sigma_X$ is used to apply Gaussian noise to the
+photometric flux (Eq.~\ref{eq:noise}). 
+This is a simplicistic noise model and, as the bottom right ($g - \sigma_r$ and
+$r - \sigma_r$) panels of Figure~\ref{fig:data} reveal, there are discrepancies
+in the magnitude versus uncertainty distributions of the training data and
 observations. 
+Despite these discrepancies, \sedflow~provides excellent estimates of the true
+posterior.  
+This is because we design our ANPE to include $\sigma_X$ as a conditional
+variable (Section~\ref{sec:anpe_train}).
+The $f_X-\sigma_X$ distribution of our training data does not impact the
+accuracy of the posteriors as long as there is sufficient training data near
+$\xobs$ to properly train the NDE in the region.
+
+A more accurate noise model will, in theory, improve the performance of
+\sedflow~since the $\bfi{x}$-space of the training data will more effectively
+span the observations. 
 In other words, there will be fewer training data expended in regions of 
-${\bf x}$-space that are not occupied by observations.  
+${\bf x}$-space that are devoid of observations.  
 However, for our application to SED modeling, we do not find significantly  
-better performance when we replace the noise model to a more sophisticated one.
-Instead, we find that having a sufficient number of training data is a more
-important factor for the accuracy of the ANPE. 
-For instance, we find significantly lower accuracy in the posteriors when we
-use less than <500,000 training data points. 
+improved performance when we replace the noise model.
+This suggests that even with our simplicistic forward model, the
+$\bfi{x}$-space of observations is sufficiently covered by the training data. 
+We note that when we decrease $N_{\rm train}$ below 500,000,
+\sedflow~posteriors are significantly less accurate. 
+A more realistic forward model may reduce this $N_{\rm train}$ threshold for
+accurate posteriors. 
+However, generating $N_{\rm train} \sim 1,000,000$ training has a negligible
+computational cost compared to MCMC SED modeling so we do not explore this
+further. 
 
-The ANPE produces accurate posteriors for ${\bf x}_{\rm obs}$ within the 
-${\bf x}$ support of the training data. 
-However, some objects in the NSA catalog are outside of the support. 
-For instance, the $g$, $r$, $\sigma_r$ panels of Figure~\ref{fig:data} reveal a
-number of NSA objects (blue) that lie outside of the $g-r$ color distribution
-of the training data (black). 
-This is not due to deficiencies in the noise model since the $g-\sigma_r$ and
-$r-\sigma_r$ relations of these NSA objects are within that of the training 
-data. 
-Some of these objects are likely observational artifacts. 
-Even with the quality cuts in Section~\ref{sec:obs}, there are likely objects
-in our samples with problematic photometry.  
-\chedit{list a few typical examples of problematic photometry}. 
-The SEDs of such artifcats cannot be modeled using an SPS model combined with
-noise, so they can lie outside of the training ${\bf x}$ support.
+Next, we consider limitations in the PROVABGS SED model used in our forward
+model. 
+One of its advantages is that it uses a compact and flexible prescription for
+SFH and ZH that can describe a broad range of SFHs and ZHs.
+However, the prescription was derived from simulated Illustris galaxies, whose
+SFHs and ZHs may be not reflect the full range of SFHs and ZHs of real galaxies.
+If certain subpopulations of galaxies have SFHs and ZHs that cannot be
+described by the PROVABGS prescriptions, they cannot be accurately forward
+modeled. 
+Furthermore, even if the PROVABGS SFH and ZH prescriptions are sufficient,
+there are limitations in our understanding of stellar evolution. 
 
-Alternatively, the training data may provide insufficient support because the
-SED model we use to generate them does not sufficiently describe the full range
-of true galaxy SEDs. 
-In this work we use the PROVABGS SED model~(Section~\ref{sec:provabgs} and
-\citealt{hahn2022}). 
-This model provides compact and flexible prescriptions for SFH and ZH that can
-describe a broad range of SFHs and ZHs~\citep{hahn2022}.
-However, the prescriptions were derived from the SFHs and ZHs of simulated
-galaxies in Illustris, which may not reflect the full range of SFHs and ZHs of
-ZHs of actual galaxies.
-Even if the PROVABGS SFH and ZH prescriptions can accurately describe the true
-SFH and ZH, there are limitations in our understanding of stellar evolution.
-
-There is currently no firm consensus in SPS: \emph{e.g.} stellar evolution,
-stellar spectral libraries, or the IMF~\citep[\emph{e.g.}][]{treu2010,
-vandokkum2010, rosani2018, ge2019, sonnenfeld2019}.
+There is currently no consensus in the stellar evolution, stellar spectral
+libraries, or IMF of galaxies~\citep[\emph{e.g.}][]{treu2010, vandokkum2010,
+rosani2018, ge2019, sonnenfeld2019}.
 The PROVABGS model uses MIST isochrones, \cite{chabrier2003} IMF, and the MILES
 + BaSeL spectral libraries. 
 These choices limit the range of SED that can be produced by the training data. 
 For instance, if galaxies have significant variations in their IMF, assuming a
-fixed IMF would reduce the $\bf{x}$ support of our training data.  
-A more flexible SED model that includes uncertainties in SPS would widen the
+fixed IMF would reduce the range of our training data.  
+A more flexible SED model that includes uncertainties in SPS would broaden the
 range of galaxy SEDs that can be modeled.
 Data-driven approaches may also enable SED models to be more
 descriptive~\citep[\emph{e.g.}][]{hogg2016, portillo2020}. 
-Extending SED models, however, is beyond the scope of this work, which focuses
-on improving the Bayesian framework for SED modeling.
-We emphasize that conventional approaches with MCMC are \emph{equally} impacted
-by the limitations of the SED model. 
+Improving  SED models, however, is beyond the scope of this work. 
+Our focus is on improving the Bayesian inference framework.
+In that regard, the limitations of the SED model equally impacts conventional
+approaches with MCMC. 
 
-In Section~\ref{sec:results}, we assessed the accuracy of the ANPE posteriors
-using posteriors derived using MCMC and test SEDs, where we know the true
-parameter values. 
-Both cases demonstrate the sufficient accuracy of ANPE posteriors for this
-work. 
-However, for applications that require even higher fidelity posteriors, there
-are further tests. 
-For instance, the $\chi^2$ of the best-fit parameter value from the ANPE
-posterior can be used to test whether the best-fit SED model whether accurately
-reproduces the observed SED.
-This only requires one additional SED model evaluation per galaxy. 
-For an even more rigorous test of the posteriors, one can construct an
-Amortized Neural Likelihood Estimator (ANLE) using the same training data and
-neural density estimator setup. 
+%\todo{revisit paragraph below after applying sedflow to NSA} 
+%Although we demonstrate that \sedflow~produces accurate posteriors for $\xobs$
+%within the $\bfi{x}$ support of the training data, there are a few objects in
+%the NSA catalog are outside of the support. 
+%For instance, the $g$, $r$, $\sigma_r$ panels of Figure~\ref{fig:data} reveal a
+%number of NSA objects (blue) that lie outside of the $g-r$ color distribution
+%of the training data (black). 
+%This is not due to deficiencies in the noise model since the $g-\sigma_r$ and
+%$r-\sigma_r$ relations of these NSA objects are within that of the training 
+%data. 
+%Some of these objects are likely observational artifacts. 
+%Even with the quality cuts in Section~\ref{sec:obs}, there are likely objects
+%in our samples with problematic photometry.  
+%\chedit{list a few typical examples of problematic photometry}. 
+%The SEDs of such artifcats cannot be modeled using an SPS model combined with
+%noise, so they can lie outside of the training ${\bf x}$ support.
+
+%In Section~\ref{sec:results}, we assessed the accuracy of the \sedflow~posteriors using posteriors derived using MCMC and test observations, where we know the true parameter values. 
+%Both cases demonstrate the high level of accuracy of \sedflow.  However, for applications that require even higher fidelity posteriors, there are further tests. 
+Given the limitations of any forward model, we can construct additional tests
+of posteriors derived from ANPE. 
+For instance, the $\chi^2$ of the best-fit parameter value from the 
+estimated posterior can be used to test whether the best-fit model 
+accurately reproduces observations.
+This would only require one additional model evaluation. 
+As another test of the posteriors, one can construct an Amortized Neural
+Likelihood Estimator (ANLE) using the same training data. 
 Unlike the ANPE, which estimates $p(\theta\given f_X, \sigma_X, z)$, the ANLE
-estimates $p(f_X \given \theta, \sigma_X, z)$.
-We can then further validate the posteriors by assessing whether the observed photometry lies within the ANLE. 
+would estimate $p(f_X \given \theta, \sigma_X, z)$.
+We can then further validate the posteriors by assessing whether the observed
+photometry lies within the ANLE. 
+Based on the high level of accuracy of \sedflow~posteriors in the previous
+section, we do not explore these additional tests; however, they can be used to
+further validate any ANPE posterior. 
 
-In this work, the ANPE estimates a 12-dimensional probability distribution with
-an 11-dimensional conditional variable space. 
-However, future SED modeling will likely require higher dimensionality. 
-As mention above, SED models currently do not account for uncertainties in
-stellar evolution, spectral libraries, or the IMF. 
-Including these uncertainties as well as any additional parameters to account
-for observational systematics (\emph{e.g.} zero-point calibration, see also
-\url{http://www.nsatlas.org/caveats}) will significantly increase the
-dimensionality of the posterior. 
-Higher dimensionality significantly increases the computational cost of current
-methods: the number of evaluation scales roughly linearly with the number of
-dimensions for MCMC. 
-Fortunately, ANPE has already been applied to higher dimensional applications.
-\cite{dax2021}, for instance, constructed an accurate ANPE for a 15-dimensional
-model parameter space and 128-dimensional conditional variable space.  
-
-We demonstrate that we can exploit ANPE to accelerate SED modeling of galaxy
-photometry. 
-The next step is to apply ANPE to SED modeling of galaxy spectra. 
-Constructing an ANPE for the full data space of spectra, however, requires
-estimating a dramatically higher dimensional probability distribution. 
-SDSS spectra, for instance, have \todo{X} spectral elements.  
-Furthermore, in our approach we include the uncertainties as conditional
-variables and double the curse of dimensionality.
-Recent works, however, have demonstrated that galaxy spectra can be represented
-in a compact low-dimensional space using autoencoders~\citep[][; Melchior \&
-Hahn in prep.]{portillo2020}.
-In \cite{portillo2020}, they demonstrate that SDSS galaxy spectra can be
-compressed into 10-dimensional latent variable space with little loss of
-information. 
-With this spectral compression, we can dramatically reduce the dimensionality
-of the conditional variable space. 
-We will explore SED modeling of galaxy spectrophotometry using ANPE and
-spectral compression in a following work. 
-
+So far, we have primarily focused on the computational advantages of
+\sedflow~for individual posterior estimation. 
+However, there are other benefits to our ANPE approach. 
 One of the key ingredients in Bayesian inference is the prior. 
 For SED modeling, recent works have demonstrated that model priors play a
 crucial role in the derived galaxy properties~\citep{carnall2018, leja2019,
@@ -139,18 +119,79 @@ ZH.
 This underscores the importance of carefully selecting priors and validating
 results using multiple different priors. 
 For SED modeling with MCMC, selecting a different prior requries reevaluating
-posteriors for every galaxy. 
-This means repeating all the SED model evaluations in the MCMC sampling. 
-For ANPE, the prior is set by how the parameters of the training data are
-sampled. 
-For a new prior, we can subsample the training data so that its parameters
-follow a newly selected prior. 
-Afterwards, the ANPE can be re-trained, re-validated on the test data, and
-re-deployed on the entire dataset.
-Re-training the ANPE has significant computational cost, however, it requires
-no where near the 
-Hence, ANPE has the additional advantage that we can vary the prior without
-additional model evalulations.
+every posterior and repeating all the SED model evaluations in the MCMC
+sampling.  
+For ANPE, the prior is set by the distribution of parameters in the training
+data. 
+For a new prior, instead of regenerating the training data, we can subsample
+it so that the parameters follow the new prior. 
+Afterwards, the ANPE model can be re-trained, re-validated on the test data,
+and re-deployed on observations.
+Each of these steps require substantially less computational resources than
+generating a new set of training data or using MCMC methods. 
+Hence, the ANPE approach also provides a way to efficiently vary the prior
+without multiplying computational costs. 
 
-\todo{extra advantages of faster posteriors}
-reemphasize that we can meet the needs of DESI, PFS, Rubin, JWST, and Roman. 
+In this work, we use \sedflow~to perform SED modeling on galaxy photometry. 
+We estimate a 12-dimensional probability distribution with an 11-dimensional
+conditional variable space. 
+While this dimensionality is already a limiting factor for current MCMC
+methods, ANPE has already been applied to higher dimensional applications.
+\cite{dax2021}, for instance, constructed an accurate ANPE for a
+15-dimensional model parameter space and 128-dimensional conditional variable
+space.
+Furthermore, NDE is an actively developing field in ML and new and methods are
+constantly emerging~\citep[\eg][]{wu2020, dhariwal2021}. 
+
+Without the limitations of current Bayesian inference methods, ANPE opens the
+doors to better SED modeling. 
+As mention above, SED models currently do not account for uncertainties in
+stellar evolution, spectral libraries, or the IMF. 
+Since ANPE approaches can handle higher dimensionality, SED models can include 
+additional parameters that model these uncertainties as well as any
+observational systematics (\emph{e.g.} zero-point calibration). 
+
+The next step is to apply the ANPE approach to SED modeling of galaxy spectra. 
+Constructing an ANPE for the full data space of spectra, however, requires
+estimating a dramatically higher dimensional probability distribution. 
+SDSS spectra, for instance, have ${\sim}3,600$ spectral elements.  
+Furthermore, in our approach we include the uncertainties of observables as
+conditional variables, which double the curse of dimensionality.
+Recent works, however, have demonstrated that galaxy spectra can be represented
+in a compact low-dimensional space using autoencoders~\citep[][; Melchior \&
+Hahn in prep.]{portillo2020}.
+In \cite{portillo2020}, they demonstrate that SDSS galaxy spectra can be
+compressed into 10-dimensional latent variable space with little loss of
+information. 
+Such spectral compression dramatically reduces the dimensionality of the
+conditional variable space to dimensions that can be tackled by current ANPE
+methods. 
+We will explore SED modeling of galaxy spectrophotometry using ANPE and
+spectral compression in a following work. 
+
+With \sedflow, we can generate accurate posteriors for SED modeling >$10^4$
+faster than conventional MCMC methods. 
+Analyzing 33,887 NSA galaxies only takes \chedit{X} CPU hours.
+Analyzing the 10 million galaxies of DESI BGS would take ${\sim}3000$ CPU hours.
+An ANPE approach will enable rigorous SED modeling on the enormous galaxy
+samples that will be observed by DESI, PFS, Rubin, JWST, and Roman. 
+We will be able to construct probabilistic catalogs that provide accurate
+posteriors on the physical properties for millions of galaxies. 
+
+In addition to accurately measuring galaxy properties, these probabilistic
+catalogs will enable new class of statistical techniques.
+For instance, they can be used for population inference to derive the
+distribution of galaxy properties for galaxy populations by combining
+individual posteriors~\citep[\eg][]{leja2019a}.
+With probabilistic catalogs, we can also robustly probe less explored, low
+signal-to-noise, regimes that may shed new light on galaxy evolution, 
+\eg~dwarf galaxies.
+Since posteriors accurately quantify uncertainty, analyses can include galaxies
+with less tightly constrained properties without introducing bias. 
+We can also more reliably quantify the extreme or outlier galaxies.
+These catalogs can also take advantage of Bayesian Hierarchical approaches that
+improve the statistical power of observations through Bayesian shrinkage. 
+Overall, these probabilistic catalogs will enable a new level of statistical
+robustness in galaxy studies and more fully extract the statistical power of
+future observations. 
+

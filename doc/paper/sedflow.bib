@@ -80,6 +80,23 @@
   file = {/Users/chahah/Zotero/storage/5TTD68U3/Alsing et al. - 2019 - Fast likelihood-free cosmology with neural density.pdf}
 }
 
+@article{alsing2020,
+  title = {{{SPECULATOR}}: {{Emulating Stellar Population Synthesis}} for {{Fast}} and {{Accurate Galaxy Spectra}} and {{Photometry}}},
+  shorttitle = {{{SPECULATOR}}},
+  author = {Alsing, Justin and Peiris, Hiranya and Leja, Joel and Hahn, ChangHoon and Tojeiro, Rita and Mortlock, Daniel and Leistedt, Boris and Johnson, Benjamin D. and Conroy, Charlie},
+  year = {2020},
+  month = jul,
+  journal = {The Astrophysical Journal Supplement Series},
+  volume = {249},
+  pages = {5},
+  issn = {0067-0049},
+  doi = {10.3847/1538-4365/ab917f},
+  abstract = {We present SPECULATOR -- a fast, accurate, and flexible framework for emulating stellar population synthesis (SPS) models for predicting galaxy spectra and photometry. For emulating spectra, we use a principal component analysis to construct a set of basis functions and neural networks to learn the basis coefficients as a function of the SPS model parameters. For photometry, we parameterize the magnitudes (for the filters of interest) as a function of SPS parameters by a neural network. The resulting emulators are able to predict spectra and photometry under both simple and complicated SPS model parameterizations to percent-level accuracy, giving a factor of 103-104 speedup over direct SPS computation. They have readily computable derivatives, making them amenable to gradient-based inference and optimization methods. The emulators are also straightforward to call from a GPU, giving an additional order of magnitude speedup. Rapid SPS computations delivered by emulation offers a massive reduction in the computational resources required to infer the physical properties of galaxies from observed spectra or photometry and simulate galaxy populations under SPS models, while maintaining the accuracy required for a range of applications.},
+  keywords = {1933,573,611,Astrophysics - Astrophysics of Galaxies,Astrophysics - Instrumentation and Methods for Astrophysics,Galaxies,Galaxy photometry,Neural networks},
+  annotation = {ADS Bibcode: 2020ApJS..249....5A},
+  file = {/Users/chahah/Zotero/storage/PIJXHA4P/Alsing et al. - 2020 - SPECULATOR Emulating Stellar Population Synthesis.pdf}
+}
+
 @article{baldry2018,
   title = {Galaxy {{And Mass Assembly}}: The {{G02}} Field, {{Herschel-ATLAS}} Target Selection and Data Release 3},
   shorttitle = {Galaxy {{And Mass Assembly}}},
@@ -226,36 +243,21 @@
   file = {/Users/chahah/Zotero/storage/UCB9TMNL/Cameron and Pettitt - 2012 - Approximate Bayesian Computation for astronomical .pdf}
 }
 
-@article{carnall2017,
-  title = {Inferring the Star-Formation Histories of Massive Quiescent Galaxies with {{BAGPIPES}}: {{Evidence}} for Multiple Quenching Mechanisms},
-  shorttitle = {Inferring the Star-Formation Histories of Massive Quiescent Galaxies with {{BAGPIPES}}},
-  author = {Carnall, A. C. and McLure, R. J. and Dunlop, J. S. and Dav{\'e}, R.},
-  year = {2017},
-  month = dec,
-  journal = {arXiv:1712.04452 [astro-ph]},
-  eprint = {1712.04452},
-  eprinttype = {arxiv},
-  primaryclass = {astro-ph},
-  abstract = {We present Bayesian Analysis of Galaxies for Physical Inference and Parameter EStimation, or BAGPIPES, a new Python tool which can be used to rapidly generate complex model galaxy spectra and to fit these to arbitrary combinations of spectroscopic and photometric data using the MultiNest algorithm. We extensively test our ability to recover realistic star-formation histories (SFHs) with BAGPIPES by fitting mock observations of quiescent galaxies from the MUFASA simulation. We show that a double-power-law model produces better agreement with realistic SFHs than an exponentially-declining model. We then perform a detailed analysis of the SFHs of a sample of 9312 quiescent galaxies from UltraVISTA with stellar masses, \$M\_* {$>$} 10\^\{10\}\textbackslash{} \textbackslash mathrm\{M\_\textbackslash odot\}\$ and redshifts \$0.25 {$<$} z\_\textbackslash mathrm\{obs\} {$<$} 3.75\$. The majority of our quiescent sample exhibit SFHs which rise gradually then quench relatively rapidly, over \$\textbackslash sim 1\{-\}2\$ Gyr. This behaviour is consistent with recent cosmological hydrodynamic simulations, where AGN-driven feedback in the low-accretion (jet) mode is the dominant quenching mechanism. In addition, we identify two further subsets of objects with distinct SFH shapes. At \$z\_\textbackslash mathrm\{obs\} \textbackslash gtrsim 1\$ we find a class of objects with SFHs which rise and fall very rapidly, with quenching timescales of \$\textbackslash lesssim 1\$ Gyr. These objects are consistent with (potentially merger-triggered) quasar-mode AGN feedback. Also, at \$z\_\textbackslash mathrm\{obs\} \textbackslash lesssim 1\$ we find a population with SFHs which quench more slowly than they rise, over \$\textbackslash gtrsim3\$ Gyr, which we speculate to be the result of a 'natural' quenching process, where galaxy SFHs die down gradually due to the diminishing overall cosmic gas supply. Purely passive evolution of the quiescent population at \$z\_\textbackslash mathrm\{obs\} \textbackslash gtrsim 0.5\$ is disfavoured by our results.},
-  archiveprefix = {arXiv},
-  keywords = {Astrophysics - Astrophysics of Galaxies,Astrophysics - Instrumentation and Methods for Astrophysics},
-  file = {/Users/chahah/Zotero/storage/KF3XDH4M/Carnall et al. - 2017 - Inferring the star-formation histories of massive .pdf;/Users/chahah/Zotero/storage/WTUEDEKQ/1712.html}
-}
-
 @article{carnall2018,
-  title = {How to Measure Galaxy Star-Formation Histories {{I}}: {{Parametric}} Models},
-  shorttitle = {How to Measure Galaxy Star-Formation Histories {{I}}},
-  author = {Carnall, A. C. and Leja, J. and Johnson, B. D. and McLure, R. J. and Dunlop, J. S. and Conroy, C.},
+  title = {Inferring the Star Formation Histories of Massive Quiescent Galaxies with {{BAGPIPES}}: Evidence for Multiple Quenching Mechanisms},
+  shorttitle = {Inferring the Star Formation Histories of Massive Quiescent Galaxies with {{BAGPIPES}}},
+  author = {Carnall, A. C. and McLure, R. J. and Dunlop, J. S. and Dav{\'e}, R.},
   year = {2018},
   month = nov,
-  journal = {arXiv:1811.03635 [astro-ph]},
-  eprint = {1811.03635},
-  eprinttype = {arxiv},
-  primaryclass = {astro-ph},
-  abstract = {Parametric models for galaxy star-formation histories (SFHs) are widely used, though they are known to impose strong priors on physical parameters. This has consequences for measurements of the galaxy stellar-mass function (GSMF), star-formation-rate density (SFRD) and star-forming main sequence (SFMS). We investigate the effects of the exponentially declining, delayed exponentially declining, lognormal and double power law SFH models using BAGPIPES. We demonstrate that each of these models imposes strong priors on specific star-formation rates (sSFRs), potentially biasing the SFMS, and also imposes a strong prior preference for young stellar populations. We show that stellar mass, SFR and mass-weighted age inferences from high-quality mock photometry vary with the choice of SFH model by at least 0.1, 0.3 and 0.2 dex respectively. However the biases with respect to the true values depend more on the true SFH shape than the choice of model. We also demonstrate that photometric data cannot discriminate between SFH models, meaning it is important to perform independent tests to find well-motivated priors. We finally fit a low-redshift, volume-complete sample of galaxies from the Galaxy and Mass Assembly (GAMA) Survey with each model. We demonstrate that our stellar masses and SFRs at redshift, \$z\textbackslash sim0.05\$ are consistent with other analyses. However, our inferred cosmic SFRDs peak at \$z\textbackslash sim0.4\$, approximately 6 Gyr later than direct observations suggest, meaning our mass-weighted ages are significantly underestimated. This makes the use of parametric SFH models for understanding mass assembly in galaxies challenging. In a companion paper we consider non-parametric SFH models.},
-  archiveprefix = {arXiv},
-  keywords = {Astrophysics - Astrophysics of Galaxies,Astrophysics - Instrumentation and Methods for Astrophysics},
-  file = {/Users/chahah/Zotero/storage/5842SKVT/Carnall et al. - 2018 - How to measure galaxy star-formation histories I .pdf;/Users/chahah/Zotero/storage/N9HT2VB7/1811.html}
+  journal = {Monthly Notices of the Royal Astronomical Society},
+  volume = {480},
+  pages = {4379--4401},
+  issn = {0035-8711},
+  doi = {10.1093/mnras/sty2169},
+  abstract = {We present Bayesian Analysis of Galaxies for Physical Inference and Parameter EStimation, or BAGPIPES, a new PYTHON tool that can be used to rapidly generate complex model galaxy spectra and to fit these to arbitrary combinations of spectroscopic and photometric data using the MULTINEST nested sampling algorithm. We extensively test our ability to recover realistic star formation histories (SFHs) by fitting mock observations of quiescent galaxies from the MUFASA simulation. We then perform a detailed analysis of the SFHs of a sample of 9289 quiescent galaxies from UltraVISTA with stellar masses, M* {$>$} 1010 M{$\odot$} and redshifts 0.25 {$<$} z {$<$} 3.75. The majority of our sample exhibit SFHs that rise gradually then quench relatively rapidly over 1-2 Gyr. This behaviour is consistent with recent cosmological hydrodynamic simulations, where AGN-driven feedback in the low-accretion (jet) mode is the dominant quenching mechanism. At z {$>$} 1, we also find a class of objects with SFHs that rise and fall very rapidly, with quenching time-scales of {$<$}1 Gyr, consistent with quasar-mode AGN feedback. Finally, at z {$<$} 1 we find a population with SFHs which quench more slowly than they rise, over {$>$}3 Gyr, which we speculate to be the result of diminishing overall cosmic gas supply. We confirm the mass-accelerated evolution (downsizing) trend, and a trend towards more rapid quenching at higher stellar masses. However, our results suggest that the latter is a natural consequence of mass-accelerated evolution, rather than a change in quenching physics with stellar mass. We find 61 {$\pm$} 8 per cent of z {$>$} 1.5 massive-quenched galaxies undergo significant further evolution by z = 0.5. BAGPIPES is available at bagpipes.readthedocs.io.},
+  keywords = {Astrophysics - Astrophysics of Galaxies,Astrophysics - Instrumentation and Methods for Astrophysics,galaxies: evolution,galaxies: star formation,methods: statistical},
+  annotation = {ADS Bibcode: 2018MNRAS.480.4379C},
+  file = {/Users/chahah/Zotero/storage/QRXIXRA5/Carnall et al. - 2018 - Inferring the star formation histories of massive .pdf}
 }
 
 @article{carnall2019,
@@ -273,6 +275,22 @@
   keywords = {Astrophysics - Astrophysics of Galaxies,Astrophysics - Instrumentation and Methods for Astrophysics,galaxies: evolution,galaxies: star formation,methods: statistical},
   annotation = {ADS Bibcode: 2019MNRAS.490..417C},
   file = {/Users/chahah/Zotero/storage/R963CCSW/Carnall et al. - 2019 - The VANDELS survey the star-formation histories o.pdf}
+}
+
+@article{carnall2019a,
+  title = {How to {{Measure Galaxy Star Formation Histories}}. {{I}}. {{Parametric Models}}},
+  author = {Carnall, Adam C. and Leja, Joel and Johnson, Benjamin D. and McLure, Ross J. and Dunlop, James S. and Conroy, Charlie},
+  year = {2019},
+  month = mar,
+  journal = {The Astrophysical Journal},
+  volume = {873},
+  pages = {44},
+  issn = {0004-637X},
+  doi = {10.3847/1538-4357/ab04a2},
+  abstract = {Parametric models for galaxy star formation histories (SFHs) are widely used, though they are known to impose strong priors on physical parameters. This has consequences for measurements of the galaxy stellar-mass function, star formation rate density (SFRD), and star-forming main sequence (SFMS). We investigate the effects of the exponentially declining, delayed exponentially declining, lognormal, and double power-law SFH models using BAGPIPES. We demonstrate that each of these models imposes strong priors on specific star formation rates (SFRs), potentially biasing the SFMS, and also imposes a strong prior preference for young stellar populations. We show that stellar mass, SFR, and mass-weighted age inferences from high-quality mock photometry vary with the choice of SFH model by at least 0.1, 0.3, and 0.2 dex, respectively. However, the biases with respect to the true values depend more on the true SFH shape than the choice of model. We also demonstrate that photometric data cannot discriminate between SFH models, meaning that it is important to perform independent tests to find well-motivated priors. We finally fit a low-redshift, volume-complete sample of galaxies from the Galaxy and Mass Assembly (GAMA) Survey with each model. We demonstrate that our stellar masses and SFRs at redshift z {$\sim$} 0.05 are consistent with other analyses. However, our inferred cosmic SFRDs peak at z {$\sim$} 0.4, approximately 6 Gyr later than direct observations suggest, meaning that our mass-weighted ages are significantly underestimated. This makes the use of parametric SFH models for understanding mass assembly in galaxies challenging. In a companion paper, we consider nonparametric SFH models.},
+  keywords = {Astrophysics - Astrophysics of Galaxies,Astrophysics - Instrumentation and Methods for Astrophysics,galaxies: evolution,galaxies: fundamental parameters,galaxies: star formation,galaxies: statistics,galaxies: stellar content},
+  annotation = {ADS Bibcode: 2019ApJ...873...44C},
+  file = {/Users/chahah/Zotero/storage/TFIGA2FC/Carnall et al. - 2019 - How to Measure Galaxy Star Formation Histories. I..pdf}
 }
 
 @article{chabrier2003,
@@ -515,6 +533,21 @@
   file = {/Users/chahah/Zotero/storage/VWVMPIGJ/DESI Collaboration et al. - 2016 - The DESI Experiment Part I Science,Targeting, and.pdf;/Users/chahah/Zotero/storage/M8HGRXRJ/1611.html}
 }
 
+@article{dhariwal2021,
+  title = {Diffusion {{Models Beat GANs}} on {{Image Synthesis}}},
+  author = {Dhariwal, Prafulla and Nichol, Alex},
+  year = {2021},
+  month = jun,
+  journal = {arXiv:2105.05233 [cs, stat]},
+  eprint = {2105.05233},
+  eprinttype = {arxiv},
+  primaryclass = {cs, stat},
+  abstract = {We show that diffusion models can achieve image sample quality superior to the current state-of-the-art generative models. We achieve this on unconditional image synthesis by finding a better architecture through a series of ablations. For conditional image synthesis, we further improve sample quality with classifier guidance: a simple, compute-efficient method for trading off diversity for fidelity using gradients from a classifier. We achieve an FID of 2.97 on ImageNet 128\$\textbackslash times\$128, 4.59 on ImageNet 256\$\textbackslash times\$256, and 7.72 on ImageNet 512\$\textbackslash times\$512, and we match BigGAN-deep even with as few as 25 forward passes per sample, all while maintaining better coverage of the distribution. Finally, we find that classifier guidance combines well with upsampling diffusion models, further improving FID to 3.94 on ImageNet 256\$\textbackslash times\$256 and 3.85 on ImageNet 512\$\textbackslash times\$512. We release our code at https://github.com/openai/guided-diffusion},
+  archiveprefix = {arXiv},
+  keywords = {Computer Science - Artificial Intelligence,Computer Science - Computer Vision and Pattern Recognition,Computer Science - Machine Learning,Statistics - Machine Learning},
+  file = {/Users/chahah/Zotero/storage/XKEGG7BK/Dhariwal and Nichol - 2021 - Diffusion Models Beat GANs on Image Synthesis.pdf;/Users/chahah/Zotero/storage/H2PVZ7YG/2105.html}
+}
+
 @article{dotter2016,
   title = {{{MESA Isochrones}} and {{Stellar Tracks}} ({{MIST}}) 0: {{Methods}} for the {{Construction}} of {{Stellar Isochrones}}},
   shorttitle = {{{MESA Isochrones}} and {{Stellar Tracks}} ({{MIST}}) 0},
@@ -559,6 +592,22 @@
   archiveprefix = {arXiv},
   keywords = {Computer Science - Machine Learning},
   file = {/Users/chahah/Zotero/storage/VR85YAUR/Févotte and Idier - 2011 - Algorithms for nonnegative matrix factorization wi.pdf;/Users/chahah/Zotero/storage/P9JN7PAH/1010.html}
+}
+
+@article{ge2019,
+  title = {Recovering Stellar Population Parameters via Different Population Models and Stellar Libraries},
+  author = {Ge, Junqiang and Mao, Shude and Lu, Youjun and Cappellari, Michele and Yan, Renbin},
+  year = {2019},
+  month = may,
+  journal = {Monthly Notices of the Royal Astronomical Society},
+  volume = {485},
+  pages = {1675--1693},
+  issn = {0035-8711},
+  doi = {10.1093/mnras/stz418},
+  abstract = {Three basic ingredients are required to generate a simple stellar population (SSP) library, i.e. an initial mass function (IMF), a stellar evolution model/isochrones, and an empirical/theoretical stellar spectral library. However, there are still some uncertainties to the determination and understanding of these ingredients. We perform the spectral fitting to test the relative parameter offsets between these uncertainties using two different stellar population models, two different empirical stellar libraries, two different isochrones, and the Salpeter and Chabrier IMFs. Based on these setups, we select five SSP libraries generated with the Galaxev/STELIB and Vazdekis/MILES models, and apply them to the pPXF full-spectrum fitting of both MaNGA and mock spectra. We find that: (1) Compared to the Galaxev/STELIB model, spectral fitting qualities with the Vazdekis/MILES model have significant improvements for those metal-rich (especially oversolar) spectra, which cause better reduced {$\chi$}2 distributions and more precisely fitted absorption lines. This might due to the lack of metal-rich stars in the empirical STELIB library, or code improvement of the Vazdekis model. (2) When applying the Vazdekis/MILES model for spectral fitting, the IMF variation will lead to not only a systematic offset in M*/Lr, but also offsets in age and metallicity, and these offsets increase with increasing stellar population ages. However, the IMF variation caused metallicity offsets disappear in the case of Galaxev/STELIB based libraries. (3) The Padova2000 model provides a better match to the MaNGA galaxy spectra at [M/H]L {$<$} -1.0, while the BaSTI model match the local galaxy spectra better at [M/H]L {$>$} -1.0. Current tests suggest that spectral fitting with the Vazdekis/MILES + BaSTI combination would be a better choice for local galaxies.},
+  keywords = {Astrophysics - Astrophysics of Galaxies,galaxies: evolution,galaxies: fundamental parameters},
+  annotation = {ADS Bibcode: 2019MNRAS.485.1675G},
+  file = {/Users/chahah/Zotero/storage/ECUP722N/Ge et al. - 2019 - Recovering stellar population parameters via diffe.pdf}
 }
 
 @article{genel2014,
@@ -1130,6 +1179,22 @@
   file = {/Users/chahah/Zotero/storage/EPPMPKT7/Pritchard et al. - 1999 - Population growth of human Y chromosomes a study .pdf;/Users/chahah/Zotero/storage/WYX9ZUDH/2925409.html}
 }
 
+@article{rosani2018,
+  title = {The Influence of Galaxy Environment on the Stellar Initial Mass Function of Early-Type Galaxies},
+  author = {Rosani, Giulio and Pasquali, Anna and La Barbera, Francesco and Ferreras, Ignacio and Vazdekis, Alexandre},
+  year = {2018},
+  month = jun,
+  journal = {Monthly Notices of the Royal Astronomical Society},
+  volume = {476},
+  pages = {5233--5252},
+  issn = {0035-8711},
+  doi = {10.1093/mnras/sty528},
+  abstract = {In this paper, we investigate whether the stellar initial mass function (IMF) of early-type galaxies depends on their host environment. To this purpose, we have selected a sample of early-type galaxies from the SPIDER catalogue, characterized their environment through the group catalogue of Wang et al., and used their optical Sloan Digital Sky Survey (SDSS) spectra to constrain the IMF slope, through the analysis of IMF-sensitive spectral indices. To reach a high enough signal-to-noise ratio, we have stacked spectra in velocity dispersion ({$\sigma$}0) bins, on top of separating the sample by galaxy hierarchy and host halo mass, as proxies for galaxy environment. In order to constrain the IMF, we have compared observed line strengths and predictions of MIUSCAT/EMILES synthetic stellar population models, with varying age, metallicity, and `bimodal' (low-mass tapered) IMF slope ({$\Gamma$} \_b). Consistent with previous studies, we find that {$\Gamma$} \_b increases with {$\sigma$}0, becoming bottom-heavy (i.e. an excess of low-mass stars with respect to the Milky Way like IMF) at high {$\sigma$}0. We find that this result is robust against the set of isochrones used in the stellar population models, as well as the way the effect of elemental abundance ratios is taken into account. We thus conclude that it is possible to use currently state-of-the-art stellar population models and intermediate resolution spectra to consistently probe IMF variations. For the first time, we show that there is no dependence of {$\Gamma$}b on environment or galaxy hierarchy, as measured within the 3 arcsec SDSS fibre, thus leaving the IMF as an intrinsic galaxy property, possibly set already at high redshift.},
+  keywords = {Astrophysics - Astrophysics of Galaxies,cD,galaxies: elliptical and lenticular,galaxies: evolution,galaxies: fundamental parameters,galaxies: groups: general,galaxies: stellar content},
+  annotation = {ADS Bibcode: 2018MNRAS.476.5233R},
+  file = {/Users/chahah/Zotero/storage/G3RERFQF/Rosani et al. - 2018 - The influence of galaxy environment on the stellar.pdf}
+}
+
 @article{rubin1984,
   title = {Bayesianly {{Justifiable}} and {{Relevant Frequency Calculations}} for the {{Applied Statistician}}},
   author = {Rubin, Donald B.},
@@ -1233,6 +1298,21 @@
   abstract = {The Cosmic Evolution Survey (COSMOS) is designed to probe the correlated evolution of galaxies, star formation, active galactic nuclei (AGNs), and dark matter (DM) with large-scale structure (LSS) over the redshift range z{$>$}0.5-6. The survey includes multiwavelength imaging and spectroscopy from X-ray-to-radio wavelengths covering a 2 deg2 area, including HST imaging. Given the very high sensitivity and resolution of these data sets, COSMOS also provides unprecedented samples of objects at high redshift with greatly reduced cosmic variance, compared to earlier surveys. Here we provide a brief overview of the survey strategy, the characteristics of the major COSMOS data sets, and a summary the science goals. Based on observations with the NASA/ESA Hubble Space Telescope, obtained at the Space Telescope Science Institute, which is operated by AURA, Inc., under NASA contract NAS 5-26555 also based on data collected at the Subaru Telescope, which is operated by the National Astronomical Observatory of Japan; the XMM-Newton, an ESA science mission with instruments and contributions directly funded by ESA Member States and NASA; the European Southern Observatory under Large Program 175.A-0839, Chile; Kitt Peak National Observatory, Cerro Tololo Inter-American Observatory, and the National Optical Astronomy Observatory, which are operated by the AURA, Inc., under cooperative agreement with the National Science Foundation; the National Radio Astronomy Observatory, which is a facility of the National Science Foundation operated under cooperative agreement by Associated Universities, Inc.; and the Canada-France-Hawaii Telescope with MegaPrime/MegaCam operated as a joint project by the CFHT Corporation, CEA/DAPNIA, the NRC and CADC of Canada, the CNRS of France, TERAPIX, and the University of Hawaii.},
   keywords = {Cosmology: Dark Matter,Cosmology: Large-Scale Structure of Universe,Cosmology: Observations,Galaxies: Evolution,Galaxies: Formation,Surveys},
   file = {/Users/chahah/Zotero/storage/QQZPUH6Y/Scoville et al. - 2007 - The Cosmic Evolution Survey (COSMOS) Overview.pdf}
+}
+
+@article{sonnenfeld2019,
+  title = {Survey of Gravitationally-Lensed Objects in {{HSC}} Imaging ({{SuGOHI}}). {{III}}. {{Statistical}} Strong Lensing Constraints on the Stellar {{IMF}} of {{CMASS}} Galaxies},
+  author = {Sonnenfeld, Alessandro and Jaelani, Anton T. and Chan, James and More, Anupreeta and Suyu, Sherry H. and Wong, Kenneth C. and Oguri, Masamune and Lee, Chien-Hsiu},
+  year = {2019},
+  month = oct,
+  journal = {Astronomy \&amp; Astrophysics, Volume 630, id.A71, {$<$}NUMPAGES{$>$}19{$<$}/NUMPAGES{$>$} pp.},
+  volume = {630},
+  pages = {A71},
+  issn = {0004-6361},
+  doi = {10.1051/0004-6361/201935743},
+  abstract = {Context. The determination of the stellar initial mass function (IMF) of massive galaxies is one of the open problems in cosmology. Strong gravitational lensing is one of the few methods that allow us to constrain the IMF outside of the Local Group. {$<$}BR /{$>$} Aims: The goal of this study is to statistically constrain the distribution in the IMF mismatch parameter, defined as the ratio between the true stellar mass of a galaxy and that inferred assuming a reference IMF, of massive galaxies from the Baryon Oscillation Spectroscopic Survey (BOSS) constant mass (CMASS) sample. {$<$}BR /{$>$} Methods: We took 23 strong lenses drawn from the CMASS sample, measured their Einstein radii and stellar masses using multi-band photometry from the Hyper Suprime-Cam survey, then fitted a model distribution for the IMF mismatch parameter and dark matter halo mass to the whole sample. We used a prior on halo mass from weak lensing measurements and accounted for strong lensing selection effects in our model. {$<$}BR /{$>$} Results: Assuming a Navarro Frenk and White density profile for the dark matter distribution, we infer a value {$\mu$}\textsubscript{IMF} = -0.04 {$\pm$} 0.11 for the average base-10 logarithm of the IMF mismatch parameter, defined with respect to a Chabrier IMF. A Salpeter IMF is in tension with our measurements. {$<$}BR /{$>$} Conclusions: Our results are consistent with a scenario in which the region of massive galaxies where the IMF normalisation is significantly heavier than that of the Milky Way is much smaller than the scales 5 - 10 kpc probed by the Einstein radius of the lenses in our sample, as recent spatially-resolved studies of the IMF in massive galaxies suggest. {$<$}P /{$>$}The Monte Carlo chains describing the posterior probability distribution of the model are available at {$<$}A href="https://github.com/astrosonnen/sugohi3\_inference"{$>$}https://github.com/astrosonnen/sugohi3\_inference{$<$}/A{$>$}, together with the code used to obtain them.},
+  langid = {english},
+  file = {/Users/chahah/Zotero/storage/RBLCSAFT/Sonnenfeld et al. - 2019 - Survey of gravitationally-lensed objects in HSC im.pdf;/Users/chahah/Zotero/storage/BKZVBZJG/abstract.html}
 }
 
 @misc{spergel2015,
@@ -1401,6 +1481,22 @@
   file = {/Users/chahah/Zotero/storage/XRKPPXQ9/Tojeiro et al. - 2007 - Recovering galaxy star formation and metallicity h.pdf}
 }
 
+@article{treu2010,
+  title = {The {{Initial Mass Function}} of {{Early-Type Galaxies}}},
+  author = {Treu, Tommaso and Auger, Matthew W. and Koopmans, L{\'e}on V. E. and Gavazzi, Rapha{\"e}l and Marshall, Philip J. and Bolton, Adam S.},
+  year = {2010},
+  month = feb,
+  journal = {The Astrophysical Journal},
+  volume = {709},
+  pages = {1195--1202},
+  issn = {0004-637X},
+  doi = {10.1088/0004-637X/709/2/1195},
+  abstract = {We determine an absolute calibration of the initial mass function (IMF) of early-type galaxies, by studying a sample of 56 gravitational lenses identified by the Sloan Lenses ACS Survey. Under the assumption of standard Navarro, Frenk, and White dark matter halos, a combination of lensing, dynamical, and stellar population synthesis models is used to disentangle the stellar and dark matter contribution for each lens. We define an "IMF mismatch" parameter {$\alpha\equiv$}M LD *,Ein/M SPS *,Ein as the ratio of stellar mass inferred by a joint lensing and dynamical model (M LD *,Ein) to the current stellar mass inferred from stellar populations synthesis models (M SPS *,Ein). We find that a Salpeter IMF provides stellar masses in agreement with those inferred by lensing and dynamical models (langlog {$\alpha$}rang = -0.00 {$\pm$} 0.03 {$\pm$} 0.02), while a Chabrier IMF underestimates them (langlog {$\alpha$}rang = 0.25 {$\pm$} 0.03 {$\pm$} 0.02). A tentative trend is found, in the sense that {$\alpha$} appears to increase with galaxy velocity dispersion. Taken at face value, this result would imply a non-universal IMF, perhaps dependent on metallicity, age, or abundance ratios of the stellar populations. Alternatively, the observed trend may imply non-universal dark matter halos with inner density slope increasing with velocity dispersion. While the degeneracy between the two interpretations cannot be broken without additional information, the data imply that massive early-type galaxies cannot have both a universal IMF and universal dark matter halos. Based on observations made with the NASA/ESA Hubble Space Telescope, obtained at the Space Telescope Science Institute, which is operated by the Association of Universities for Research in Astronomy, Inc., under NASA contract NAS 5-26555. These observations are associated with programs 10174, 10587, 10886, 10494, 10798, and 11202.},
+  keywords = {Astrophysics - Cosmology and Nongalactic Astrophysics,cD,galaxies: elliptical and lenticular,galaxies: evolution,galaxies: formation,galaxies: structure},
+  annotation = {ADS Bibcode: 2010ApJ...709.1195T},
+  file = {/Users/chahah/Zotero/storage/TC3HQBZJ/Treu et al. - 2010 - The Initial Mass Function of Early-Type Galaxies.pdf}
+}
+
 @article{uria2016,
   title = {Neural {{Autoregressive Distribution Estimation}}},
   author = {Uria, Benigno and C{\^o}t{\'e}, Marc-Alexandre and Gregor, Karol and Murray, Iain and Larochelle, Hugo},
@@ -1414,6 +1510,22 @@
   archiveprefix = {arXiv},
   keywords = {Computer Science - Machine Learning},
   file = {/Users/chahah/Zotero/storage/945I7KTQ/Uria et al. - 2016 - Neural Autoregressive Distribution Estimation.pdf;/Users/chahah/Zotero/storage/BD29CXKN/1605.html}
+}
+
+@article{vandokkum2010,
+  title = {A Substantial Population of Low-Mass Stars in Luminous Elliptical Galaxies},
+  author = {{van Dokkum}, Pieter G. and Conroy, Charlie},
+  year = {2010},
+  month = dec,
+  journal = {Nature},
+  volume = {468},
+  pages = {940--942},
+  issn = {0028-0836},
+  doi = {10.1038/nature09578},
+  abstract = {The stellar initial mass function (IMF) describes the mass distribution of stars at the time of their formation and is of fundamental importance for many areas of astrophysics. The IMF is reasonably well constrained in the disk of the Milky Way but we have very little direct information on the form of the IMF in other galaxies and at earlier cosmic epochs. Here we report observations of the NaI doublet and the Wing-Ford molecular FeH band in the spectra of elliptical galaxies. These lines are strong in stars with masses less than 0.3Msolar (where Msolar is the mass of the Sun) and are weak or absent in all other types of stars. We unambiguously detect both signatures, consistent with previous studies that were based on data of lower signal-to-noise ratio. The direct detection of the light of low-mass stars implies that they are very abundant in elliptical galaxies, making up over 80\% of the total number of stars and contributing more than 60\% of the total stellar mass. We infer that the IMF in massive star-forming galaxies in the early Universe produced many more low-mass stars than the IMF in the Milky Way disk, and was probably slightly steeper than the Salpeter form in the mass range 0.1Msolar to 1Msolar.},
+  keywords = {Astrophysics - Astrophysics of Galaxies,Astrophysics - Cosmology and Nongalactic Astrophysics,Astrophysics - Solar and Stellar Astrophysics},
+  annotation = {ADS Bibcode: 2010Natur.468..940V},
+  file = {/Users/chahah/Zotero/storage/S4FE28PG/van Dokkum and Conroy - 2010 - A substantial population of low-mass stars in lumi.pdf}
 }
 
 @article{vogelsberger2014,
@@ -1510,6 +1622,21 @@
   archiveprefix = {arXiv},
   keywords = {Astrophysics - High Energy Astrophysical Phenomena,Astrophysics - Instrumentation and Methods for Astrophysics,General Relativity and Quantum Cosmology},
   file = {/Users/chahah/Zotero/storage/MPJKFSWW/Wong et al. - 2020 - Gravitational wave population inference with deep .pdf;/Users/chahah/Zotero/storage/MBS5W4G3/2002.html}
+}
+
+@article{wu2020,
+  title = {Stochastic {{Normalizing Flows}}},
+  author = {Wu, Hao and K{\"o}hler, Jonas and No{\'e}, Frank},
+  year = {2020},
+  month = oct,
+  journal = {arXiv:2002.06707 [physics, stat]},
+  eprint = {2002.06707},
+  eprinttype = {arxiv},
+  primaryclass = {physics, stat},
+  abstract = {The sampling of probability distributions specified up to a normalization constant is an important problem in both machine learning and statistical mechanics. While classical stochastic sampling methods such as Markov Chain Monte Carlo (MCMC) or Langevin Dynamics (LD) can suffer from slow mixing times there is a growing interest in using normalizing flows in order to learn the transformation of a simple prior distribution to the given target distribution. Here we propose a generalized and combined approach to sample target densities: Stochastic Normalizing Flows (SNF) -- an arbitrary sequence of deterministic invertible functions and stochastic sampling blocks. We show that stochasticity overcomes expressivity limitations of normalizing flows resulting from the invertibility constraint, whereas trainable transformations between sampling steps improve efficiency of pure MCMC/LD along the flow. By invoking ideas from non-equilibrium statistical mechanics we derive an efficient training procedure by which both the sampler's and the flow's parameters can be optimized end-to-end, and by which we can compute exact importance weights without having to marginalize out the randomness of the stochastic blocks. We illustrate the representational power, sampling efficiency and asymptotic correctness of SNFs on several benchmarks including applications to sampling molecular systems in equilibrium.},
+  archiveprefix = {arXiv},
+  keywords = {Computer Science - Machine Learning,Physics - Chemical Physics,Physics - Data Analysis; Statistics and Probability,Statistics - Machine Learning},
+  file = {/Users/chahah/Zotero/storage/U79J39CF/Wu et al. - 2020 - Stochastic Normalizing Flows.pdf;/Users/chahah/Zotero/storage/3439RA53/2002.html}
 }
 
 @article{york2000,

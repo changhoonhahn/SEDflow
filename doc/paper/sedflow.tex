@@ -108,7 +108,7 @@ The next step of the forward model is to apply noise.
 We assign photometric uncertainties, $\sigma'_X$, by sampling an estimate of
 the true $p(\sigma_X | f_X)$ of NSA galaxies. 
 Then, we apply Gaussian noise
-\begin{equation}
+\begin{equation} \label{eq:noise} 
     \hat{f}_X(\theta', z', \sigma'_x) = f_X(\theta', z') + n_X  \quad {\rm where}~n_X \sim \mathcal{N}(0, \sigma'_X)
 \end{equation}
 to derive the forward modeled photometric flux.
