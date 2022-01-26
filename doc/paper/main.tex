@@ -68,6 +68,7 @@
 \newcommand{\beq}{\begin{equation}}
 \newcommand{\eeq}{\end{equation}}
 
+\newcommand{\sedflow}{{\sc SEDflow}}
 %% collaborating
 \newcommand{\todo}[1]{\marginpar{\color{red}TODO}{\color{red}#1}}
 \definecolor{orange}{rgb}{1,0.5,0}
@@ -89,31 +90,32 @@
     State-of-the-art spectral energy distribution (SED) analyses use a
     Bayesian framework to infer the physical properties of galaxies from
     observed photometry and spectra.
-    They require sampling a high dimensional space of SED model parameters and
-    take $>10-100$ CPU hours per galaxy. 
-    As a result, they are not computationally feasible for analyzing the {\em
-    millions} of galaxy SEDs that will be observed by upcoming galaxy surveys
+    They require sampling a high dimensional space of SED model parameters and,
+    thus, take $>10-100$ CPU hours per galaxy. 
+    Current models are not computationally feasible for analyzing the {\em
+    millions} of galaxies that will be observed by upcoming galaxy surveys
     (\eg~DESI, PFS, Rubin, James Webb, and Roman). 
     In this work, we present an alternative \emph{scalable} approach for
-    conducting rigorous Bayesian inference using Amortized Neural Posterior
+    rigorous Bayesian inference using Amortized Neural Posterior
     Estimation (ANPE). 
-    ANPE is a simulation-based inference method that exploit neural network
+    ANPE is a simulation-based inference method that exploits neural network
     models to estimate the posterior probability distribution over the full
-    conditional variable space.
-    To demonstrate the ANPE approach, we present {\sc SEDflow}, an SED modeling
-    method that combines ANPE with the recent \cite{hahn2022}
-    {\sc provabgs} SED model, which uses non-parameteric star formation and
-    chemical enrichment histories, to analyze SDSS optical photometry. 
+    range of observations.
+    It requires no additional model evaluations to estimate the posterior after
+    training. 
+    To demonstrate the advantages of an ANPE approach, we present \sedflow, an
+    SED modeling method that uses ANPE with the recent \cite{hahn2022}
+    SED model, and apply it to optical photometry. 
     Once trained, deriving the posterior of galaxy properties with {\sc
     SEDflow} takes \emph{${\sim}1$ second per galaxy}. 
-    Futhermore, we validate our method using posteriors derived from standard
-    Markov Chain Monte Carlo (MCMC) sampling and mock observations, with known
-    true parameter values.  
-    The {\sc SEDflow} posteriors accurately estimate the true posteriors of SED
-    model parameters and are indistinguishable from MCMC estimates.    
-    Therefore, we conclude that using ANPE we derive accurate posteriors
-    ${\sim}50,000\times$ faster than standard SED modeling methods. 
-    Lastly, we apply our method to 33,887 galaxies in the NASA-Sloan Atlas and
+    Futhermore, we validate \sedflow~using posteriors derived from standard
+    Markov Chain Monte Carlo (MCMC) sampling and synthetic observations, with
+    known true parameter values.  
+    The \sedflow~posteriors are in excellent agreement with both the MCMC
+    estimates and the true posteriors. 
+    We therefore conclude that using ANPE we derive accurate posteriors
+    $>10,000\times$ faster than standard SED modeling methods. 
+    Lastly, we apply \sedflow~to 33,887 galaxies in the NASA-Sloan Atlas and
     publicly release the posteriors of galaxy properties for every galaxy.
 \end{abstract}
 \keywords{galaxies: evolution -- galaxies: statistics}
