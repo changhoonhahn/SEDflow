@@ -1,34 +1,34 @@
 \section{NASA-Sloan Atlas} \label{sec:obs}
-As a demonstration of its speed and accuracy, we apply {\sc SEDflow} to optical
-photometry from the NASA-Sloan Atlas\footnote{\url{http://nsatlas.org/}} (NSA)
-with some additional quality cuts.
+As a demonstration of its speed and accuracy, we apply \sedflow~to optical
+photometry from the NASA-Sloan Atlas\footnote{\url{http://nsatlas.org/}} (NSA).
 The NSA catalog is a re-reduction of SDSS DR8~\citep{aihara2011} that includes
 an improved background subtraction~\citep{blanton2011}.
 We use SDSS photometry in the $u$, $g$, $r$, $i$, and $z$ bands, which are
 corrected for galactic extinction using \cite{schlegel1998}.
-
-We impose a number of additional quality cuts to the NSA photometry.
-The SDSS photometric pipeline can struggle to accurately define the center
-of objects near the edge or at low signal-to-noise. 
-In some cases, the centroiding algorithm will report the position of the peak
-pixel in a given band as the centroid. 
-These cases are often associated with spurious objects, so we exclude them
-from our sample. 
-We also exclude objects that have pixels, which were not checked for peaks
-by the deblender. % ; deblending can be problematic in these cases. 
-The SDSS pipeline interpolates over pixels classified as bad (\eg~cosmic ray).
-We exclude objects where more than 20\% of point-spread function (PSF) flux is
-interpolated over as well as objects where the interpolation affected many
-pixels and the PSF flux error is inaccurate. 
-We also exclude objects where the interpolated pixels fall within 3 pixels of
-their center and they contain a cosmic ray that was interpolated over.
-Lastly, we exclude any objects that were not detected at $\ge5\sigma$ in the
-original frame, that contain saturated pixels, or where their radial profile 
-could not be extracted.
-By imposing these quality cuts, we avoid complications from artificats in the
+To ensure that the galaxy sample is not contaminated, we impose a number of
+additional quality cuts by excluding:
+\begin{itemize}
+    \item objects where the centroiding algorithm reports the
+    position of the peak pixel in a given band as the centroid. 
+    The SDSS photometric pipeline can struggle to accurately define the center
+    of objects near the edge or at low signal-to-noise, so these cases are
+    often associated with spurious objects. 
+    \item objects that have pixels that were not checked for peaks by the
+    deblender. 
+    \item objects where more than 20\% of point-spread function (PSF) flux is
+    interpolated over as well as objects where the interpolation affected many
+    pixels and the PSF flux error is inaccurate. 
+    The SDSS pipeline interpolates over pixels classified as bad (\eg~cosmic
+    ray).
+    \item objects where the interpolated pixels fall within 3 pixels of their
+    center and they contain a cosmic ray that was interpolated over.
+    \item objects that were not detected at $\ge5\sigma$ in the original frame,
+    that contain saturated pixels, or where their radial profile could not be
+    extracted.
+\end{itemize}
+By excluding these objects, we avoid complications from artificats in the
 photometry that we do not model. 
-In principle, we can relax the cuts if we were to include observational effects
-in our model.
+%In principle, we can relax the cuts if we were to include observational effects in our model.
 For additional details on the quality flags, we refer readers to the SDSS
 documentation\footnote{\url{https://www.sdss.org/dr16/algorithms/flags_detail}}.
 After the quality cuts, we have a total of 33,887 galaxies in our NSA sample.
