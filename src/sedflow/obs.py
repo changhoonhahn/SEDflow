@@ -38,8 +38,8 @@ def load_nsa_data(test_set=True):
     sigma_flux  = nsa['NMGY_IVAR'][:,2:]**-0.5
 
     # calculate magnitudes and uncertainties in the magnitudes
-    nsa_mags = flux2mag(flux) 
-    nsa_sigs = sigma_flux2mag(sigma_flux, flux) 
+    nsa_mags = Train.flux2mag(flux) 
+    nsa_sigs = Train.sigma_flux2mag(sigma_flux, flux) 
     nsa_zred = np.atleast_2d(nsa['Z'].flatten()).T
     
     if test_set: 
