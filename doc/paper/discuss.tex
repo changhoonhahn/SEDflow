@@ -1,4 +1,5 @@
 \section{Discussion} \label{sec:discuss}
+\subsection{Further Validation} 
 In the previous section, we validated and demonstrated the accuracy of
 \sedflow~posteriors. 
 Nevertheless, a primary determining factor of \sedflow, and any ML model, is
@@ -106,6 +107,7 @@ Based on the high level of accuracy of \sedflow~posteriors in the previous
 section, we do not explore these additional tests; however, they can be used to
 further validate any ANPE posterior. 
 
+\subsection{Additional Advantages} 
 So far, we have primarily focused on the computational advantages of
 \sedflow~for individual posterior estimation. 
 However, there are other benefits to our ANPE approach. 
@@ -151,7 +153,27 @@ Since ANPE approaches can handle higher dimensionality, SED models can include
 additional parameters that model these uncertainties as well as any
 observational systematics (\emph{e.g.} zero-point calibration). 
 
-The next step is to apply the ANPE approach to SED modeling of galaxy spectra. 
+\subsection{Subsequent Applications} 
+In this work, we apply the ANPE approach to optical photometry, photometric
+uncertainties, and redshifts from the NSA. 
+Our approach can easily be extended beyond this application. 
+For instance, we can include multi-wavelength photometry at ultra-violet (UV)
+or infrared (IR) wavelengths. 
+We can also modify \sedflow~to infer redshift from photometry. 
+In \sedflow, we include redshift as a conditional variable, since NSA provides
+spectroscopic redshifts. 
+However, redshift can be included as an inferred variable rather than a
+conditional one. 
+Then, we can apply \sedflow~to infer galaxy properties from photometric data
+sets without redshift measurements while marginalizing over the redshift
+prior. 
+If we do not require spectroscopic redshifts, \sedflow~can be extended to much
+larger data sets that span fainter and broader galaxy samples. 
+Conversely, we can use \sedflow~to infer more physically motivated photometric 
+redshifts, where we marginalize over our understanding of galaxies rather than
+using templates. 
+
+The ANPE approach to SED modeling can also be extended to galaxy spectra. 
 Constructing an ANPE for the full data space of spectra, however, requires
 estimating a dramatically higher dimensional probability distribution. 
 SDSS spectra, for instance, have ${\sim}3,600$ spectral elements.  
@@ -172,11 +194,14 @@ spectral compression in a following work.
 With \sedflow, we can generate accurate posteriors for SED modeling >$10^4$
 faster than conventional MCMC methods. 
 Analyzing 33,887 NSA galaxies only takes \chedit{X} CPU hours.
-Analyzing the 10 million galaxies of DESI BGS would take ${\sim}3000$ CPU hours.
+Analyzing the 10 million galaxies of DESI BGS would only take ${\sim}3000$ CPU
+hours.
 An ANPE approach will enable rigorous SED modeling on the enormous galaxy
 samples that will be observed by DESI, PFS, Rubin, JWST, and Roman. 
+The Rubin observatory, alone, will soon provide photometry from billions of
+galaxies. 
 We will be able to construct probabilistic catalogs that provide accurate
-posteriors on the physical properties for millions of galaxies. 
+posteriors on the physical properties for all of these galaxies. 
 
 In addition to accurately measuring galaxy properties, these probabilistic
 catalogs will enable new class of statistical techniques.
@@ -194,4 +219,3 @@ improve the statistical power of observations through Bayesian shrinkage.
 Overall, these probabilistic catalogs will enable a new level of statistical
 robustness in galaxy studies and more fully extract the statistical power of
 future observations. 
-
