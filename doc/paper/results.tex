@@ -4,13 +4,13 @@
     \caption{\label{fig:corner}
     A comparison of the posteriors of the 12 SED model parameters derived from
     standard MCMC sampling (black) and our \sedflow~(blue) for an arbitrarily
-    selected NSA galaxy.
+    selected NSA galaxy ($\mathtt{NSAID} = 72$).
     The posteriors are in excellent agreement for all of the SED parameters. 
     In the bottom panel, we present the SEDs of the the best-fit parameter
     values from the \sedflow~(blue) and MCMC posteriors (black dotted), which
     are all in excellent agreement with the observed NSA photometric flux
     (red). 
-    We mark the optical broadband response curves (dashed) for reference. 
+    %We mark the optical broadband response curves (dashed) for reference. 
     Estimating the posterior using MCMC sampling requires 10 CPU hours. 
     Even using neural emulators to accelerate likelihood evaluations, MCMC
     sampling requires 10 CPU minutes. 
@@ -23,17 +23,16 @@
 \section{Results} \label{sec:results}
 Now that we have trained \sedflow, we can estimate the posterior,
 $p(\theta\given \bfi{x}_i)$, for any $\bfi{x}_i = \{f_X, \sigma_X, z \}$. 
-In pratice, we do this by drawing samples from the \sedflow~NDE model:
+In practice, we do this by drawing samples from the \sedflow~NDE model:
 $q(\theta\given \bfi{x}_i, {\bf h})$. 
 Since we use a normalizing flow, this is trivial:
 we generate samples from the target distribution of the normalizing flow,  a
 multivariate Gaussian distribution in our case, then we transform the samples
 using the bijective transformation in Eq.~\ref{eq:normflow} that we trained.
 The transformed samples follow $q(\theta\given \bfi{x}_i, {\bf h})$ and 
-estimates the posterior, $p(\theta\given \bfi{x}_i)$. 
+estimate the posterior, $p(\theta\given \bfi{x}_i)$. 
 
-Next, we validate the accuracy of the \sedflow~posterior estimates, before we
-apply it to the NSA sample.
+Next, we validate the accuracy of the \sedflow~posterior estimates.
 As a first test, we compare the posterior from \sedflow~to the posterior derived
 from MCMC sampling for a single arbitrarily chosen NSA galaxy in
 Figure~\ref{fig:corner}. 
@@ -45,8 +44,7 @@ for all of the SED parameters}.
  
 In the bottom of Figure~\ref{fig:corner}, we compare the SEDs of the best-fit
 parameter values from the \sedflow~(blue) and MCMC posteriors (black dotted). 
-We also include the NSA photometric flux of the selected galaxy (red) and mark
-the optical broadband response curves (dashed) for reference. 
+We also include the NSA photometric flux of the selected galaxy (red). 
 The best-fit SED from the \sedflow~posterior is also in excellent agreement
 with both the MCMC best-fit SED and the NSA photometry.  
 
@@ -61,7 +59,7 @@ Since each evaluation takes ${\sim}340$ ms, it ${\sim}10$ CPU hours for
 a single MCMC posterior. 
 Recently, SED modeling has adopted neural emulators to accelerate SED model
 evaluations~\citep{alsing2020}. 
-In \chedit{Hahn~\etal~(2022)}, for instance, the PROVABGS emulator takes
+In \cite{hahn2022}, for instance, the PROVABGS emulator takes
 only ${\sim}2.9$ ms to evaluate, >100$\times$ faster than the original model. 
 Yet, even with emulators, due to the number of evaluations necessary for
 convergence, an MCMC posterior takes ${\sim}10$ CPU minutes. 
@@ -122,7 +120,7 @@ true posterior and are subject to limitations in initialization, sampling, and
 convergence.
 On the other hand, posteriors from \sedflow~are not impacted by these
 limations, so the comparison highlights additional advantages of an ANPE
-approach besides the ${>}10^4\times$ speed up.
+approach besides the ${>}10^4\times$ performance increase.
 
 \begin{figure}
 \begin{center}
