@@ -14,7 +14,7 @@ def deploy_nsa(ichunk, sample='toy', itrain=2, nhidden=500, nblocks=15):
         "#!/bin/bash", 
         "#SBATCH -J nsa.anpe.%s.%ix%i.%i.%i" % (sample, nhidden, nblocks, itrain, ichunk), 
         "#SBATCH --partition=general",
-        "#SBATCH --time=71:59:59", 
+        "#SBATCH --time=23:59:59", 
         "#SBATCH --export=ALL", 
         "#SBATCH --output=o/nsa.anpe.%s.%ix%i.%i.%i.o" % (sample, nhidden, nblocks, itrain, ichunk), 
         "#SBATCH --mail-type=all", 
@@ -40,7 +40,7 @@ def deploy_nsa(ichunk, sample='toy', itrain=2, nhidden=500, nblocks=15):
     os.system('rm _nsa.slurm')
     return None 
 
-for i in range(34): 
+for i in list(range(1, 6)) + [8] + list(range(10,34)): 
     time.sleep(1)
     deploy_nsa(i)
 

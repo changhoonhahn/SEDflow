@@ -4,6 +4,8 @@ script to apply trained ANPE on the NSA data
 
 '''
 import os, sys
+import signal 
+import warnings 
 import numpy as np
 from scipy import stats
 from sedflow import obs as Obs
@@ -75,9 +77,28 @@ def get_posterior(y_nsa_i, nmcmc=10000):
             show_progress_bars=False)
     return np.array(mcmc_anpe) 
 
+class TimeoutException(Exception):   
+    pass
+
+def timeout_handler(signum, frame): 
+    raise TimeoutException
+
+signal.signal(signal.SIGALRM, timeout_handler)
+
 mcmcs = [] 
 for igal in np.arange(y_nsa.shape[0])[ichunk*1000:(ichunk+1)*1000]: 
-    _mcmc_i = get_posterior(y_nsa[igal])
+
+    signal.alarm(300) # max 5 mins 
+
+    try: 
+        _mcmc_i = get_posterior(y_nsa[igal])
+    except TimeoutException: 
+        warnings.warn('Timed out for igal = %i' % igal) 
+        _mcmc_i = np.zeros((10000, len(prior_low)))
+    else:
+        # Reset the alarm
+        signal.alarm(0)
+
     mcmcs.append(_mcmc_i)
 
 # save samples 
