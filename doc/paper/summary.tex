@@ -21,7 +21,7 @@ and would require \emph{billions} of CPU hours.
 Rigorous inference would be the major bottleneck for galaxy studies. 
 
 We demonstrate in this work that Amortized Neural Posterior Estimation (ANPE)
-provides an altnerative \emph{scalable} approach for Bayesian inference in SED
+provides an alternative \emph{scalable} approach for Bayesian inference in SED
 modeling. 
 ANPE is a simulation-based inference method that leverages the latest
 developments in ML.
@@ -29,7 +29,7 @@ It formulates Bayesian inference into a density estimation problem and uses
 neural density estimators (NDE) to approximate the posterior over the full
 space of observations. 
 The NDE is trained using parameter values drawn from the prior and mock
-observations constructed using them and a forward model.  
+observations forward modeled using them.  
 Once trained, a posterior can be derived using the NDE by plugging in the observations as the conditional variables without any additional model evaluations. 
 
 In this work, we present {\sc SEDflow}, a galaxy SED modeling method using ANPE

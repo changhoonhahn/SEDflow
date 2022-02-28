@@ -1,13 +1,13 @@
 \section{Simulation-Based Inference} \label{sec:sbi}
 % standard bayesian approach and introducing SBI
-The ultimate goal of Bayesian SED modeling, and probabilistic inference more
+The goal of Bayesian SED modeling, and probabilistic inference more
 broadly, is to infer the posterior probability distributions of galaxy
 properties, $\theta$, given observations, $\xobs$  --- $p(\theta\given\xobs)$.
 For a specific $\theta$ and $\bfi{x}$, we can evaluate the posterior using
 Bayes' rule, $p(\theta\given\xobs) \propto p(\theta)~p(\xobs\given\theta)$. 
 $p(\theta)$ is the prior distribution, which we specify, and
-$p(\xobs\given\theta)$ is the likelihood, which is {\em typically}
-evaluated using a surrogate Gaussian functional form: 
+$p(\xobs\given\theta)$ is the likelihood, which is typically assumed to have a
+surrogate Gaussian functional form: 
 \beq
     \ln p(\xobs\given\theta) = -\frac{1}{2}(\xobs - m(\theta))^T {\bf C}^{-1}
     (\xobs - m(\theta)).
@@ -17,79 +17,32 @@ ${\bf C}$ is the covariance matrix of the observations.
 In practice, off-diagonal terms are often ignored and measured uncertainties
 are used as estimates of the diagonal terms. 
 
-In the standard approach, the full posterior distribution is estimated by
-exploring the posterior with a sampling technique such as Markov Chain Monte
-Carlo~\citep[MCMC; \eg][]{carnall2018, leja2019a, tacchella2021}.
-These sampling techniques are essential for the efficient exploration given 
-the relatively high dimensionality of SED model parameter space.
-Even advanced techniques, however, are subject to major limitations.  
-For instance, MCMC can struggle to accurately estimate multimodal and
-degenerate posteriors. 
-Many techniques also require significant hand-tuning.
-More importantly, despite their efficiency, these techniques require on the
-order of a {\em million} SED model evaluations to derive a posterior --- this
-can take ${\sim}10-100$ of CPU hours per galaxy.
-Analyzing the tens of millions of spectra or billions of photometry from
-upcoming surveys (\eg~DESI, PFS, Rubin, JWST, Roman) with these approaches
-would thus require {\em billions of CPU hours}.
+%In the standard approach, the full posterior distribution is estimated by exploring the posterior with a sampling technique such as Markov Chain Monte Carlo~\citep[MCMC; \eg][]{carnall2018, leja2019a, tacchella2021}.  These sampling techniques are essential for the efficient exploration given the relatively high dimensionality of SED model parameter space.  Even advanced techniques, however, are subject to major limitations.  For instance, MCMC can struggle to accurately estimate multimodal and degenerate posteriors.  Many techniques also require significant hand-tuning.  More importantly, despite their efficiency, these techniques require on the order of a {\em million} SED model evaluations to derive a posterior --- this can take ${\sim}10-100$ of CPU hours per galaxy.  Analyzing the tens of millions of spectra or billions of photometry from upcoming surveys (\eg~DESI, PFS, Rubin, JWST, Roman) with these approaches would thus require {\em billions of CPU hours}.
 
 % overview of SBI and mention of ABC
 Simulation-based inference (SBI; also known as ``likelihood-free'' inference)
-offers a more scalable approach to Bayesian SED modeling.
-At its core, SBI involves any method that uses a forward model of the observed
-data to directly estimate the posterior --- $p(\theta\given \bfi{x})$, the
-likelihood --- $p(\bfi{x}\given \theta)$, or the joint distribution of the
-parameters and data --- $p(\theta, \bfi{x})$. 
+offers an alternative that requires no assumptions about the form of the
+likelihood. 
+Instead, SBI uses a generative model, \emph{i.e.} a simulation $F$, to generate
+mock data $\bfi{x'}$ given parameters $\theta'$: $F(\theta') = \bfi{x}'$. 
+With pairs of $\{(\theta', \bfi{x'}\}$, it then seeks to directly estimate
+the posterior --- $p(\theta\given \bfi{x})$, the likelihood ---
+$p(\bfi{x}\given \theta)$, or the joint distribution of the parameters and data
+--- $p(\theta, \bfi{x})$. 
 SBI has already been successfully applied to a number of Bayesian parameter
 inference problems in astronomy~\citep[\emph{e.g.}][]{cameron2012, weyant2013,
 hahn2017b, kacprzak2018, alsing2018, wong2020, huppenkothen2021, zhang2021},
 and in physics~\citep[\emph{e.g.}][]{brehmer2019, cranmer2020}.
 
-One simple and pedagogical example of SBI is Approximate Bayesian
-Computation~\citep[ABC;][]{rubin1984, pritchard1999, beaumont2002}, which uses
-a rejection sampling framework to estimate the posterior. 
-First, parameter values are sampled from the prior: $\theta'\sim p(\theta)$. 
-The forward model, $F$, is then run on $\theta'$ to generate simulated data
-$F(\theta') = \bfi{x}'$.
-If the simulated $\bfi{x}'$ is `close' to the observed $\xobs$, usually based
-on a threshold on some distance criterion $\rho(\bfi{x}', \xobs) < \epsilon$, 
-$\theta'$ is kept. 
-Otherwise, $\theta'$ is rejected. 
-This process is repeated until there are enough samples to estimate the
-posterior. 
-The estimated posterior from ABC can be written as 
-$p(\theta \given \rho(F(\theta), \xobs) < \epsilon)$. 
-In the case where $\epsilon\rightarrow 0$, the conditional statement is
-equivalent to the condition $F(\theta) = \xobs$; thus, the estimated ABC
-posterior is  equivalent to the true posterior:
-$p(\theta \given \rho(F(\theta), \xobs) < \epsilon\rightarrow 0) \equiv
-p(\theta \given \xobs)$.
+%One simple and pedagogical example of SBI is Approximate Bayesian Computation~\citep[ABC;][]{rubin1984, pritchard1999, beaumont2002}, which uses a rejection sampling framework to estimate the posterior.  First, parameter values are sampled from the prior: $\theta'\sim p(\theta)$.  The forward model, $F$, is then run on $\theta'$ to generate simulated data $F(\theta') = \bfi{x}'$.  If the simulated $\bfi{x}'$ is `close' to the observed $\xobs$, usually based on a threshold on some distance criterion $\rho(\bfi{x}', \xobs) < \epsilon$, $\theta'$ is kept.  Otherwise, $\theta'$ is rejected.  This process is repeated until there are enough samples to estimate the posterior.  The estimated posterior from ABC can be written as $p(\theta \given \rho(F(\theta), \xobs) < \epsilon)$.  In the case where $\epsilon\rightarrow 0$, the conditional statement is equivalent to the condition $F(\theta) = \xobs$; thus, the estimated ABC posterior is  equivalent to the true posterior: $p(\theta \given \rho(F(\theta), \xobs) < \epsilon\rightarrow 0) \equiv p(\theta \given \xobs)$.
 
-ABC produces unbiased estimates of the posterior and only requires a forward
-model of the observed data.
-It makes no assumptions on the likelihood and, therefore, relaxes the
-assumptions that go into surrogate likelihood methods. 
-Nevertheless, ABC is based on rejection sampling and thus requires comparable
-number of model evaluations as standard MCMC sampling based techniques. 
-ABC is only the simplest SBI method; new SBI methods can infer posteriors with
-much fewer model evaluations.
-Density estimation-based SBI methods~\citep[\eg][]{papamakarios2017,
-alsing2018, hahn2019c, greenberg2019, tejero-cantero2020}, for instance, use
-model evaluations to fit the $p(\theta\given\xobs)$, $p(\bfi{x}\given \theta$,
-or $p(\theta, \bfi{x})$ probability distributions. 
-They can exploit recent advances in neural density estimation (NDE) that
-increasingly enable high-fidelity density estimation with fewer samples of the
-distribution.
-For instance, the NDE in \cite{papamakarios2017} accurately estimates the
-$28\times28=784$-dimensional distribution of the MNIST
-dataset\footnote{\url{http://yann.lecun.com/exdb/mnist/}} with only tens of
-thousands of samples. 
 
 \subsection{Amortized Neural Posterior Estimation} \label{sec:flow}
-Density estimation SBI provides a critical advantage over MCMC sampling-based
+SBI provides another a critical advantage over MCMC sampling-based
 inference methods --- it enables \emph{amortized inference}. 
 For SED modeling using MCMC, each galaxy requires >$10^5$ model evaluations to
-accurately estimate $p(\theta \given \xobs)$.
+accurately estimate $p(\theta \given \xobs)$~(\citealt{hahn2022}, Kwon~\etal~in
+prep.).
 Moreover, model evaluations for calculating the posterior of one galaxy cannot
 be used for another. 
 For large galaxy surveys with >$10^6$
@@ -98,7 +51,10 @@ billion model evalulations.
 Upcoming galaxy surveys will observe orders of magnitude more galaxies
 (\emph{e.g.} DESI, PFS, Rubin, Roman).
 Bayesian SED modeling with MCMC sampling for these large galaxy surveys is
-utterly \emph{computationally infeasible}.
+\emph{computationally infeasible}.
+
+%ABC produces unbiased estimates of the posterior and only requires a forward model of the observed data.  It makes no assumptions on the likelihood and, therefore, relaxes the assumptions that go into surrogate likelihood methods.  Nevertheless, ABC is based on rejection sampling and thus requires comparable number of model evaluations as standard MCMC sampling based techniques.  ABC is only the simplest SBI method; new SBI methods can infer posteriors with much fewer model evaluations.  Density estimation-based SBI methods~\citep[\eg][]{papamakarios2017, alsing2018, hahn2019c, greenberg2019, tejero-cantero2020}, for instance, use model evaluations to fit the $p(\theta\given\xobs)$, $p(\bfi{x}\given \theta$, or $p(\theta, \bfi{x})$ probability distributions.  They can exploit recent advances in neural density estimation (NDE) that increasingly enable high-fidelity density estimation with fewer samples of the distribution.  For instance, the NDE in \cite{papamakarios2017} accurately estimates the $28\times28=784$-dimensional distribution of the MNIST dataset\footnote{\url{http://yann.lecun.com/exdb/mnist/}} with only tens of thousands of samples. 
+
 
 On the other hand, if we use density estimation SBI for SED modeling, we do not
 require a large number of model evaluations for each galaxy. 
@@ -106,8 +62,9 @@ An initial set of model evaluations (${\sim}10^6$) is necessary to train an NDE
 to accurately estimate $\hat{p}(\theta \given \xobs)$ --- \emph{i.e.} Amortized
 Neural Posterior Estimation (ANPE).
 Once trained, $\hat{p}(\theta \given \xobs)$ is estimated over the full
-$\theta$ and $\xobs$-space so we can sample $\hat{p}(\theta\given\bfi{x}_{{\rm
-obs}, i})$ for each galaxy with minimal computational cost. 
+$\theta$ and $\xobs$-space so we can evaluate 
+$\hat{p}(\theta\given\bfi{x}_{{\rm obs}, i})$ for each galaxy with minimal
+computational cost. 
 The inference is amortized and no additional model evaluations are
 needed to generate the posterior for each galaxy. 
 In total, SED modeling with ANPE for >$10^6$ galaxies requires the same number
@@ -122,13 +79,13 @@ Normalizing flow models use an invertible bijective transformation, $f$, to map
 a complex target distribution to a simple base distribution, $\pi(z)$, that is
 fast to evaluate.
 For ANPE, the target distribution is $p(\theta \given {\bf x})$ and the
-$\pi(z)$ is typically a simple multivariate Gaussian, or mixutre of Gaussians.
+$\pi(z)$ is typically a simple multivariate Gaussian, or mixture of Gaussians.
 
 The transformation $f: z \rightarrow \theta$ must be invertible and have a
 tractable Jacobian. 
-This is so that we can evaluate the target distribution from $\pi(z)$ using
+This is so that we can evaluate the target distribution from $\pi(z)$ by a 
 change of variable:  
-\begin{equation} \label{normflow}
+\begin{equation} \label{eq:normflow}
     p(\theta \given {\bf x}) = \pi(z) \Bigl|{\rm det} \left(\frac{\partial
     f^{-1}}{\partial \theta} \right)\Bigr|.
 \end{equation} 

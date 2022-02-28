@@ -15,7 +15,7 @@ Below, we describe the PROVABGS model, the construction of the
 % section explaining specific SED set up 
 \subsection{SED Modeling: PROVABGS} \label{sec:provabgs}
 We use the state-of-the-art SPS model of the
-PROVABGS~(\chedit{Hahn~\etal~2022}). 
+PROVABGS~\citep{hahn2022}. 
 The SED of a galaxy is modeled as a composite of stellar populations defined by
 stellar evolution theory (in the form of isochrones, stellar spectral
 libraries, and an initial mass function) and its star
@@ -39,14 +39,15 @@ and adds stochasticity to the SFH.
 
 The ZH is similar defined using two NMF bases dervied from Illustris. 
 This ZH prescription enables us to flexibly model a wide range of ZHs and
-unlike most SED models, it does not assume constant metallicity over time, whichcan significantly bias inferred galaxy properties~\citep{thorne2021}. 
+unlike most SED models, it does not assume constant metallicity over time,
+which can significantly bias inferred galaxy properties~\citep{thorne2021}. 
 The stellar evolution theory is based on Flexible Stellar Population
 Synthesis~\citep[FSPS;][]{conroy2009, conroy2010c} with the MIST
 isochrones~\citep{paxton2011, paxton2013, paxton2015, choi2016, dotter2016},  
 the \cite{chabrier2003} initial mass function (IMF), and a combination of the
 MILES~\citep{sanchez-blazquez2006} and BaSeL~\citep{lejeune1997, lejeune1998,
 westera2002} libraries.
-The SFH and ZH are binned into 43 logarithmically-space time bin and SSPs are
+The SFH and ZH are binned into 43 logarithmically-space time and SSPs are
 evalulated at each time bin using FSPS. 
 The SSPs are summed up to get the unattenuated rest-frame galaxy SED. 
 
@@ -57,7 +58,7 @@ All SSPs are attenuated by the diffuse dust using the \cite{kriek2013}
 attenuation curve.
 Then, the BC component provides extra dust attenuation on SSPs younger than 100
 Myr with young stars that are embedded in modecular clouds and HII regions. 
-In total the PROVABGS SED model has 12 free parameters: stellar mass ($M_*$),
+In total the PROVABGS SED model has 12 parameters: stellar mass ($M_*$),
 six SFH parameters ($\beta_1, \beta_2, \beta_3, \beta_4, t_{\rm burst}, f_{\rm
 burst}$), two ZH parameters ($\gamma_1, \gamma2$), and three dust attenuation
 parameters ($\tau_{\rm BC}, \tau_{\rm ISM}, n_{\rm dust}$). 
@@ -89,14 +90,13 @@ Each PROVABGS model evaluation takes ${\sim}340$ ms.
 In this section, we describe how to we construct the training data for
 \sedflow~using the PROVABGS SED model.
 First, we sample $N_{\rm train}$ SED model parameters from a prior: $\theta'\sim p(\theta)$. 
-We use the same priors as \chedit{Hahn \etal~(2022)}: uniform priors over $M_*,
+We use the same priors as \cite{hahn2022}: uniform priors over $M_*,
 t_{\rm burst}, f_{\rm burst}, \gamma_1, \gamma_2, \tau_{\rm BC}, \tau_{\rm ISM},
 n_{\rm dust}$ with broad conservative ranges and Dirichlet prior over $\beta_1,
 \beta_2, \beta_3, \beta_4$, chosen to normalize the NMF SFH.
 For each $\theta'$, we also uniformly sample a redshift within the range of the
 NSA: $z' \sim \mathcal{U}(0., 0.2)$. 
-Next, we forward model mock observables --- NSA optical photometry
-(Section~\ref{sec:obs}). 
+Next, we forward model mock observables. 
 We calculate the rest-frame galaxy SED from PROVABGS and redshift it: 
 $F(\lambda;\theta', z)$. 
 Afterwards, we convolve $F$ with optical broadband filters, $R_X$, to generate
@@ -106,7 +106,7 @@ noiseless photometric fluxes:
 \end{equation}
 The next step of the forward model is to apply noise. 
 We assign photometric uncertainties, $\sigma'_X$, by sampling an estimate of
-the true $p(\sigma_X | f_X)$ of NSA galaxies. 
+the observed $p(\sigma_X | f_X)$ of NSA galaxies. 
 Then, we apply Gaussian noise
 \begin{equation} \label{eq:noise} 
     \hat{f}_X(\theta', z', \sigma'_x) = f_X(\theta', z') + n_X  \quad {\rm where}~n_X \sim \mathcal{N}(0, \sigma'_X)
@@ -137,8 +137,7 @@ values.
 We discuss this further in Section~\ref{sec:discuss}.
 
 In total, we constuct $N_{\rm train} = 1,131,561$ sets of SED parameters,
-redshift, photometric uncertainty, and mock NSA photometry: 
-$\{(\theta', z, \sigma'_X, \hat{f}_X \}$.
+redshift, photometric uncertainty, and mock NSA photometry. 
 There are 12 SED parameters and photometry and uncertainties in 5 NSA bands. 
 In Figure~\ref{fig:data}, we present the training data through the joint
 distribution of a subset of $\{(\theta', z, \sigma'_X, \hat{f}_X \}$ (black).
@@ -156,8 +155,8 @@ space of the NSA observations.
 \subsection{Training \sedflow} \label{sec:anpe_train}
 For \sedflow, we use a MAF normalizing flow model (Section~\ref{sec:flow}) with 
 15 MADE blocks, each with 2 hidden layers and 500 hidden units.
-In total, the model has 7,890,330 free hyperparameters, ${\bf h}$. 
-We detremine this architecture through random hyperparameter search. 
+In total, the model has 7,890,330 parameters, ${\bf h}$. 
+We determine this architecture through experimentation. 
 Our goal is to determine ${\bf h}$ of the MAF model, 
 $q(\theta\given\bfi{x}, {\bf h})$, so that it accurately estimates the
 posterior probability distribution $p(\theta\given\bfi{x})$. 
