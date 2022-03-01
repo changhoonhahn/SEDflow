@@ -26,19 +26,11 @@ n_cpu   = int(sys.argv[6])
 # u, g, r, i, z, sigma_u, sigma_g, sigma_r, sigma_i, sigma_z, redshift 
 y_nsa = Obs.load_nsa_data(test_set=False)
 
-igals = []
-for ichunk in range(34):
-    fpost = os.path.join(Train.data_dir(), 'anpe_thetaunt_magsigz.%s.%ix%i.%i.nsa%iof34.samples.npy' % (sample, nhidden, nblocks, itrain, ichunk))
-    if not os.path.isfile(fpost): continue
-    post = np.load(fpost)
-    fail = (np.sum(np.sum(post, axis=2), axis=1) == 0)
-    igals.append(np.arange(y_nsa.shape[0])[ichunk*1000:(ichunk+1)*1000][fail])
-
-igals = np.concatenate(igals)
+igals = np.load('/scratch/network/chhahn/sedflow/nsa_fail/fail.igals.npy')
 
 # convert to flux 
 y_flux = Train.mag2flux(y_nsa[:,:5])
-y_ivar = Train.sigma_mag2flux(y_nsa[:,5:10], y_nsa[:,:5])
+y_ivar = Train.sigma_mag2flux(y_nsa[:,5:10], y_nsa[:,:5])**-2
 y_zred = y_nsa[:,-1]
 
 ####################################################
@@ -60,7 +52,6 @@ prior_sps = Infer.load_priors([
 # SPS model 
 m_sps = Models.NMF(burst=True, emulator=True)
 
-
 def run_mcmc(i_obs): 
     # desi MCMC object
     nsa_mcmc = Infer.nsaMCMC(model=m_sps, prior=prior_sps)
@@ -81,7 +72,7 @@ def run_mcmc(i_obs):
             burnin=0,
             opt_maxiter=2000,
             niter=niter,
-            progress=False,
+            progress=True,
             writeout=fmcmc)
     return None 
 
