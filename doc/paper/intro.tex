@@ -3,16 +3,15 @@ Physical properties of galaxies are the building
 blocks of our understanding of galaxies and their evolution. 
 We can determine properties such as stellar mass ($M_*$), star formation rate (SFR), metallicity
 ($Z$), and age ($t_{\rm age}$) of a galaxy by analyzing its
-spectral energy distribution (SED), which encodes all of the physical
-processes it has undergone. 
-For instance, the SED over the ultraviolet to infrared wavelengths is primarily
-composed of light from the galaxy's stellar populations and, thus, reflects the
-galaxy's star formation and chemical enrichment histories.  
-The gas and dust content of the galaxy determines how this stellar light is
-reprocessed.  
-
-Current theoretical models for galaxy SEDs are based on stellar population
-synthesis (SPS) and model the SED as a composite stellar population constructed
+spectral energy distribution (SED).
+%, which encodes all of the physical processes it has undergone. 
+%For instance, the SED over the ultraviolet to infrared wavelengths is primarily
+%composed of light from the galaxy's stellar populations and, thus, reflects the
+%galaxy's star formation and chemical enrichment histories.  
+%The gas and dust content of the galaxy determines how this stellar light is
+%reprocessed.  
+Theoretical modeling of galaxy SEDs is currently based on stellar population
+synthesis (SPS) and describes the SED as a composite stellar population constructed
 from isochrones, stellar spectra, an initial mass function (IMF), a star
 formation and chemical evolution history, and dust
 attenuation~\citep[\emph{e.g.}][see \citealt{walcher2011, conroy2013} for a
@@ -34,7 +33,7 @@ which are necessary to model the effects of observational systematics
 However, current Bayesian SED modeling methods, which use Markov Chain Monte
 Carlo (MCMC) sampling techniques, take 10-100 CPU hours per
 galaxy~\citep[\emph{e.g.}][]{carnall2019a, tacchella2021}. 
-While that is merely expensive with current data set of hundreds of thousands of 
+While that is merely very expensive with current data set of hundreds of thousands of 
 galaxy SEDs, observed by the Sloan Digital Sky Survey~\citep[SDSS;][]{york2000},
 DEEP2~\citep{davis2003}, COSMOS and zCOSMOS~\citep{scoville2007, lilly2007},
 and GAMA~\citep{baldry2018}, it becomes prohibitive for the next generation of surveys.
@@ -43,15 +42,20 @@ Dark Energy Spectroscopic Instrument~\citep[DESI;][]{desicollaboration2016},
 the Prime Focus Spectrograph~\citep[PFS;][]{takada2014}, 
 the Vera C. Rubin Observatory~\citep{ivezic2019}, 
 the James Webb Space Telescope~\citep{gardner2006},
-and the Roman Space Telescope~\citep{spergel2015} will observe \emph{billions}
+and the Roman Space Telescope~\citep{spergel2015}, will observe \emph{billions}
 of galaxy SEDs.
 The task of SED modeling alone for these surveys would amount to tens or
 hundreds of billions of CPU hours, exceeding \emph{e.g.} the compute allocation
-of the entire Legacy Survey of Space and Time (LSST) data processing by at
-least two orders of magnitude.
-Runtimes of hours per galaxy also entirely preclude analyses with fast
-turnaround requirements, in particular for the upcoming transient
-surveys~\citep{lsstscience}.
+of the Legacy Survey of Space and Time (LSST) data release production  
+over its entire lifetime ($\approx$2 billion core hours\footnote{\url{https://dmtn-135.lsst.io/}}) 
+by at least two orders of magnitude.
+Recently, \cite{alsing2020} have adopted neural emulators to accelerate SED model
+evaluations by three to four orders of magnitude, which renders
+current data sets within reach, but for the next generation that still amounts to tens or 
+hundreds of millions of  CPU hours whenever any aspect of the SED model is altered.
+And even with an emulator, posterior inference takes minutes per galaxy, 
+which practically precludes rapid analyses of upcoming transient surveys, especially LSST, that will 
+report of order 10,000 alerts per minute.\footnote{\url{https://dmtn-102.lsst.io/}}
 
 But Bayesian inference does not require MCMC sampling.  
 Simulation-based inference (SBI) is a rapidly developing class of inference
@@ -92,14 +96,14 @@ galaxy SED modeling using the recent \cite{hahn2022} SED model.
 We demonstrate that we can derive accurate posteriors with \sedflow~and make
 Bayesian SED modeling fully scalable for the billions of galaxies that will be
 observed by upcoming surveys.
-As further demonstration, we apply ANPE to analyze optical photometry of
+As further demonstration, we apply ANPE to the optical photometry of
 ${\sim}33,000$ galaxies in the NASA-Sloan
 Atlas~(NSA\footnote{\url{http://www.nsatlas.org/}}). 
 We begin in Section~\ref{sec:sbi} by describing SBI using ANPE.
 We then present how we design and train \sedflow~in Section~\ref{sec:sedflow}.
 Afterwards, we describe the NSA observations in Section~\ref{sec:obs}. 
 We validate the accuracy of the posteriors from \sedflow~in
-Section~\ref{sec:results} and discuss the impliciations of our results and
+Section~\ref{sec:results} and discuss the implications of our results and
 future steps in Section~\ref{sec:discuss}. 
 
 %The building blocks of our physical insight into galaxies are their 
