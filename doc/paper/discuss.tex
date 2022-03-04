@@ -107,53 +107,62 @@ Based on the high level of accuracy of \sedflow~posteriors in the previous
 section, we do not explore these additional tests; however, they can be used to
 further validate any ANPE posterior. 
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Additional Advantages} 
-So far, we have primarily focused on the computational advantages of
-\sedflow~for individual posterior estimation. 
-However, there are other benefits to our ANPE approach. 
-One of the key ingredients in Bayesian inference is the prior. 
-For SED modeling, recent works have demonstrated that model priors play a
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+The primary advantage of \sedflow~is its computational speed. 
+It accelerates Bayesian inference to make SED modeling scalable for the
+billions of galaxies that will be observed by upcoming galaxy surveys. 
+Furthermore, by removing the computational bottleneck of Bayesian inference,
+\sedflow~enables us to tackle other key challenges in SED modeling.  
+
+For instance, recent works have demonstrated that priors of SED models play a
 crucial role in the derived galaxy properties~\citep{carnall2018, leja2019,
 hahn2022}. 
 Even ``uniformative'' uniform priors on SED model parameters can impose
 undesirable priors on derived galaxy properties such as $M_*$, SFR, SFH, or
 ZH.
-This underscores the importance of carefully selecting priors and validating
-results using multiple different priors. 
+To avoid significant biases from this effect, galaxy studies must carefully
+select priors and validate their results using multiple different choices. 
 For SED modeling with MCMC, selecting a different prior requries reevaluating
 every posterior and repeating all the SED model evaluations in the MCMC
 sampling.  
+
+The ANPE approach, overall, requires substantially fewer model evaluations; 
+however, the advantages extend even further. 
 For ANPE, the prior is set by the distribution of parameters in the training
 data. 
 For a new prior, instead of regenerating the training data, we can subsample
 it so that the parameters follow the new prior. 
-Afterwards, the ANPE model can be re-trained, re-validated on the test data,
-and re-deployed on observations.
+Then, the ANPE model can be re-trained, re-validated on the test data, and
+re-deployed on observations.
 Each of these steps require substantially less computational resources than
 generating a new set of training data or using MCMC methods. 
-Hence, the ANPE approach also provides a way to efficiently vary the prior
-without multiplying computational costs. 
+Hence, the ANPE approach provides a way to efficiently vary the prior without
+multiplying computational costs.
 
-In this work, we use \sedflow~to perform SED modeling on galaxy photometry. 
-We estimate a 12-dimensional probability distribution with an 11-dimensional
-conditional variable space. 
-While this dimensionality is already a limiting factor for current MCMC
-methods, ANPE has already been applied to higher dimensional applications.
+Another challenge in SED modeling is that current SPS models make strong
+theoretical assumptions.
+As mentioned above, they do not account for uncertainties in stellar evolution,
+spectral libraries, or the IMF. 
+To relax these assumptions, SPS models would need to introduce additional
+parameters that flexibly model these uncertainties. 
+While the dimensionality of current SPS models already makes MCMC methods
+computational infeasible, ANPE has been applied to higher dimensional
+applications.
 \cite{dax2021}, for instance, constructed an accurate ANPE for a
 15-dimensional model parameter space and 128-dimensional conditional variable
 space.
-Furthermore, NDE is an actively developing field in ML and new and methods are
-constantly emerging~\citep[\eg][]{wu2020, dhariwal2021}. 
+NDE is an actively developing field in ML and new methods are constantly
+emerging~\citep[\eg][]{wu2020, dhariwal2021}. 
+Since ANPE can handle higher dimensionality, we can include additional
+parameters that model uncertainties in SPS. 
+This will not only improve our SED modeling, but also improve our understanding
+of stellar evolution and the IMF. 
 
-Without the limitations of current Bayesian inference methods, ANPE opens the
-doors to better SED modeling. 
-As mention above, SED models currently do not account for uncertainties in
-stellar evolution, spectral libraries, or the IMF. 
-Since ANPE approaches can handle higher dimensionality, SED models can include 
-additional parameters that model these uncertainties as well as any
-observational systematics (\emph{e.g.} zero-point calibration). 
-
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Next Applications} 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 In this work, we apply the ANPE approach to optical photometry, photometric
 uncertainties, and redshifts from the NSA. 
 Our approach can easily be extended beyond this application. 
@@ -193,8 +202,8 @@ spectral compression in a following work.
 
 With \sedflow, we can generate accurate posteriors for SED modeling >$10^4$
 faster than conventional MCMC methods. 
-Analyzing 33,887 NSA galaxies only takes \chedit{X} CPU hours.
-Analyzing the 10 million galaxies of DESI BGS would only take ${\sim}3000$ CPU
+Analyzing 33,887 NSA galaxies takes <12 CPU hours.
+Analyzing the 10 million galaxies of DESI BGS would only take ${\sim}3,000$ CPU
 hours.
 An ANPE approach will enable rigorous SED modeling on the enormous galaxy
 samples that will be observed by DESI, PFS, Rubin, JWST, and Roman. 
