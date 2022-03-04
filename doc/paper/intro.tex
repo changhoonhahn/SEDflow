@@ -1,8 +1,8 @@
 \section{Introduction} \label{sec:intro} 
-Physical properties of galaxies measured from observations are the building
-blocks to our understanding of galaxies and their evolution. 
-Properties such as stellar mass ($M_*$), star formation rate (SFR), metallicity
-($Z$), and age ($t_{\rm age}$) of a galaxy can be measured by analyzing its
+Physical properties of galaxies are the building
+blocks of our understanding of galaxies and their evolution. 
+We can determine properties such as stellar mass ($M_*$), star formation rate (SFR), metallicity
+($Z$), and age ($t_{\rm age}$) of a galaxy by analyzing its
 spectral energy distribution (SED), which encodes all of the physical
 processes it has undergone. 
 For instance, the SED over the ultraviolet to infrared wavelengths is primarily
@@ -12,8 +12,8 @@ The gas and dust content of the galaxy determines how this stellar light is
 reprocessed.  
 
 Current theoretical models for galaxy SEDs are based on stellar population
-synthesis (SPS) and model the SED as a compsite stellar population constructed
-from isocrhones, stellar spectra, an initial mass function (IMF), a star
+synthesis (SPS) and model the SED as a composite stellar population constructed
+from isochrones, stellar spectra, an initial mass function (IMF), a star
 formation and chemical evolution history, and dust
 attenuation~\citep[\emph{e.g.}][see \citealt{walcher2011, conroy2013} for a
 comprehensive review]{bruzual2003, maraston2005, conroy2009}.
@@ -21,89 +21,84 @@ Some models also include dust and nebular emissions as well as emissions from
 active galactic nuclei~\citep[\emph{e.g.}][]{johnson2021}.
 In state-of-the-art SED modeling, theoretical SPS models are compared to
 observed SEDs using Bayesian inference~\citep{acquaviva2011, chevallard2016,
-leja2017, carnall2018, johnson2021, hahn2022}. 
-They infer $p(\theta\given\bfi{x})$, the posterior probability distribution of
-parameters $\theta$, in our case galaxy properties, given observation
-$\bfi{x}$. 
-$p(\theta\given\bfi{x})$ provides an accurate estimate of parameter
-uncertainties and degerancies among them. 
+leja2017, carnall2018, johnson2021, hahn2022}, which yields 
+%They infer $p(\theta\given\bfi{x})$, the posterior probability distribution of
+%parameters $\theta$, in our case galaxy properties, given observation
+%$\bfi{x}$. 
+%$p(\theta\given\bfi{x})$ provides 
+an accurate quantification of parameter uncertainties and degeneracies among them. 
 The Bayesian approach also enables marginalization over nuisance parameters,
-which are necessary to model the effects of any observational systematics
+which are necessary to model the effects of observational systematics
 (\emph{e.g.} flux calibration).
 
-Over the past few decades, the hundreds of thousands of galaxy SEDs observed by
-galaxy surveys such as the Sloan Digital Sky Survey~\citep[SDSS;][]{york2000},
+However, current Bayesian SED modeling methods, which use Markov Chain Monte
+Carlo (MCMC) sampling techniques, take 10-100 CPU hours per
+galaxy~\citep[\emph{e.g.}][]{carnall2019a, tacchella2021}. 
+While that is merely expensive with current data set of hundreds of thousands of 
+galaxy SEDs, observed by the Sloan Digital Sky Survey~\citep[SDSS;][]{york2000},
 DEEP2~\citep{davis2003}, COSMOS and zCOSMOS~\citep{scoville2007, lilly2007},
-and GAMA~\citep{baldry2018} have transformed our understanding of how galaxies
-form and evolve. 
-Over the next decade, galaxy surveys that will be conducted using the 
+and GAMA~\citep{baldry2018}, it becomes prohibitive for the next generation of surveys.
+Over the next decade, surveys with the 
 Dark Energy Spectroscopic Instrument~\citep[DESI;][]{desicollaboration2016},
 the Prime Focus Spectrograph~\citep[PFS;][]{takada2014}, 
-the Rubin observatory~\citep{ivezic2019}, 
+the Vera C. Rubin Observatory~\citep{ivezic2019}, 
 the James Webb Space Telescope~\citep{gardner2006},
 and the Roman Space Telescope~\citep{spergel2015} will observe \emph{billions}
-of galaxy SEDs. 
-Studying the detailed properties of all of these galaxies will undoubtedly
-revolutionize our understanding of galaxy formation and evolution once again. 
-However, current Bayesian SED modeling methods, which use Markov Chain Monte
-Carlo (MCMC) sampling techniques, takes 10-100 CPU hours per
-galaxy~\citep[\emph{e.g.}][]{carnall2019a, tacchella2021}. 
-They are not scalable. 
+of galaxy SEDs.
+The task of SED modeling alone for these surveys would amount to tens or hundreds of billions of CPU hours, exceeding e.g. the compute allocation of the entire LSST data processing \peter{by at least two orders of magnitude.
+Runtimes of hours per galaxy also entirely preclude analyses with fast turnaround requirements, 
+in particular for the upcoming transient surveys [cite LSST and HATPI].}
 
-There are even more computational challenges.
-First, more accurate and sophisticated SED models require additional
-parameters, for instance, to model nebular emission of observational
-systematics. 
-Second, it has recently come to light that the choice of prior can
-significantly impact the inferred galaxy 
-properties~\citep{carnall2018, leja2017, hahn2022}. 
-Hence, deriving robust galaxy properties requires validating the properties
-using different priors and investigating their impact. 
-Lastly, current SPS models make strong theoretical assuptions. 
-They make explicit choices for stellar spectral library and initial mass
-function, but there is currently no consensus on the best choices for either.
-Relaxing these assumptions would involve parameterizing the uncertainties and
-variations as additional parameters in SED models~\citep{conroy2009,
-conroy2010c} or deriving galaxy properties for multiple sets of assumptions. 
-Both options increase the computational costs of current SED modeling.  
+%There are even more computational challenges.
+%First, more accurate and sophisticated SED models require additional
+%parameters, for instance, to model nebular emission of observational
+%systematics. 
+%Second, it has recently come to light that the choice of prior can
+%significantly impact the inferred galaxy 
+%properties~\citep{carnall2018, leja2017, hahn2022}. 
+%Hence, deriving robust galaxy properties requires validating the properties
+%using different priors and investigating their impact. 
+%Lastly, current SPS models make strong theoretical assuptions. 
+%They make explicit choices for stellar spectral library and initial mass
+%function, but there is currently no consensus on the best choices for either.
+%Relaxing these assumptions would involve parameterizing the uncertainties and
+%variations as additional parameters in SED models~\citep{conroy2009,
+%conroy2010c} or deriving galaxy properties for multiple sets of assumptions. 
+%Both options increase the computational costs of current SED modeling.  
 
-Bayesian inference, however, does not require MCMC sampling. 
-Simulation-based inference (SBI; also known as ``likelihood-free inference'')
+But Bayesian inference does not require MCMC sampling. 
+Simulation-based inference (SBI)
 is a rapidly developing class of inference methods that offers alternatives for
-many applications~\citep[see][and reference therein]{cranmer2020}.
+many applications~\citep[see][and references therein]{cranmer2020}.
 Many SBI methods leverage the latest developments in statistics and Machine
 Learning for more efficient posterior estimation~\citep{papamakarios2017,
 alsing2019a, hahn2019c, dax2021, huppenkothen2021, zhang2021}. 
-One such SBI technique optimal for scalable Bayesian inference is Amortized
+Of particular interest for SED modeling is a technique called Amortized
 Neural Posterior Estimation (ANPE). 
-
-ANPE utilizes a density estimation approach to SBI. 
-Instead of using MCMC to sample the posterior, $p(\theta \given \bfi{x}_i)$, 
-of a single galaxy, $i$, ANPE uses neural density estimators (NDE) and training
-data to estimate $p(\theta\given\bfi{x})$  over the full space of observables
-$\bfi{x}$.
-NDEs are density models parameterized by neural networks that estimate
-density/probability distributions. 
-The training data are $\{(\theta_i, \bfi{x}'_i)\}$ pairs.
-In our application, $\theta$ is the SED model parameters, sampled from a 
-prior, and $\bfi{x}'_i$ are synthetic observables, such as photometry, forward
-modeled using the SED model. 
-Once the NDE is trained, generating the posterior requires no additional model
-evaluations and only requires plugging in the observation $\bfi{x}_i$.
-%--- this takes ${\sim}1$ second. 
-
-ANPE addresses one of the major drawbacks of MCMC: SED model evaluations used
-for one galaxy cannot be used for another.
-This is why MCMC sampling has to be performed on every galaxy. 
-In ANPE, models evaluations are only used to construct the training data of the
-NDE. 
-Although the training set typically requires more evaluations than for a single
-MCMC posterior, no additional evaluations are necessary after training. 
-Hence, the computational cost is \emph{amoritzed} and, at test time, only a
-minuscule fraction of the cost of performing MCMC.
-ANPE has recently been applied to a wide range of applications in physics and
-astronomy with remarkable success~\citep{stein2020, wong2020, dax2021,
-zhang2021}.
+Instead of using MCMC to sample the posterior for every single galaxy separately,
+ANPE uses neural density estimators (NDE) to build a model of the posterior for 
+\emph{all} observable galaxies.
+%NDEs are density models parameterized by neural networks that estimate
+%density/probability distributions. 
+%The training data are $\{(\theta_i, \bfi{x}'_i)\}$ pairs.
+%In our application, $\theta$ is the SED model parameters, sampled from a 
+%prior, and $\bfi{x}'_i$ are synthetic observables, such as photometry, forward
+%modeled using the SED model. 
+Once the NDE is trained, generating the posterior requires only the observed SED and no additional model
+evaluations.
+%
+%ANPE addresses one of the major drawbacks of MCMC: SED model evaluations used
+%for one galaxy cannot be used for another.
+%This is why MCMC sampling has to be performed on every galaxy. 
+%In ANPE, models evaluations are only used to construct the training data of the
+%NDE. 
+%Although the training set typically requires more evaluations than for a single
+%MCMC posterior, no additional evaluations are necessary after training. 
+%Hence, the computational cost is \emph{amoritzed} and, at test time, only a
+%minuscule fraction of the cost of performing MCMC.
+%ANPE has recently been applied to a wide range of applications in physics and
+%astronomy with remarkable success~\citep{stein2020, wong2020, dax2021,
+%zhang2021}.
 
 In this work, we present \sedflow, a method that applies ANPE to Bayesian
 galaxy SED modeling using the recent \cite{hahn2022} SED model. 
