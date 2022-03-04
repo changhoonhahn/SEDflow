@@ -45,48 +45,35 @@ the Vera C. Rubin Observatory~\citep{ivezic2019},
 the James Webb Space Telescope~\citep{gardner2006},
 and the Roman Space Telescope~\citep{spergel2015} will observe \emph{billions}
 of galaxy SEDs.
-The task of SED modeling alone for these surveys would amount to tens or hundreds of billions of CPU hours, exceeding e.g. the compute allocation of the entire LSST data processing \peter{by at least two orders of magnitude.
-Runtimes of hours per galaxy also entirely preclude analyses with fast turnaround requirements, 
-in particular for the upcoming transient surveys [cite LSST and HATPI].}
+The task of SED modeling alone for these surveys would amount to tens or
+hundreds of billions of CPU hours, exceeding \emph{e.g.} the compute allocation
+of the entire Legacy Survey of Space and Time (LSST) data processing by at
+least two orders of magnitude.
+Runtimes of hours per galaxy also entirely preclude analyses with fast
+turnaround requirements, in particular for the upcoming transient
+surveys~\citep{lsstscience}.
 
-%There are even more computational challenges.
-%First, more accurate and sophisticated SED models require additional
-%parameters, for instance, to model nebular emission of observational
-%systematics. 
-%Second, it has recently come to light that the choice of prior can
-%significantly impact the inferred galaxy 
-%properties~\citep{carnall2018, leja2017, hahn2022}. 
-%Hence, deriving robust galaxy properties requires validating the properties
-%using different priors and investigating their impact. 
-%Lastly, current SPS models make strong theoretical assuptions. 
-%They make explicit choices for stellar spectral library and initial mass
-%function, but there is currently no consensus on the best choices for either.
-%Relaxing these assumptions would involve parameterizing the uncertainties and
-%variations as additional parameters in SED models~\citep{conroy2009,
-%conroy2010c} or deriving galaxy properties for multiple sets of assumptions. 
-%Both options increase the computational costs of current SED modeling.  
-
-But Bayesian inference does not require MCMC sampling. 
-Simulation-based inference (SBI)
-is a rapidly developing class of inference methods that offers alternatives for
-many applications~\citep[see][and references therein]{cranmer2020}.
+But Bayesian inference does not require MCMC sampling.  
+Simulation-based inference (SBI) is a rapidly developing class of inference
+methods that offers alternatives for many applications~\citep[see][and
+references therein]{cranmer2020}.
 Many SBI methods leverage the latest developments in statistics and Machine
 Learning for more efficient posterior estimation~\citep{papamakarios2017,
 alsing2019a, hahn2019c, dax2021, huppenkothen2021, zhang2021}. 
 Of particular interest for SED modeling is a technique called Amortized
 Neural Posterior Estimation (ANPE). 
-Instead of using MCMC to sample the posterior for every single galaxy separately,
-ANPE uses neural density estimators (NDE) to build a model of the posterior for 
-\emph{all} observable galaxies.
+Instead of using MCMC to sample the posterior for every single galaxy
+separately, ANPE uses neural density estimators (NDE) to build a model of the
+posterior for \emph{all} observable galaxies.
 %NDEs are density models parameterized by neural networks that estimate
 %density/probability distributions. 
 %The training data are $\{(\theta_i, \bfi{x}'_i)\}$ pairs.
 %In our application, $\theta$ is the SED model parameters, sampled from a 
 %prior, and $\bfi{x}'_i$ are synthetic observables, such as photometry, forward
 %modeled using the SED model. 
-Once the NDE is trained, generating the posterior requires only the observed SED and no additional model
-evaluations.
-%
+Once the NDE is trained, generating the posterior requires only the observed
+SED and no additional model evaluations.
+
 %ANPE addresses one of the major drawbacks of MCMC: SED model evaluations used
 %for one galaxy cannot be used for another.
 %This is why MCMC sampling has to be performed on every galaxy. 
