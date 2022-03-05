@@ -127,13 +127,14 @@ Any $\theta'$ that is assigned a negative $\sigma'_X$ is removed from our
 training data. 
 We also remove any training data with $f_X(\theta'$ outside the range of NSA
 photometry. 
-Although this is a simplicistic noise model, we emphasize that our choice of
-noise model does not strongly affect the accuracy of the posteriors from
-\sedflow.
-This is because we design \sedflow~to include $\sigma_X$ in the conditional
-statement of the posterior. 
-Hence, our primary concern is that $\sigma'_X$ spans the observed $\sigma_X$
-values. 
+
+As SBI requires an accurate noise model, one might be worried about the simplicity of ours.
+If the noise model is in fact incorrect, estimates of the parameters $\theta$ would be biased
+by an amount that is impossible to predict.
+We therefore decide to add the noise variances $\sigma_X$ to the the conditioning variables
+of the posterior model, i.e. we train and evaluate $p_\phi(\btheta\given\bfi{x},\{\sigma_X\})$.
+That means we merely have to ensure that $\sigma'_X$ spans the observed $\sigma_X$
+values in order to have a posterior that is very robust to our choice of noise model.
 We discuss this further in Section~\ref{sec:discuss}.
 
 In total, we constuct $N_{\rm train} = 1,131,561$ sets of SED parameters,
@@ -155,21 +156,20 @@ space of the NSA observations.
 \subsection{Training \sedflow} \label{sec:anpe_train}
 For \sedflow, we use a MAF normalizing flow model (Section~\ref{sec:flow}) with 
 15 MADE blocks, each with 2 hidden layers and 500 hidden units.
-In total, the model has 7,890,330 parameters, ${\bf h}$. 
+In total, the model has 7,890,330 parameters, $\bphi$. 
 We determine this architecture through experimentation. 
-Our goal is to determine ${\bf h}$ of the MAF model, 
-$q(\theta\given\bfi{x}, {\bf h})$, so that it accurately estimates the
-posterior probability distribution $p(\theta\given\bfi{x})$. 
-$\theta$ represent the SED parameters and ${\bf x} = (f_X, \sigma_X, z)$.
+Our goal is to determine $\bphi$ of the MAF model, 
+$p_\phi(\btheta\given\bfi{x})$, so that it accurately estimates the
+posterior probability distribution $p(\btheta\given\bfi{x})$. 
+$\btheta$ represent the SED parameters and $\bfi{x} = (f_X, \sigma_X, z)$.
 We do this by minimizing the KL divergence between 
-$q(\theta\given{\bf x}, {\bf h})$ and $p(\theta\given{\bf x})$:
-$D_{\rm KL} (p\,||\,q)$. 
+$p_\phi(\btheta\given\bfi{x})$ and $p(\btheta\given\bfi{x})$.
 
 In practice, we split the training data (Section~\ref{sec:training}) into a
 training and validation set with a 90/10 split. 
-Afterwards, we maximize the total log likelihood $\sum_i \log q(\theta_i\given
-\bfi{x}_i, \bf{h})$ over training set, which is equivalent to minimizing 
-$D_{\rm KL} (p\,||\,q)$.
+Afterwards, we maximize the total log likelihood $\sum_i \log p_\phi(\btheta_i\given
+\bfi{x}_i)$ over training set, which is equivalent to minimizing 
+$D_{\rm KL} (p\,||\,p_\phi)$.
 We use the {\sc Adam} optimizer~\citep{kingma2017} with a learning rate of $5\times10^{-4}$. 
 To prevent overfitting, we evaluate the total log likelihood on the validation
 data at every training epoch and stop the training when the validation log

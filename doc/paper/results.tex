@@ -22,15 +22,14 @@
 
 \section{Results} \label{sec:results}
 Now that we have trained \sedflow, we can estimate the posterior,
-$p(\theta\given \bfi{x}_i)$, for any $\bfi{x}_i = \{f_X, \sigma_X, z \}$. 
-In practice, we do this by drawing samples from the \sedflow~NDE model:
-$q(\theta\given \bfi{x}_i, {\bf h})$. 
+$p(\btheta\given \bfi{x}_i)$, for any $\bfi{x}_i = \{f_X, \sigma_X, z \}$. 
+In practice, we do this by drawing samples from the \sedflow~NDE model. 
 Since we use a normalizing flow, this is trivial:
 we generate samples from the target distribution of the normalizing flow,  a
 multivariate Gaussian distribution in our case, then we transform the samples
 using the bijective transformation in Eq.~\ref{eq:normflow} that we trained.
-The transformed samples follow $q(\theta\given \bfi{x}_i, {\bf h})$ and 
-estimate the posterior, $p(\theta\given \bfi{x}_i)$. 
+The transformed samples follow $p_\phi(\btheta\given \bfi{x}_i)$ and 
+estimate the posterior, $p(\btheta\given \bfi{x}_i)$. 
 
 Next, we validate the accuracy of the \sedflow~posterior estimates.
 As a first test, we compare the posterior from \sedflow~to the posterior derived
@@ -91,12 +90,12 @@ However, we do not know the true SED parameters for these galaxies so to
 further validate \sedflow, we use test synthetic photometry, where we know the
 truth.
 We sample 1000 SED parameters from the prior,
-$\{\theta^{\rm test}_i\} \sim p(\theta)$, 
+$\{\btheta^{\rm test}_i\} \sim p(\btheta)$, 
 and forward model synthetic NSA observations, 
 $\{\bfi{x}^{\rm test}_i\}$, 
 for them in the same way as the training data (Section~\ref{sec:training}). 
 Afterwards, we generate posteriors for each of $\bfi{x}^{\rm test}_i$ using 
-\sedflow: $\{ p(\theta \given \bfi{x}^{\rm test}_i)\}$. 
+\sedflow: $\{ p(\btheta \given \bfi{x}^{\rm test}_i)\}$. 
 
 In Figure~\ref{fig:pp}, we present the probability-probability (p-p) plot of
 the \sedflow~posteriors for the test data. 
@@ -179,7 +178,7 @@ With the accuracy \sedflow~validated, we apply it to derive posteriors for all
 of our NSA galaxies (Section~\ref{sec:obs}). 
 Analyzing all 33,884 NSA galaxies takes <12 CPU hours. 
 For each galaxy, we generate 10,000 samples of the 12-dimensional posterior,
-$p(\theta | \xobs)$. 
+$p(\btheta \given \bfi{x})$. 
 These posteriors on SED parameters represent posteriors on stellar mass, SFH,
 ZH, and dust content of the NSA galaxies. 
 To maximize the utility of the posteriors further, we use them to derive
