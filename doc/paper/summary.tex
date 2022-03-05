@@ -1,4 +1,4 @@
-\section{Summary} \label{sec:summary}
+\section{Summary and Outlook} \label{sec:summary}
 By analyzing the SED of a galaxy, we can infer detailed physical properties
 such as its stellar mass, star formation rate, metallicity, and dust content. 
 These properties serve as the building blocks of our understanding of how
@@ -12,25 +12,26 @@ to enable more rigorous statistical analyses.
 For the dimensionality of current SED models, deriving a posterior requires 
 ${\gtrsim}100,000$ model evaluations and take ${\gtrsim}10-100$ CPU hours per 
 galaxy. 
-Upcoming galaxy surveys, however, will observe \emph{millions} of galaxies
+Upcoming galaxy surveys, however, will observe \emph{billions} of galaxies
 using \emph{e.g.} DESI, PFS, Rubin observatory, James Webb Space Telescope, and
 the Roman Space Telescope. 
 Analyzing all of these galaxies with current Bayesian SED models is infeasible
-and would require \emph{billions} of CPU hours. 
+and would require hundreds of billions of CPU hours.
+Even with recently a proposed emulator, which accelerates model evaluations 
+by three to four orders to magnitude, the computation cost of SED modeling
 %Furthermore, computational costs will only multiply as SED models increase in sophistication and treat theoretical uncertainties more flexibly. 
-Rigorous inference would be the major bottleneck for galaxy studies. 
+would remain a major bottleneck for galaxy studies. 
 
 We demonstrate in this work that Amortized Neural Posterior Estimation (ANPE)
 provides an alternative \emph{scalable} approach for Bayesian inference in SED
-modeling. 
-ANPE is a simulation-based inference method that leverages the latest
-developments in ML.
-It formulates Bayesian inference into a density estimation problem and uses 
-neural density estimators (NDE) to approximate the posterior over the full
-space of observations. 
-The NDE is trained using parameter values drawn from the prior and mock
-observations forward modeled using them.  
-Once trained, a posterior can be derived using the NDE by plugging in the observations as the conditional variables without any additional model evaluations. 
+modeling.
+ANPE is a simulation-based inference method that formulates Bayesian inference 
+as a density estimation problem and uses  neural density estimators (NDE) 
+to approximate the posterior over the full space of observations. 
+The NDE is trained using parameter values drawn from their respective prior and mock
+observations simulated with these parameters.  
+Once trained, a posterior can be obtained from the NDE by providing the observations 
+as the conditional variables without any additional model evaluations. 
 
 In this work, we present {\sc SEDflow}, a galaxy SED modeling method using ANPE
 and PROVABGS, a flexible SED model that uses a compact non-parameteric SFH and
@@ -38,23 +39,22 @@ ZH prescriptions and was recently validated in \cite{hahn2022}.
 Furthermore, we apply {\sc SEDflow} to optical photometry from the NASA-Sloan
 Atlas as demonstration and validation of our ANPE approach.  
 We present the following key results from our analysis.
-\begin{itemize}
+\begin{compactitem}
     \item We train {\sc SEDflow} using a data set of ${\sim}1$ million SED
         model parameters and forward model synthetic SEDs.
         The parameters are drawn from a prior and the forward model is based on
         the PROVABGS and noise models. 
         We design the ANPE to estimate $p(\theta | f_X, \sigma_X, z)$, where
         $f_X$, $\sigma_X$, and $z$ are the photometry, photometric uncertainty,
-        and redshift respectively. 
+        and redshift, respectively. 
         For its architecture, we use a MAF normalizing flow with 15 MADE blocks
         each with 2 hidden layers and 500 hidden units.
         Training {\sc SEDflow} requires roughly 1 day on a single CPU. 
         Once trained, deriving posteriors of galaxy properties for a galaxy
-        takes ${\sim}1$ second --- $>10^4\times$ faster than current 
-        methods.
+        takes ${\sim}1$ second, $10^5\times$ faster than traditional MCMC sampling. 
     \item Posteriors derived using {\sc SEDflow} show excellent agreement with
         posteriors derived from MCMC sampling. 
-        We further validate the accuracy of its posteriors by applying  {\sc
+        We further validate the accuracy of the posteriors by applying  {\sc
         SEDflow} to synthetic observations with known true parameter values.  
         Based on statistical metrics used in the literature (p-p plot and SBC),
         we find excellent agreement between the {\sc SEDflow} and the true
@@ -62,29 +62,78 @@ We present the following key results from our analysis.
     \item Lastly, we demonstrate the advantages of {\sc SEDflow} by applying it
         to the NASA-Sloan Atlas.
         Estimating the posterior of ${\sim}34,000$ galaxies takes <12 CPU hours. 
-        We make the catalog of posteriors publicly available at \url{urlhere}. 
+        We make the catalog of posteriors publicly available at \peter{URL}. 
         For each galaxy, the catalog contains posteriors on all 12 PROVABGS
         SED model parameters.
         In terms of galaxy properties, the catalog includes posteriors of
         $M_*$, average SFR over 1Gyr, mass-weighted metallicity, mass-weighted
         age, and dust optical depth. 
-\end{itemize}
+\end{compactitem}
 
 This work highlights the advantages of using an ANPE approach to Bayesian SED
-modeling.  
-Our approach will enable us to analyze the billions of galaxies that will be
-observed by upcoming experiments and accurately measure their physical
-properties. 
-In addition, the posteriors on galaxy properties for all these galaxies we will
-be able to construct probabilistic galaxy catalogs that will unlock a new level
-of statistical robustness in galaxy studies and more fully extract the
-statistical power of future observations.
+modeling.  Our approach can easily be extended beyond this application. 
+For instance, we can include multi-wavelength photometry at ultra-violet (UV)
+or infrared (IR) wavelengths. 
+We can also modify \sedflow~to infer redshift from photometry. 
+In \sedflow, we include redshift as a conditional variable, since NSA provides
+spectroscopic redshifts. 
+However, redshift can be included as an inferred variable rather than a
+conditional one. 
+Then, we can apply \sedflow~to infer galaxy properties from photometric data
+sets without redshift measurements while marginalizing over the redshift
+prior. 
+If we do not require spectroscopic redshifts, \sedflow~can be extended to much
+larger data sets that span fainter and broader galaxy samples. 
+Conversely, we can use \sedflow~to infer more physically motivated photometric 
+redshifts, where we marginalize over our understanding of galaxies rather than
+using templates. 
 
-In this work, we focus on SED modeling of optical photometry. 
-The performance of ANPE has already been demonstrated on higher dimensional
-applications. 
-This means that \sedflow~can easily be extended to multi-wavelength photometry.
-In fact, with the latest developments in efficiently dimensionality reduction
-of spectra~\citep[][Melchior \& Hahn 2022]{portillo2020}, \sedflow~can even be
-extended to galaxy spectra. 
-We wil explore this in subsequent work. 
+The ANPE approach to SED modeling can also be extended to galaxy spectra. 
+Constructing an ANPE for the full data space of spectra, however, requires
+estimating a dramatically higher dimensional probability distribution. 
+SDSS spectra, for instance, have ${\sim}3,600$ spectral elements.  
+Furthermore, in our approach we include the uncertainties of observables as
+conditional variables, which double the curse of dimensionality.
+Recent works, however, have demonstrated that galaxy spectra can be represented
+in a compact low-dimensional space using autoencoders~\citep[][Melchior \&
+Hahn, in prep.]{portillo2020}.
+In \cite{portillo2020}, they demonstrate that SDSS galaxy spectra can be
+compressed into 7-dimensional latent variable space with little loss of
+information. 
+Such spectral compression dramatically reduces the dimensionality of the
+conditional variable space to dimensions that can be tackled by current ANPE
+methods. 
+We will explore SED modeling of galaxy spectrophotometry using ANPE and
+spectral compression in a following work. 
+
+
+%Our approach will enable us to analyze the billions of galaxies that will be
+%observed by upcoming experiments and accurately measure their physical
+%properties. 
+%In addition, the posteriors on galaxy properties for all these galaxies we will
+%be able to construct probabilistic galaxy catalogs that will unlock a new level
+%of statistical robustness in galaxy studies and more fully extract the
+%statistical power of future observations.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\subsection{Next Applications} 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%In this work, we apply the ANPE approach to optical photometry, photometric
+%uncertainties, and redshifts from the NSA. 
+%
+%With \sedflow, we can generate accurate posteriors for SED modeling >$10^4$
+%faster than conventional MCMC methods. 
+%Analyzing 33,887 NSA galaxies takes <12 CPU hours.
+%Analyzing the 10 million galaxies of DESI BGS would only take ${\sim}3,000$ CPU
+%hours.
+%An ANPE approach will enable rigorous SED modeling on the enormous galaxy
+%samples that will be observed by DESI, PFS, Rubin, JWST, and Roman. 
+%The Rubin observatory, alone, will soon provide photometry from billions of
+%galaxies. 
+%We will be able to construct probabilistic catalogs that provide accurate
+%posteriors on the physical properties for all of these galaxies. 
+
+%In addition to accurately measuring galaxy properties, these probabilistic catalogs will enable new class of statistical techniques.  For instance, they can be used for population inference to derive the distribution of galaxy properties for galaxy populations by combining individual posteriors~\citep[\eg][]{leja2019a}.  With probabilistic catalogs, we can also robustly probe less explored, low signal-to-noise, regimes that may shed new light on galaxy evolution, \eg~dwarf galaxies.  Since posteriors accurately quantify uncertainty, analyses can include galaxies with less tightly constrained properties without introducing bias.  We can also more reliably quantify the extreme or outlier galaxies.  These catalogs can also take advantage of Bayesian Hierarchical approaches that improve the statistical power of observations through Bayesian shrinkage.  Overall, these probabilistic catalogs will enable a new level of statistical robustness in galaxy studies and more fully extract the statistical power of future observations. 
+
+

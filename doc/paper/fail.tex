@@ -1,4 +1,4 @@
-\section{Outside \sedflow~Support} \label{sec:fail}
+\section{Testing Outside \sedflow~ Training Range} \label{sec:fail}
 For a small number of NSA galaxies, 591 out of 33,883, \sedflow~does not
 produce valid posteriors. 
 The normalizing flow of \sedflow~generates posteriors that are entirely outside
@@ -37,7 +37,7 @@ There are 490 NSA galaxies without valid \sedflow~posteriors due to (1).
 These galaxies have a $\bfi{x}$ distribution that is significant discrepant
 from the distribution of the training data, with many galaxies that lie well
 beyond the locus of training data points. 
-The \sedflow~estimate of $p(\theta | f_X, \sigma_X, z)$ is only accurate in
+The \sedflow~estimate of $p(\btheta \given f_X, \sigma_X, z)$ is only accurate in
 regions of $\bfi{x}$-space where there is sufficient training data. 
 This requirement is not met for these NSA galaxies.  
 In principle, if we use a more conservative noise model than Eq.~\ref{eq:noise}
