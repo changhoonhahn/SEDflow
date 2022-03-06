@@ -1,24 +1,23 @@
 \section{Simulation-Based Inference} \label{sec:sbi}
 % standard bayesian approach and introducing SBI
 The goal of Bayesian SED modeling, and probabilistic inference more
-broadly, is to infer the posterior probability distributions $p(\btheta\given\bfi{x})$
-of galaxy properties, $\btheta$, given observations $\bfi{x}$.
+broadly, is to infer the posterior probability distributions
+$p(\btheta\given\bfi{x})$ of galaxy properties, $\btheta$, given observations, 
+$\bfi{x}$.
 For a specific $\btheta$ and $\bfi{x}$, we can evaluate the posterior using
-Bayes' rule, $p(\btheta\given\bfi{x}) \propto p(\btheta)~p(\bfi{x}\given\btheta)$,  
-where $p(\btheta)$ denotes the prior distribution and
-$p(\bfi{x}\given\btheta)$ the likelihood, which is typically assumed to have a
-Gaussian functional form: 
+Bayes' rule, 
+$p(\btheta\given\bfi{x}) \propto p(\btheta)~p(\bfi{x}\given\btheta)$, where 
+$p(\btheta)$ denotes the prior distribution and $p(\bfi{x}\given\btheta)$ the
+likelihood, which is typically assumed to have a Gaussian functional form: 
 \beq
 \label{eq:likelihood}
-    \ln p(\bfi{x}\given\btheta) = -\frac{1}{2}(\bfi{x} - m(\btheta))^T {\bf C}^{-1}
-    (\bfi{x} - m(\btheta)).
+    \ln p(\bfi{x}\given\btheta) = -\frac{1}{2}\left(\bfi{x} - m(\btheta)\right)^T {\bf C}^{-1}
+    \left(\bfi{x} - m(\btheta)\right).
 \eeq
 $m(\btheta)$ is the theoretical model, in our case a galaxy SED model from SPS.
 ${\bf C}$ is the covariance matrix of the observations. 
 In practice, off-diagonal terms are often ignored and measured uncertainties
 are used as estimates of the diagonal terms. 
-
-%In the standard approach, the full posterior distribution is estimated by exploring the posterior with a sampling technique such as Markov Chain Monte Carlo~\citep[MCMC; \eg][]{carnall2018, leja2019a, tacchella2021}.  These sampling techniques are essential for the efficient exploration given the relatively high dimensionality of SED model parameter space.  Even advanced techniques, however, are subject to major limitations.  For instance, MCMC can struggle to accurately estimate multimodal and degenerate posteriors.  Many techniques also require significant hand-tuning.  More importantly, despite their efficiency, these techniques require on the order of a {\em million} SED model evaluations to derive a posterior --- this can take ${\sim}10-100$ of CPU hours per galaxy.  Analyzing the tens of millions of spectra or billions of photometry from upcoming surveys (\eg~DESI, PFS, Rubin, JWST, Roman) with these approaches would thus require {\em billions of CPU hours}.
 
 % overview of SBI and mention of ABC
 Simulation-based inference (SBI; also known as ``likelihood-free'' inference)
@@ -38,41 +37,47 @@ and in physics~\citep[\emph{e.g.}][]{brehmer2019, cranmer2020}.
 
 
 \subsection{Amortized Neural Posterior Estimation} \label{sec:flow}
-SBI provides another a critical advantage over MCMC
-inference methods --- it enables \emph{amortized inference}. 
+SBI provides another a critical advantage over MCMC inference methods --- it
+enables \emph{amortized inference}. 
 For SED modeling using MCMC, each galaxy requires >$10^5$ model evaluations to
-accurately estimate $p(\btheta \given \bfi{x})$~(\citealt{hahn2022}, Kwon~\etal~in
-prep.).
-In particular, model evaluations for calculating the posterior of one galaxy cannot
+accurately estimate $p(\btheta \given \bfi{x})$~(\citealt{hahn2022}, 
+Kwon~\etal~in prep.).
+Moreover, model evaluations for calculating the posterior of one galaxy cannot
 be used for another. 
-That aspect is what make MCMC approaches for SED modeling of upcoming surveys
-computationally infeasible.
+This makes MCMC approaches for SED modeling of upcoming surveys computationally
+infeasible.
 
-%ABC produces unbiased estimates of the posterior and only requires a forward model of the observed data.  It makes no assumptions on the likelihood and, therefore, relaxes the assumptions that go into surrogate likelihood methods.  Nevertheless, ABC is based on rejection sampling and thus requires comparable number of model evaluations as standard MCMC sampling based techniques.  ABC is only the simplest SBI method; new SBI methods can infer posteriors with much fewer model evaluations.  Density estimation-based SBI methods~\citep[\eg][]{papamakarios2017, alsing2018, hahn2019c, greenberg2019, tejero-cantero2020}, for instance, use model evaluations to fit the $p(\btheta\given\bfi{x})$, $p(\bfi{x}\given \btheta$, or $p(\btheta, \bfi{x})$ probability distributions.  They can exploit recent advances in neural density estimation (NDE) that increasingly enable high-fidelity density estimation with fewer samples of the distribution.  For instance, the NDE in \cite{papamakarios2017} accurately estimates the $28\times28=784$-dimensional distribution of the MNIST dataset\footnote{\url{http://yann.lecun.com/exdb/mnist/}} with only tens of thousands of samples. 
-
-
-With density estimation SBI, we require a large number (${\sim}10^6$) of model evaluations 
-only initially to train an NDE, i.e. a neural network with parameters $\bphi$ that
-is trained to estimate the density $p_\phi(\btheta \given \bfi{x}')$.
-If the training covers the entire or at least the practically relevant portions of the
-spaces of $\btheta$ and $\bfi{x}$, respectively, we can afterwards evaluate 
-$p_\phi(\btheta\given\bfi{x}_i)$ for each galaxy $i$ with minimal
-computational cost. 
+With density estimation SBI, we require a large number (${\sim}10^6$) of model
+evaluations only initially to train a neural density estimator (NDE), 
+\emph{i.e.} a neural network with parameters $\bphi$ that is trained to
+estimate the density $p_\phi(\btheta \given \bfi{x}')$.
+If the training covers the entire or the practically relevant portions of the
+$\btheta$ and $\bfi{x}$ spaces, we can evaluate
+$p_\phi(\btheta\given\bfi{x}_i)$ for each galaxy $i$ with minimal computational
+cost. 
 The inference is therefore amortized and no additional model evaluations are
 needed to generate the posterior for each galaxy.
 This technique is called  Amortized Neural Posterior Estimation (ANPE) 
 and has recently been applied to a broad range of astronomical applications
 from analyzing gravitational waves~\citep[\emph{e.g.}][]{wong2020,dax2021} to
 binary microlensing lensing~\citep{zhang2021}.
-For SED modeling, the choice in favor of amortization is easy: the 
-entire upfront cost for ANPE model evaluations would yield posteriors for only tens of galaxies with MCMC.
+For SED modeling, the choice in favor of using ANPE is easy: the entire upfront
+cost for ANPE model evaluations would only yield posteriors of tens of galaxies
+with MCMC.
 
-However, ANPE makes two important assumptions.
-\begin{compactenum}
-\item The simulator $F$ is capable of generating mock data $\bfi{x}'$ that is practically indistinguishable from the observations.
-In terms of the expected signal, i.e. $m$ in Eq.~\ref{eq:likelihood}, it shares that requirement with any probabilistic modeling approach. But unlike likelihood-based evaluations such as conventional MCMC, data generated for SBI need to include all relevant noise terms as well. We will address these two aspects in sections \ref{sec:training} and \ref{sec:forward-model}
-\item The NDE is trained well, so that $p_\phi(\btheta \given \bfi{x}')$ is a good approximation of $p(\btheta \given \bfi{x}')$, and therefore, per item 1, of $p(\btheta \given \bfi{x})$. We will assess this question in section~\ref{sec:results}.
-\end{compactenum}
+ANPE makes two important assumptions.
+First, the simulator $F$ is capable of generating mock data $\bfi{x}'$ that is
+practically indistinguishable from the observations.
+In terms of the expected signal, $m$ in Eq.~\ref{eq:likelihood}, this is the
+same requirement as any probabilistic modeling approach. 
+But unlike likelihood-based evaluations, such as conventional MCMC, data
+generated for SBI need to include all relevant noise terms as well. 
+We address both aspects in Sections \ref{sec:training} and \ref{sec:forward-model}.
+Second, ANPE assumes that the NDE is trained well: 
+$p_\phi(\btheta \given \bfi{x}')$ is a good approximation of 
+$p(\btheta \given \bfi{x}')$, and therefore of $p(\btheta \given \bfi{x})$. 
+We assess this in Section~\ref{sec:results}.
+
 
 ANPE commonly employs so-called ``normalizing flows''~\citep{tabak2010,
 tabak2013} as density estimators.
@@ -83,8 +88,8 @@ For ANPE, the target distribution is $p(\btheta \given \bfi{x})$ and the
 $\pi(\bfi{z})$ is typically a simple multivariate Gaussian, or mixture of Gaussians.
 The transformation $f: \bfi{z} \rightarrow \btheta$ must be invertible and have a
 tractable Jacobian. 
-This is so that we can evaluate the target distribution from $\pi(z)$ by a 
-change of variable:  
+This is so that we can evaluate the target distribution from $\pi(\bfi{z})$ by
+a change of variable:  
 \begin{equation} \label{eq:normflow}
     p(\btheta \given {\bf x}) = \pi(\bfi{z}) \Bigl|{\rm det} \left(\frac{\partial
     f^{-1}}{\partial \btheta} \right)\Bigr|.
@@ -116,9 +121,8 @@ autoregressive model describes a conditional probability $p(\bfi{x}\given \bfi{y
 One drawback of autoregressive models is their sensitivity to the ordering of
 the variables. 
 Masked Autoencoder for Distribution Estimation~\citep[MADE;][]{germain2015}
-models address this limitation using binary masks to impose the autoregressive dependence and by permutating the order of the conditioning variables.
-%This ensures that the MADE model is autoregressive and can be efficiently
-%calculated. 
+models address this limitation using binary masks to impose the autoregressive
+dependence and by permutating the order of the conditioning variables.
 A MAF model is built by stacking multiple MADE models.  
 Hence, it has the autoregressive structure of MADE but with more flexibility to
 describe complex probability distributions.  
