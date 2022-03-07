@@ -17,9 +17,9 @@ using \emph{e.g.} DESI, PFS, Rubin observatory, James Webb Space Telescope, and
 the Roman Space Telescope. 
 Analyzing all of these galaxies with current Bayesian SED models is infeasible
 and would require hundreds of billions of CPU hours.
-Even with recently proposed emulators, which accelerates model evaluations 
-by three to four orders to magnitude, the computation cost of SED modeling
-would remain a major bottleneck for galaxy studies. 
+Even with recently proposed emulators, which accelerate model evaluations by
+three to four orders to magnitude, the computation cost of SED modeling would
+remain a major bottleneck for galaxy studies. 
 
 We demonstrate in this work that Amortized Neural Posterior Estimation (ANPE)
 provides an alternative \emph{scalable} approach for Bayesian inference in SED
@@ -44,7 +44,7 @@ We present the following key results from our analysis.
         model parameters and forward model synthetic SEDs.
         The parameters are drawn from a prior and the forward model is based on
         the PROVABGS and noise models. 
-        We design the ANPE to estimate $p(\theta | f_X, \sigma_X, z)$, where
+        We design the ANPE to estimate $p(\btheta | f_X, \sigma_X, z)$, where
         $f_X$, $\sigma_X$, and $z$ are the photometry, photometric uncertainty,
         and redshift, respectively. 
         For its architecture, we use a MAF normalizing flow with 15 MADE blocks
@@ -58,10 +58,10 @@ We present the following key results from our analysis.
         SEDflow} to synthetic observations with known true parameter values.  
         Based on statistical metrics used in the literature (p-p plot and SBC),
         we find excellent agreement between the {\sc SEDflow} and the true
-        posterior. 
+        posteriors. 
     \item Lastly, we demonstrate the advantages of {\sc SEDflow} by applying it
         to the NASA-Sloan Atlas.
-        Estimating the posterior of ${\sim}34,000$ galaxies takes <12 CPU hours. 
+        Estimating the posterior of ${\sim}33,000$ galaxies takes <12 CPU hours. 
         We make the catalog of posteriors publicly available at \peter{URL}. 
         For each galaxy, the catalog contains posteriors on all 12 PROVABGS
         SED model parameters.
@@ -106,35 +106,3 @@ conditional variable space to dimensions that can be tackled by current ANPE
 methods. 
 We will explore SED modeling of galaxy spectrophotometry using ANPE and
 spectral compression in a following work. 
-
-
-%Our approach will enable us to analyze the billions of galaxies that will be
-%observed by upcoming experiments and accurately measure their physical
-%properties. 
-%In addition, the posteriors on galaxy properties for all these galaxies we will
-%be able to construct probabilistic galaxy catalogs that will unlock a new level
-%of statistical robustness in galaxy studies and more fully extract the
-%statistical power of future observations.
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%\subsection{Next Applications} 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%In this work, we apply the ANPE approach to optical photometry, photometric
-%uncertainties, and redshifts from the NSA. 
-%
-%With \sedflow, we can generate accurate posteriors for SED modeling >$10^4$
-%faster than conventional MCMC methods. 
-%Analyzing 33,887 NSA galaxies takes <12 CPU hours.
-%Analyzing the 10 million galaxies of DESI BGS would only take ${\sim}3,000$ CPU
-%hours.
-%An ANPE approach will enable rigorous SED modeling on the enormous galaxy
-%samples that will be observed by DESI, PFS, Rubin, JWST, and Roman. 
-%The Rubin observatory, alone, will soon provide photometry from billions of
-%galaxies. 
-%We will be able to construct probabilistic catalogs that provide accurate
-%posteriors on the physical properties for all of these galaxies. 
-
-%In addition to accurately measuring galaxy properties, these probabilistic catalogs will enable new class of statistical techniques.  For instance, they can be used for population inference to derive the distribution of galaxy properties for galaxy populations by combining individual posteriors~\citep[\eg][]{leja2019a}.  With probabilistic catalogs, we can also robustly probe less explored, low signal-to-noise, regimes that may shed new light on galaxy evolution, \eg~dwarf galaxies.  Since posteriors accurately quantify uncertainty, analyses can include galaxies with less tightly constrained properties without introducing bias.  We can also more reliably quantify the extreme or outlier galaxies.  These catalogs can also take advantage of Bayesian Hierarchical approaches that improve the statistical power of observations through Bayesian shrinkage.  Overall, these probabilistic catalogs will enable a new level of statistical robustness in galaxy studies and more fully extract the statistical power of future observations. 
-
-
