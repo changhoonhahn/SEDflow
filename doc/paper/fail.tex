@@ -1,9 +1,10 @@
-\section{Testing Outside \sedflow~ Training Range} \label{sec:fail}
+\section{Testing Outside \sedflow~Training Range} \label{sec:fail}
 For a small number of NSA galaxies, 591 out of 33,883, \sedflow~does not
 produce valid posteriors. 
 The normalizing flow of \sedflow~generates posteriors that are entirely outside
-of the prior volume because the observables of the NSA galaxies lie outside of
-the support of the \sedflow~training data (Section~\ref{sec:training}). 
+of the prior volume because the photometry or uncertainties of the NSA galaxies
+lie outside of the support of the \sedflow~training data
+(Section~\ref{sec:training}). 
 These galaxies lie outside of the support for two reasons: 
 (1) they have unusually high photometric uncertainties that are not accounted
 for in our noise model or 
@@ -19,7 +20,8 @@ due to (1) in orange and (2) in blue.
     \includegraphics[width=0.9\textwidth]{figs/fails.pdf}
     \caption{\label{fig:fail}
     The distribution of photometric magnitudes, uncertainities, and redshift of
-    NSA galaxies for which \sedflow~does not produce valid posteriors. 
+    NSA galaxies for which \sedflow~does not produce valid posteriors (blue or
+    orange). 
     These galaxies lie outside of the suport of the \sedflow~training data
     (black) so \sedflow~cannot accurately estimate their posteriors. 
     We mark the NSA galaxies that have unusually high photometric uncertainties
@@ -34,9 +36,7 @@ $\sigma_X$ that is unusually high for a given $f_X$ in at least one photometric
 band: $\sigma_X > \mu_{\sigma_X}(f_X) + 3 \sigma_{\sigma_X}(f_X)$
 (see Eq.~\ref{eq:noise}). 
 There are 490 NSA galaxies without valid \sedflow~posteriors due to (1).
-These galaxies have a $\bfi{x}$ distribution that is significant discrepant
-from the distribution of the training data, with many galaxies that lie well
-beyond the locus of training data points. 
+Many of these galaxies lie well beyond the locus of training data points. 
 The \sedflow~estimate of $p(\btheta \given f_X, \sigma_X, z)$ is only accurate in
 regions of $\bfi{x}$-space where there is sufficient training data. 
 This requirement is not met for these NSA galaxies.  
@@ -63,11 +63,11 @@ number of NSA galaxies are bluer than the training data.
 The fact that the training data do not span these colors suggests that the
 PROVABGS SED model may not fully describe all types of galaxies in observations. 
 As we discuss in Section~\ref{sec:discuss}, this may be due to limitations in
-the SFH and ZH prescription in the PROVABGS model or even in our understanding
-of stellar evolution. 
+the SFH and ZH prescription in the PROVABGS model or our understanding of
+stellar evolution. 
 Limitations of the SED model equally impacts conventional MCMC sampling
 approaches and is beyond the scope of this work. 
 We, therefore, do not examine the issue further. 
-For completeness, we derive posteriors for NSA galaxies for which \sedflow~fails
-to estimate valid posteriors using PROVABGS with MCMC sampling with the same
-configuration as \cite{hahn2022}. 
+For completeness, we derive posteriors for NSA galaxies, for which
+\sedflow~fails, using PROVABGS with MCMC sampling with the same configuration
+as \cite{hahn2022}. 
