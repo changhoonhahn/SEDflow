@@ -1,22 +1,20 @@
 \section{Discussion} \label{sec:discuss}
 \subsection{Forward Model} \label{sec:forward-model}
 In the previous section, we demonstrated the accuracy of \sedflow~posteriors. 
-Nevertheless, a primary determining factor the fidelity of \sedflow, or any ML model, is
-the quality of the training data set and, thus, the forward model used to
-construct it. 
+Nevertheless, a primary determining factor the fidelity of \sedflow, or any ML
+model, is the quality of the training data set and, thus, the forward model
+used to construct it. 
 Below, we discuss the caveats and limitations of our forward model, which has
-two components: the PROVABGS SED model and a noise model
+two components: the PROVABGS SPS model and noise model 
 (Section~\ref{sec:training}).
 
-First, for our noise model, we assign noiseless photometric fluxes
-uncertainties based on an empirical estimate of $p(\sigma_X\given f_X)$ for
-each band independently. 
-Afterwards, the assigned $\sigma_X$ is used to apply Gaussian noise to the
-photometric flux (Eq.~\ref{eq:noise}). 
-This is a simplicistic noise model and, as the bottom right ($g - \sigma_r$ and
-$r - \sigma_r$) panels of Figure~\ref{fig:data} reveal, there are discrepancies
-in the magnitude versus uncertainty distributions of the training data and
-observations. 
+First, for our noise model, we assign uncertainties to noiseless photometric
+fluxes based on an empirical estimate of $p(\sigma_X\given f_X)$ for each band
+independently. 
+This is a simplicistic prescription and, as the bottom right panels of
+Figure~\ref{fig:data} ($g - \sigma_r$ and $r - \sigma_r$) reveal, there are
+discrepancies in the magnitude versus uncertainty distributions of the training
+data and observations. 
 Despite these discrepancies, \sedflow~provides excellent estimates of the true
 posterior.  
 This is because we design our ANPE to include $\sigma_X$ as a conditional
@@ -26,41 +24,41 @@ accuracy of the posteriors as long as there are sufficient training data near
 $\bfi{x}$ to train the NDE in that region.
 
 A more accurate noise model will, in theory, improve the performance of
-\sedflow~because the $\bfi{x}$-space of the training data will more effectively
+\sedflow~because the $\bfi{x}$-space of the training data will more efficiently 
 span the observations. 
-In other words, there will be fewer training data expended in regions of 
-$\bfi{x}$-space that are devoid of observations.  
-However, for our application to SED modeling, we do not find significantly  
+Fewer training data would be expended in regions of $\bfi{x}$-space that are
+devoid of observations.  
+However, for our application, we do not find significantly  
 improved performance when we alter the noise model.
-This suggests that even with our simplistic noise model, the
-$\bfi{x}$-space of observations is covered sufficiently well by the training data. 
+This suggests that even with our simplistic noise model, the $\bfi{x}$-space of
+observations is covered sufficiently well by the training data. 
 We note that when we decrease $N_{\rm train}$ to below 500,000,
 \sedflow~posteriors are significantly less accurate. 
 A more realistic forward model may reduce this $N_{\rm train}$ threshold for
 accurate posteriors. 
 However, generating $N_{\rm train} \sim 1,000,000$ training has a negligible
-computational cost compared to MCMC SED modeling, so we do not consider it 
+computational cost compared to MCMC SED modeling, so we do not consider it
 necessary to explore this further. 
 
-Next, we consider limitations in the PROVABGS SED model used in our forward
+Next, we consider limitations in the PROVABGS SPS model used in our forward
 model. 
-Our SED model uses a compact and flexible prescription for SFH and ZH that can
+Our SPS model uses a compact and flexible prescription for SFH and ZH that can
 describe a broad range of SFHs and ZHs.
 However, the prescription is derived from simulated Illustris galaxies, whose
 SFHs and ZHs may be not reflect the full range of SFHs and ZHs of real
 galaxies.
 If certain subpopulations of observed galaxies have SFHs and ZHs that cannot be
-described by the PROVABGS prescriptions, they cannot be accurately
-modeled. 
-Furthermore, even if the PROVABGS SFH and ZH prescriptions are sufficient,
-there are limitations in our understanding of stellar evolution. 
+well described by the PROVABGS prescription, they cannot be accurately modeled.
+Even if the PROVABGS SFH and ZH prescriptions are sufficient, there are
+limitations in our understanding of stellar evolution. 
 
 There is currently no consensus in the stellar evolution, stellar spectral
 libraries, or IMF of galaxies~\citep[\emph{e.g.}][]{treu2010, vandokkum2010,
 rosani2018, ge2019, sonnenfeld2019}.
 The PROVABGS model uses MIST isochrones, \cite{chabrier2003} IMF, and the MILES
 + BaSeL spectral libraries. 
-These choices limit the range of SEDs that can be produced by the training data. 
+These choices limit the range of SEDs that can be produced by the training
+data. 
 For instance, if galaxies have significant variations in their IMF, assuming a
 fixed IMF would falsely limit the range of our training data.  
 A more flexible SED model that includes uncertainties in SPS would broaden the
@@ -73,19 +71,19 @@ In that regard, the limitations of the SED model equally impacts conventional
 approaches with MCMC. 
 
 We encounter the caveats above when we apply \sedflow~to the NSA catalog. 
-For a small fraction of NSA galaxy SEDs (591 out of 33,883), \sedflow~generates
+For a small fraction of NSA galaxies (591 out of 33,883), \sedflow~generates
 posteriors that are outside of the prior volume. 
-We encounter these failures because the photometry or photometric uncertainties
-of these galaxies lie outside of the support of the training data where
-\sedflow~is not trained. 
+This is because the photometry or uncertainties of these galaxies lie outside
+of the support of the training data where \sedflow~is not trained. 
 They either have higher photometric uncertainties, for a given magnitude, or
 bluer photometric colors than the training data. 
 Some of these may be observational artifacts or problematic photometry.
-Nevertheless, \sedflow~fails because the limitations in our noise and SPS
-models, mentioned above, prevent us from construct training data near them. 
-Since this issue only affects a small fraction of the NSA galaxies, we flag
-them in our catalog and infer their galaxy properties by applying PROVABGS with
-MCMC sampling for completeness.
+Nevertheless, \sedflow~fails because we cannot construct training data near
+them in our limited noise and SPS models. 
+Since this only affects a small fraction of the NSA galaxies, we flag them in
+our catalog. 
+We infer their galaxy properties by applying PROVABGS with MCMC sampling for
+completeness.
 For more details on these failures, we refer readers to
 Appendix~\ref{sec:fail}.
 
@@ -95,23 +93,23 @@ For instance, the $\chi^2$ of the best-fit parameter value from the
 estimated posterior can be used to assess whether the best-fit model 
 accurately reproduces observations.
 This would only require one additional model evaluation per galaxy. 
-As another test of the posteriors, one can construct an Amortized Neural
-Likelihood Estimator (ANLE) using the same training data.
+One can also construct an Amortized Neural Likelihood Estimator (ANLE) using
+the same training data.
 Unlike the ANPE, which estimates $p(\btheta\given f_X, \sigma_X, z)$, the ANLE
 would estimate $p(f_X \given \btheta, \sigma_X, z)$.
 We can then further validate the posteriors by assessing whether the observed
-photometry lies within the ANLE. 
+photometry lies within the ANLE distribution. 
 Based on the overall high level of accuracy of \sedflow~posteriors, we do not
 explore these additional tests; however, they can be used to further validate
-any ANPE posterior. 
+any ANPE posteriors. 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Advantages of \sedflow} 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 The primary advantage of \sedflow~is its computational speed. 
-This becomes even more relevant if one wants to add further parameters to
-address the concerns about the choices in current SPS models we described 
-in Section~\ref{sec:forward-model}.
+This becomes even more relevant if we want to add additional parameters to
+address the concerns about the choices in current SPS models we described
+above.
 To relax these assumptions, SPS models would need to introduce additional
 parameters that flexibly model these uncertainties~\citep{conroy2009,
 conroy2010c}. 
@@ -123,8 +121,8 @@ For instance, \cite{dax2021} constructed an accurate ANPE for a
 space.
 NDE is an actively developing field in ML and new methods are constantly
 emerging~\citep[\eg][]{wu2020, dhariwal2021}. 
-Since ANPE can handle higher dimensionality, we can in the future include additional
-parameters that model uncertainties in SPS. 
+Since ANPE can handle higher dimensionality, we can in the future include
+additional parameters that model uncertainties in SPS. 
 This will not only improve our SED modeling, but also improve our understanding
 of stellar evolution and the IMF.
 
@@ -154,15 +152,3 @@ Each of these steps require substantially less computational resources than
 generating a new set of training data or using MCMC methods. 
 Hence, the ANPE approach provides a way to efficiently vary the prior without
 multiplying computational costs.
-
-
-%First, more accurate and sophisticated SED models require additional
-%parameters, for instance, to model nebular emission of observational
-%systematics. 
-%Lastly, current SPS models make strong theoretical assuptions. 
-%They make explicit choices for stellar spectral library and initial mass
-%function, but there is currently no consensus on the best choices for either.
-%Relaxing these assumptions would involve parameterizing the uncertainties and
-%variations as additional parameters in SED models~\citep{conroy2009,
-%conroy2010c} or deriving galaxy properties for multiple sets of assumptions. 
-%Both options increase the computational costs of current SED modeling.  
