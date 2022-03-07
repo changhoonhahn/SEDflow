@@ -17,21 +17,21 @@ using \emph{e.g.} DESI, PFS, Rubin observatory, James Webb Space Telescope, and
 the Roman Space Telescope. 
 Analyzing all of these galaxies with current Bayesian SED models is infeasible
 and would require hundreds of billions of CPU hours.
-Even with recently a proposed emulator, which accelerates model evaluations 
+Even with recently proposed emulators, which accelerates model evaluations 
 by three to four orders to magnitude, the computation cost of SED modeling
-%Furthermore, computational costs will only multiply as SED models increase in sophistication and treat theoretical uncertainties more flexibly. 
 would remain a major bottleneck for galaxy studies. 
 
 We demonstrate in this work that Amortized Neural Posterior Estimation (ANPE)
 provides an alternative \emph{scalable} approach for Bayesian inference in SED
 modeling.
-ANPE is a simulation-based inference method that formulates Bayesian inference 
-as a density estimation problem and uses  neural density estimators (NDE) 
-to approximate the posterior over the full space of observations. 
-The NDE is trained using parameter values drawn from their respective prior and mock
+ANPE is a simulation-based inference method that formulates Bayesian inference
+as a density estimation problem and uses neural density estimators (NDE) to
+approximate the posterior over the full space of observations. 
+The NDE is trained using parameter values drawn from the prior and mock
 observations simulated with these parameters.  
-Once trained, a posterior can be obtained from the NDE by providing the observations 
-as the conditional variables without any additional model evaluations. 
+Once trained, a posterior can be obtained from the NDE by providing the
+observations as the conditional variables without any additional model
+evaluations. 
 
 In this work, we present {\sc SEDflow}, a galaxy SED modeling method using ANPE
 and PROVABGS, a flexible SED model that uses a compact non-parameteric SFH and
@@ -71,9 +71,10 @@ We present the following key results from our analysis.
 \end{compactitem}
 
 This work highlights the advantages of using an ANPE approach to Bayesian SED
-modeling.  Our approach can easily be extended beyond this application. 
-For instance, we can include multi-wavelength photometry at ultra-violet (UV)
-or infrared (IR) wavelengths. 
+modeling. 
+Our approach can easily be extended beyond this application. 
+For instance, we can include multi-wavelength photometry at ultra-violet or
+infrared wavelengths. 
 We can also modify \sedflow~to infer redshift from photometry. 
 In \sedflow, we include redshift as a conditional variable, since NSA provides
 spectroscopic redshifts. 

@@ -1,8 +1,8 @@
 \section{Discussion} \label{sec:discuss}
 \subsection{Forward Model} \label{sec:forward-model}
 In the previous section, we demonstrated the accuracy of \sedflow~posteriors. 
-Nevertheless, a primary determining factor the fidelity of \sedflow, or any ML
-model, is the quality of the training data set and, thus, the forward model
+Nevertheless, a primary determining factor for the fidelity of \sedflow, or any
+ML model, is the quality of the training data set and, thus, the forward model
 used to construct it. 
 Below, we discuss the caveats and limitations of our forward model, which has
 two components: the PROVABGS SPS model and noise model 
@@ -13,7 +13,7 @@ fluxes based on an empirical estimate of $p(\sigma_X\given f_X)$ for each band
 independently. 
 This is a simplicistic prescription and, as the bottom right panels of
 Figure~\ref{fig:data} ($g - \sigma_r$ and $r - \sigma_r$) reveal, there are
-discrepancies in the magnitude versus uncertainty distributions of the training
+discrepancies between the magnitude - uncertainty distributions of the training
 data and observations. 
 Despite these discrepancies, \sedflow~provides excellent estimates of the true
 posterior.  
@@ -36,7 +36,7 @@ We note that when we decrease $N_{\rm train}$ to below 500,000,
 \sedflow~posteriors are significantly less accurate. 
 A more realistic forward model may reduce this $N_{\rm train}$ threshold for
 accurate posteriors. 
-However, generating $N_{\rm train} \sim 1,000,000$ training has a negligible
+However, generating $N_{\rm train}{\sim}1,000,000$ training has a negligible
 computational cost compared to MCMC SED modeling, so we do not consider it
 necessary to explore this further. 
 
@@ -74,16 +74,15 @@ We encounter the caveats above when we apply \sedflow~to the NSA catalog.
 For a small fraction of NSA galaxies (591 out of 33,883), \sedflow~generates
 posteriors that are outside of the prior volume. 
 This is because the photometry or uncertainties of these galaxies lie outside
-of the support of the training data where \sedflow~is not trained. 
+of the support of the training data and where \sedflow~is well trained. 
 They either have higher photometric uncertainties, for a given magnitude, or
 bluer photometric colors than the training data. 
 Some of these may be observational artifacts or problematic photometry.
 Nevertheless, \sedflow~fails because we cannot construct training data near
-them in our limited noise and SPS models. 
+them with our limited noise and SPS models. 
 Since this only affects a small fraction of the NSA galaxies, we flag them in
-our catalog. 
-We infer their galaxy properties by applying PROVABGS with MCMC sampling for
-completeness.
+our catalog and, fore completeness, infer their galaxy properties by applying
+PROVABGS with MCMC sampling.
 For more details on these failures, we refer readers to
 Appendix~\ref{sec:fail}.
 
@@ -108,17 +107,16 @@ any ANPE posteriors.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 The primary advantage of \sedflow~is its computational speed. 
 This becomes even more relevant if we want to add additional parameters to
-address the concerns about the choices in current SPS models we described
-above.
+address concerns about the choices in current SPS models, described above.
 To relax these assumptions, SPS models would need to introduce additional
 parameters that flexibly model these uncertainties~\citep{conroy2009,
 conroy2010c}. 
 While the dimensionality of current SPS models already makes MCMC methods
-computational infeasible, ANPE has already been applied to higher dimensional
+computational infeasible, ANPE has been applied to higher dimensional
 applications.
 For instance, \cite{dax2021} constructed an accurate ANPE for a
-15-dimensional model parameter space and 128-dimensional conditional variable
-space.
+15-dimensional model parameter and 128-dimensional conditional variable
+spaces.
 NDE is an actively developing field in ML and new methods are constantly
 emerging~\citep[\eg][]{wu2020, dhariwal2021}. 
 Since ANPE can handle higher dimensionality, we can in the future include
@@ -127,7 +125,7 @@ This will not only improve our SED modeling, but also improve our understanding
 of stellar evolution and the IMF.
 
 In addition to enabling scalable SED modeling for the next generation galaxy
-surveys, \sedflow~will enable us to tackle other key challenges in SED
+surveys, \sedflow~will also enable us to tackle other key challenges in SED
 modeling. 
 For example, recent works have demonstrated that priors of SED models can
 significantly impact the inferred galaxy properties~\citep{carnall2018,
@@ -139,9 +137,6 @@ To avoid significant biases, galaxy studies must carefully select priors and
 validate their results using multiple different choices. 
 With an MCMC approach, selecting a different prior means reevaluating every
 posterior and repeating all the SED model evaluations in the MCMC sampling.  
-
-%\sedflow~requires substantially fewer model evaluations overall; however, the
-%advantages extend even further. 
 For an ANPE approach, the prior is set by the distribution of parameters in the
 training data. 
 For a new prior, instead of reconstructing the training data, we can resample
