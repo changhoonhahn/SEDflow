@@ -1,6 +1,7 @@
 \documentclass[12pt, letterpaper, preprint, comicneue]{aastex63}
 %\usepackage[default]{comicneue} % comic sans font for editing
 \usepackage[T1]{fontenc}
+\usepackage{fontawesome}
 \usepackage{color}
 \usepackage{amsmath}
 \usepackage{natbib}
@@ -70,6 +71,9 @@
 \newcommand{\beq}{\begin{equation}}
 \newcommand{\eeq}{\end{equation}}
 
+\newcommand{\github}{\href{https://github.com/changhoonhahn/SEDflow/}{\faGithub}}
+
+
 \newcommand{\sedflow}{{\sc SEDflow}}
 %% collaborating
 \newcommand{\todo}[1]{\marginpar{\color{red}TODO}{\color{red}#1}}
@@ -115,6 +119,7 @@ Princeton, NJ 08544, USA}
     agreement with traditional Markov Chain Monte Carlo sampling results.
     We also apply \sedflow~to 33,884 galaxies in the NASA-Sloan Atlas and
     publicly release their posteriors.
+    \github
 \end{abstract}
 \keywords{galaxies: evolution -- galaxies: statistics}
 
