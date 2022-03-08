@@ -1,7 +1,5 @@
 import os, sys
 import numpy as np
-from functools import partial
-from multiprocessing.pool import Pool 
 
 from sedflow import obs as Obs
 from sedflow import train as Train
@@ -18,7 +16,8 @@ itrain  = int(sys.argv[2])
 nhidden = int(sys.argv[3]) 
 nblocks = int(sys.argv[4])
 niter   = int(sys.argv[5])
-n_cpu   = int(sys.argv[6])
+i0      = int(sys.argv[6])
+i1      = int(sys.argv[7])
 
 ####################################################
 # compile NSA failures 
@@ -58,26 +57,36 @@ def run_mcmc(i_obs):
     
     fmcmc = os.path.join('/scratch/network/chhahn/sedflow/nsa_fail', 
             'mcmc.nsa.%i.hdf5' % i_obs)
-    print(fmcmc) 
 
-    # run MCMC
-    zeus_chain = nsa_mcmc.run(
-            bands='sdss', # u, g, r, i, z
-            photo_obs=y_flux[i_obs], 
-            photo_ivar_obs=y_ivar[i_obs], 
-            zred=y_zred[i_obs],
-            vdisp=0.,
-            sampler='zeus',
-            nwalkers=30,
-            burnin=0,
-            opt_maxiter=2000,
-            niter=niter,
-            progress=True,
-            writeout=fmcmc)
+    if not os.path.isfile(fmcmc): 
+        print('%s running' % os.path.basename(fmcmc))
+    
+        if not np.all(np.isfinite(y_flux[i_obs])): 
+            print('NaN photometry', y_flux[i_obs])
+            return None
+        
+        if not np.all(np.isfinite(y_ivar[i_obs])): 
+            print('NaN ivar', y_ivar[i_obs])
+            return None
+
+        # run MCMC
+        zeus_chain = nsa_mcmc.run(
+                bands='sdss', # u, g, r, i, z
+                photo_obs=y_flux[i_obs], 
+                photo_ivar_obs=y_ivar[i_obs], 
+                zred=y_zred[i_obs],
+                vdisp=0.,
+                sampler='zeus',
+                nwalkers=30,
+                burnin=0,
+                opt_maxiter=2000,
+                niter=niter,
+                progress=True,
+                writeout=fmcmc)
+    else: 
+        print('%s already exists' % os.path.basename(fmcmc))
     return None 
 
-pool = Pool(processes=n_cpu) 
-pool.map(partial(run_mcmc), igals) 
-pool.close()
-pool.terminate()
-pool.join()
+
+for i in range(i0, i1+1): 
+    run_mcmc(igals[i])
