@@ -1,5 +1,7 @@
-NASA-Sloan Atlas (NSA) ``SEDflow`` Value-Added Catalog
-======================================================
+.. _datamodel:
+
+NSA ``SEDflow`` Catalog
+=======================
 
 This probabilistic  value-added catalog provides detailed physical properties
 for 33,884 galaxies in the NASA-Sloan Atlas (http://www.nsatlas.org/). 
@@ -92,9 +94,13 @@ The catalog is in hdf5 format and can be read using https://www.h5py.org/.
     f.close()
 
 
+Attribution
+-----------
+Please cite |sedflow|_ if you use the SEDflow NSA catalog in your research.
+
+
 .. _provabgs: https://ui.adsabs.harvard.edu/abs/2020ApJS..250....2V/abstract/
 .. |provabgs| replace:: Hahn *et al.* (2022a) 
 
 .. _sedflow: https://ui.adsabs.harvard.edu/abs/2020ApJS..250....2V/abstract/
 .. |sedflow| replace:: Hahn & Melchior (2022) 
-
