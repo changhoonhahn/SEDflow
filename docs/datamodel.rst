@@ -11,7 +11,7 @@ Estimation. For more details on this catalog and ``SEDflow`` see |sedflow|_.
 For each galaxy, the catalog provides 10,000 samples drawn from the posteriors of
 ::
 
-    logMstar : 
+    log_mstar : 
         log10 of stellar mass
 
     log_sfr_1gyr : 
@@ -34,21 +34,47 @@ For each galaxy, the catalog provides 10,000 samples drawn from the posteriors o
         log10 of coefficients of the NMF metallicity history basis 
         functions
 
-    dust1 : 
+    tau_bc : 
         birth cloud optical depth
 
-    dust2 : 
+    tau_ism : 
         diffuse dust optical depth
 
-    dust_index : 
+    n_dust : 
         Calzetti (2001) dust index
 
-For more details on the galaxy properties, see |provabgs|_. 
+For more details on the specific galaxy properties, see |provabgs|_. 
 
+A small fraction fo NSA galaxies have photometry or uncertainties outside 
+of the ``SEDflow`` training data. 
+For these galaxies, ``SEDflow`` does not produce sensible posteriors. 
+We estimate their posteriors using the ``PROVABGS`` SED model with MCMC 
+sampling in the same way as |provabgs|_.
+We mark these galaxies using:  
+::
+
+    sedflow : boolean
+        True if posterior was estimated using SEDflow. 
+        False if posterior was estimated using MCMC
+
+We also include: 
+::
+
+    NSAID : 
+        unique ID within the NSA catalog 
+
+    mag_u, mag_g, mag_r, mag_i, mag_z : 
+        u, g, r, i, z optical magnitudes derived from NSA catalog's 
+        NMGY Galactic-extinction corrected AB photometric flux 
+    
+    sigma_u, sigma_g, sigma_r, sigma_i, sigma_z: 
+        uncertainties of u, g, r, i, z optical photometry in 
+        magnitude space
+        
 
 Download
 --------
-Download the catalog: 10.5281/zenodo.6337945
+Download the catalog ``nsa.sedflow.hdf5``: 10.5281/zenodo.6337945
 
 The catalog is in hdf5 format and can be read using https://www.h5py.org/.
 ::
@@ -61,7 +87,7 @@ The catalog is in hdf5 format and can be read using https://www.h5py.org/.
     print(f.keys())
     
     # read stellar mass 
-    logm = f['logMstar'][...]
+    logm = f['log_mstar'][...]
 
     f.close()
 

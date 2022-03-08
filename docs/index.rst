@@ -19,8 +19,9 @@ be observed by upcoming galaxy surveys (e.g. DESI, PFS, Rubin, Webb, and Roman).
 Posterior Estimation (ANPE), a simulation-based inference method that employs neural networks 
 to estimate the posterior probability distribution over the full range of observations. 
 Once trained, ``SEDflow`` requires no additional model evaluations to estimate the posterior. 
-``SEDflow`` takes ∼1 second per galaxy to obtain the posteriors of the 12 |provabgs|_ SED 
-model parameters, all of which are in excellent agreement with traditional Markov Chain 
+
+``SEDflow`` takes *∼1 second per galaxy* to obtain the posteriors of the 12 |provabgs|_ 
+SED model parameters, all of which are in excellent agreement with traditional Markov Chain 
 Monte Carlo sampling results.
 
 ``PROVABGS`` SED Model
@@ -35,7 +36,7 @@ The |provabgs|_ model, in particular, utilizes a non-parametric SFH with a
 starburst, a non-parametric ZH that varies with time, and a flexible dust 
 attenuation prescription.
 
-NSA `SEDflow` Catalog
+NSA ``SEDflow`` Catalog
 ---------------------
 We apply ``SEDflow`` to 33,884 galaxies in the NASA-Sloan Atlas and construct 
 a probabilistic value-added catalog. 
