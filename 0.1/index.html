@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SEDflow &#8212; sedflow  documentation</title>
+    <title>Accelerated Bayesian SED Modeling &#8212; sedflow  documentation</title>
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <script id="documentation_options" data-url_root="#" src="_static/documentation_options.js"></script>
@@ -15,7 +15,7 @@
     <script src="_static/language_data.js"></script>
     <link rel="index" title="Index" href="genindex/" />
     <link rel="search" title="Search" href="search/" />
-    <link rel="next" title="Data Model" href="datamodel/" />
+    <link rel="next" title="NASA-Sloan Atlas (NSA) SEDflow Value-Added Catalog" href="datamodel/" />
    
   <link rel="stylesheet" href="_static/custom.css" type="text/css" />
   
@@ -32,15 +32,46 @@
 
           <div class="body" role="main">
             
-  <div class="section" id="sedflow">
-<h1>SEDflow<a class="headerlink" href="#sedflow" title="Permalink to this headline">¶</a></h1>
-<p>Accelerated Bayesian SED Modeling using Amortized Neural Posterior Estimation</p>
+  <div class="section" id="accelerated-bayesian-sed-modeling">
+<span id="datamodel"></span><h1>Accelerated Bayesian SED Modeling<a class="headerlink" href="#accelerated-bayesian-sed-modeling" title="Permalink to this headline">¶</a></h1>
+<p>State-of-the-art SED analyses use a Bayesian framework to infer the physical properties of
+galaxies from observed photometry or spectra.
+They require sampling from a high-dimensional space of SED model parameters and take
+&gt;10-100 CPU hours per galaxy.
+This makes them them practically infeasible for analyzing the billions of galaxies that will
+be observed by upcoming galaxy surveys (e.g. DESI, PFS, Rubin, Webb, and Roman).</p>
+<p><code class="docutils literal notranslate"><span class="pre">SEDflow</span></code> is method for scalable Bayesian SED modeling that uses Amortized Neural
+Posterior Estimation (ANPE), a simulation-based inference method that employs neural networks
+to estimate the posterior probability distribution over the full range of observations.
+Once trained, <code class="docutils literal notranslate"><span class="pre">SEDflow</span></code> requires no additional model evaluations to estimate the posterior.</p>
+<p><code class="docutils literal notranslate"><span class="pre">SEDflow</span></code> takes <em>∼1 second per galaxy</em> to obtain the posteriors of the 12 <a class="reference external" href="https://ui.adsabs.harvard.edu/abs/2020ApJS..250....2V/abstract/">Hahn <em>et al.</em> (2022a)</a>
+SED model parameters, all of which are in excellent agreement with traditional Markov Chain
+Monte Carlo sampling results.</p>
+<div class="section" id="provabgs-sed-model">
+<h2><code class="docutils literal notranslate"><span class="pre">PROVABGS</span></code> SED Model<a class="headerlink" href="#provabgs-sed-model" title="Permalink to this headline">¶</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">SEDflow</span></code> applies ANPE to Bayesian galaxy SED modeling using the
+recent <a class="reference external" href="https://ui.adsabs.harvard.edu/abs/2020ApJS..250....2V/abstract/">Hahn <em>et al.</em> (2022a)</a> SED model, the state-of-the-art SPS model of the <a class="reference external" href="http://desi.lbl.gov/">DESI</a>
+PRObabilistic Value-Added Bright Galaxy Survey (<code class="docutils literal notranslate"><span class="pre">PROVABGS</span></code>).
+The SED of a galaxy is modeled as a composite of stellar populations defined by
+stellar evolution theory, its star formation and chemical enrichment histories
+(SFH and ZH), and dust attenuation.
+The <a class="reference external" href="https://ui.adsabs.harvard.edu/abs/2020ApJS..250....2V/abstract/">Hahn <em>et al.</em> (2022a)</a> model, in particular, utilizes a non-parametric SFH with a
+starburst, a non-parametric ZH that varies with time, and a flexible dust
+attenuation prescription.</p>
+</div>
+<div class="section" id="nsa-sedflow-catalog">
+<h2>NSA <code class="docutils literal notranslate"><span class="pre">SEDflow</span></code> Catalog<a class="headerlink" href="#nsa-sedflow-catalog" title="Permalink to this headline">¶</a></h2>
+<p>We apply <code class="docutils literal notranslate"><span class="pre">SEDflow</span></code> to 33,884 galaxies in the NASA-Sloan Atlas and construct
+a probabilistic value-added catalog.
+For more details on the catalog and how to download it, see [<a class="reference internal" href="#datamodel"><span class="std std-ref">Accelerated Bayesian SED Modeling</span></a>]</p>
+</div>
 <div class="section" id="attribution">
 <h2>Attribution<a class="headerlink" href="#attribution" title="Permalink to this headline">¶</a></h2>
-<p>Please cite <a href="#id1"><span class="problematic" id="id2">`Hahn &amp; Melchior (2022) &lt;&gt;`_</span></a> if you use the SEDflow NSA catalog in your research.</p>
+<p>Please cite <a class="reference external" href="https://ui.adsabs.harvard.edu/abs/2020ApJS..250....2V/abstract/">Hahn &amp; Melchior (2022)</a> if you use the SEDflow NSA catalog in your research.</p>
 <div class="toctree-wrapper compound">
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="datamodel/">Data Model</a></li>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Accelerated Bayesian SED Modeling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="datamodel/">NASA-Sloan Atlas (NSA) <code class="docutils literal notranslate"><span class="pre">SEDflow</span></code> Value-Added Catalog</a></li>
 </ul>
 </div>
 </div>
@@ -68,15 +99,16 @@
 
 
 <h3>Navigation</h3>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="datamodel/">Data Model</a></li>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Accelerated Bayesian SED Modeling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="datamodel/">NASA-Sloan Atlas (NSA) <code class="docutils literal notranslate"><span class="pre">SEDflow</span></code> Value-Added Catalog</a></li>
 </ul>
 
 <div class="relations">
 <h3>Related Topics</h3>
 <ul>
   <li><a href="#">Documentation overview</a><ul>
-      <li>Next: <a href="datamodel/" title="next chapter">Data Model</a></li>
+      <li>Next: <a href="datamodel/" title="next chapter">NASA-Sloan Atlas (NSA) <code class="docutils literal notranslate"><span class="pre">SEDflow</span></code> Value-Added Catalog</a></li>
   </ul></li>
 </ul>
 </div>

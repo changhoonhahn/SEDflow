@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Data Model &#8212; sedflow  documentation</title>
+    <title>NASA-Sloan Atlas (NSA) SEDflow Value-Added Catalog &#8212; sedflow  documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
@@ -15,7 +15,7 @@
     <script src="../_static/language_data.js"></script>
     <link rel="index" title="Index" href="../genindex/" />
     <link rel="search" title="Search" href="../search/" />
-    <link rel="prev" title="SEDflow" href="../" />
+    <link rel="prev" title="Accelerated Bayesian SED Modeling" href="../" />
    
   <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
   
@@ -32,11 +32,90 @@
 
           <div class="body" role="main">
             
-  <div class="section" id="data-model">
-<h1>Data Model<a class="headerlink" href="#data-model" title="Permalink to this headline">¶</a></h1>
-<p>Data model for NSA catalog:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span>
+  <div class="section" id="nasa-sloan-atlas-nsa-sedflow-value-added-catalog">
+<h1>NASA-Sloan Atlas (NSA) <code class="docutils literal notranslate"><span class="pre">SEDflow</span></code> Value-Added Catalog<a class="headerlink" href="#nasa-sloan-atlas-nsa-sedflow-value-added-catalog" title="Permalink to this headline">¶</a></h1>
+<p>This probabilistic  value-added catalog provides detailed physical properties
+for 33,884 galaxies in the NASA-Sloan Atlas (<a class="reference external" href="http://www.nsatlas.org/">http://www.nsatlas.org/</a>).
+The properties are inferred from optical photometry in the <em>u, g, r, i, z</em>
+bands using <code class="docutils literal notranslate"><span class="pre">SEDflow</span></code>, an accelerated Bayesian SED modeling method that
+combines the <a class="reference external" href="https://ui.adsabs.harvard.edu/abs/2020ApJS..250....2V/abstract/">Hahn <em>et al.</em> (2022a)</a> <code class="docutils literal notranslate"><span class="pre">PROVABGS</span></code> SED model with Amortized Neural Posterior
+Estimation. For more details on this catalog and <code class="docutils literal notranslate"><span class="pre">SEDflow</span></code> see <a class="reference external" href="https://ui.adsabs.harvard.edu/abs/2020ApJS..250....2V/abstract/">Hahn &amp; Melchior (2022)</a>.</p>
+<p>For each galaxy, the catalog provides 10,000 samples drawn from the posteriors of</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">log_mstar</span> <span class="p">:</span>
+    <span class="n">log10</span> <span class="n">of</span> <span class="n">stellar</span> <span class="n">mass</span>
+
+<span class="n">log_sfr_1gyr</span> <span class="p">:</span>
+    <span class="n">log10</span> <span class="n">of</span> <span class="n">average</span> <span class="n">star</span> <span class="n">formation</span> <span class="n">rate</span> <span class="n">over</span> <span class="mi">1</span><span class="n">Gyr</span>
+
+<span class="n">log_Z_MW</span> <span class="p">:</span>
+    <span class="n">log10</span> <span class="n">of</span> <span class="n">mass</span><span class="o">-</span><span class="n">weighted</span> <span class="n">metallicity</span>
+
+<span class="n">beta1</span><span class="p">,</span> <span class="n">beta2</span><span class="p">,</span> <span class="n">beta3</span><span class="p">,</span> <span class="n">beta4</span> <span class="p">:</span>
+    <span class="n">coefficients</span> <span class="n">of</span> <span class="n">the</span> <span class="n">non</span><span class="o">-</span><span class="n">negative</span> <span class="n">matrix</span> <span class="n">factorization</span> <span class="p">(</span><span class="n">NMF</span><span class="p">)</span>
+    <span class="n">star</span> <span class="n">formation</span> <span class="n">history</span> <span class="n">basis</span> <span class="n">functions</span>
+
+<span class="n">fburst</span> <span class="p">:</span>
+    <span class="n">fraction</span> <span class="n">of</span> <span class="n">stellar</span> <span class="n">mass</span> <span class="n">formed</span> <span class="n">by</span> <span class="n">star</span> <span class="n">burst</span>
+
+<span class="n">tburst</span> <span class="p">:</span>
+    <span class="n">time</span> <span class="n">of</span> <span class="n">star</span> <span class="n">burst</span> <span class="n">event</span>
+
+<span class="n">log_gamma1</span><span class="p">,</span> <span class="n">log_gamma2</span> <span class="p">:</span>
+    <span class="n">log10</span> <span class="n">of</span> <span class="n">coefficients</span> <span class="n">of</span> <span class="n">the</span> <span class="n">NMF</span> <span class="n">metallicity</span> <span class="n">history</span> <span class="n">basis</span>
+    <span class="n">functions</span>
+
+<span class="n">tau_bc</span> <span class="p">:</span>
+    <span class="n">birth</span> <span class="n">cloud</span> <span class="n">optical</span> <span class="n">depth</span>
+
+<span class="n">tau_ism</span> <span class="p">:</span>
+    <span class="n">diffuse</span> <span class="n">dust</span> <span class="n">optical</span> <span class="n">depth</span>
+
+<span class="n">n_dust</span> <span class="p">:</span>
+    <span class="n">Calzetti</span> <span class="p">(</span><span class="mi">2001</span><span class="p">)</span> <span class="n">dust</span> <span class="n">index</span>
 </pre></div>
+</div>
+<p>For more details on the specific galaxy properties, see <a class="reference external" href="https://ui.adsabs.harvard.edu/abs/2020ApJS..250....2V/abstract/">Hahn <em>et al.</em> (2022a)</a>.</p>
+<p>A small fraction fo NSA galaxies have photometry or uncertainties outside
+of the <code class="docutils literal notranslate"><span class="pre">SEDflow</span></code> training data.
+For these galaxies, <code class="docutils literal notranslate"><span class="pre">SEDflow</span></code> does not produce sensible posteriors.
+We estimate their posteriors using the <code class="docutils literal notranslate"><span class="pre">PROVABGS</span></code> SED model with MCMC
+sampling in the same way as <a class="reference external" href="https://ui.adsabs.harvard.edu/abs/2020ApJS..250....2V/abstract/">Hahn <em>et al.</em> (2022a)</a>.
+We mark these galaxies using:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sedflow</span> <span class="p">:</span> <span class="n">boolean</span>
+    <span class="kc">True</span> <span class="k">if</span> <span class="n">posterior</span> <span class="n">was</span> <span class="n">estimated</span> <span class="n">using</span> <span class="n">SEDflow</span><span class="o">.</span>
+    <span class="kc">False</span> <span class="k">if</span> <span class="n">posterior</span> <span class="n">was</span> <span class="n">estimated</span> <span class="n">using</span> <span class="n">MCMC</span>
+</pre></div>
+</div>
+<p>We also include:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">NSAID</span> <span class="p">:</span>
+    <span class="n">unique</span> <span class="n">ID</span> <span class="n">within</span> <span class="n">the</span> <span class="n">NSA</span> <span class="n">catalog</span>
+
+<span class="n">mag_u</span><span class="p">,</span> <span class="n">mag_g</span><span class="p">,</span> <span class="n">mag_r</span><span class="p">,</span> <span class="n">mag_i</span><span class="p">,</span> <span class="n">mag_z</span> <span class="p">:</span>
+    <span class="n">u</span><span class="p">,</span> <span class="n">g</span><span class="p">,</span> <span class="n">r</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">z</span> <span class="n">optical</span> <span class="n">magnitudes</span> <span class="n">derived</span> <span class="kn">from</span> <span class="nn">NSA</span> <span class="n">catalog</span><span class="s1">&#39;s</span>
+    <span class="n">NMGY</span> <span class="n">Galactic</span><span class="o">-</span><span class="n">extinction</span> <span class="n">corrected</span> <span class="n">AB</span> <span class="n">photometric</span> <span class="n">flux</span>
+
+<span class="n">sigma_u</span><span class="p">,</span> <span class="n">sigma_g</span><span class="p">,</span> <span class="n">sigma_r</span><span class="p">,</span> <span class="n">sigma_i</span><span class="p">,</span> <span class="n">sigma_z</span><span class="p">:</span>
+    <span class="n">uncertainties</span> <span class="n">of</span> <span class="n">u</span><span class="p">,</span> <span class="n">g</span><span class="p">,</span> <span class="n">r</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">z</span> <span class="n">optical</span> <span class="n">photometry</span> <span class="ow">in</span>
+    <span class="n">magnitude</span> <span class="n">space</span>
+</pre></div>
+</div>
+<div class="section" id="download">
+<h2>Download<a class="headerlink" href="#download" title="Permalink to this headline">¶</a></h2>
+<p>Download the catalog <code class="docutils literal notranslate"><span class="pre">nsa.sedflow.hdf5</span></code>: 10.5281/zenodo.6337945</p>
+<p>The catalog is in hdf5 format and can be read using <a class="reference external" href="https://www.h5py.org/">https://www.h5py.org/</a>.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">h5py</span>
+
+<span class="n">f</span> <span class="o">=</span> <span class="n">h5py</span><span class="o">.</span><span class="n">File</span><span class="p">(</span><span class="s1">&#39;nsa.sedflow.hdf5&#39;</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span>
+
+<span class="c1"># print data columns</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+
+<span class="c1"># read stellar mass</span>
+<span class="n">logm</span> <span class="o">=</span> <span class="n">f</span><span class="p">[</span><span class="s1">&#39;log_mstar&#39;</span><span class="p">][</span><span class="o">...</span><span class="p">]</span>
+
+<span class="n">f</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</pre></div>
+</div>
 </div>
 </div>
 
@@ -63,14 +142,15 @@
 
 <h3>Navigation</h3>
 <ul class="current">
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Data Model</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../">Accelerated Bayesian SED Modeling</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">NASA-Sloan Atlas (NSA) <code class="docutils literal notranslate"><span class="pre">SEDflow</span></code> Value-Added Catalog</a></li>
 </ul>
 
 <div class="relations">
 <h3>Related Topics</h3>
 <ul>
   <li><a href="../">Documentation overview</a><ul>
-      <li>Previous: <a href="../" title="previous chapter">SEDflow</a></li>
+      <li>Previous: <a href="../" title="previous chapter">Accelerated Bayesian SED Modeling</a></li>
   </ul></li>
 </ul>
 </div>
