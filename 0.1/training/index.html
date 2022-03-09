@@ -35,16 +35,20 @@
             
   <div class="section" id="sedflow-training">
 <h1><code class="docutils literal notranslate"><span class="pre">SEDflow</span></code> Training<a class="headerlink" href="#sedflow-training" title="Permalink to this headline">¶</a></h1>
-<p>All scripts used to train and deploy <code class="docutils literal notranslate"><span class="pre">SEDflow</span></code> is publicly available in the
+<p>All scripts used to train, validate, and deploy <code class="docutils literal notranslate"><span class="pre">SEDflow</span></code> are publicly available in the
 github repo: <a class="reference external" href="https://github.com/changhoonhahn/SEDflow">https://github.com/changhoonhahn/SEDflow</a> . It includes:</p>
 <ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">bin/train/anpe.py</span></code>: script used to train <cite>SEDflow</cite>. Requires <code class="docutils literal notranslate"><span class="pre">pytorch</span></code> and the <a class="reference external" href="https://github.com/mackelab/sbi/"><code class="docutils literal notranslate"><span class="pre">sbi</span></code></a> package.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">bin/nsa.py</span></code>: script used to deploy <cite>SEDflow</cite> on optical photometry of NSA galaxies</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">bin/train/anpe.py</span></code>: script used to train <code class="docutils literal notranslate"><span class="pre">SEDflow</span></code>. Requires <code class="docutils literal notranslate"><span class="pre">pytorch</span></code> and the <a class="reference external" href="https://github.com/mackelab/sbi/"><code class="docutils literal notranslate"><span class="pre">sbi</span></code></a> package.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">bin/nsa.py</span></code>: script used to deploy <code class="docutils literal notranslate"><span class="pre">SEDflow</span></code> on optical photometry of NSA galaxies</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">bin/training_data.ipynb</span></code>: notebook used to compile and construct training data</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">docs/nb/</span></code>: notebooks used to generate results and figures for <a class="reference external" href="https://ui.adsabs.harvard.edu/abs/2020ApJS..250....2V/abstract/">Hahn &amp; Melchior (2022)</a>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">docs/nb/</span></code>: notebooks used to generate all the results for <a class="reference external" href="https://ui.adsabs.harvard.edu/abs/2020ApJS..250....2V/abstract/">Hahn &amp; Melchior (2022)</a>.</p></li>
 </ul>
-<p>All of data used to train and test <code class="docutils literal notranslate"><span class="pre">SEDflow</span></code> is also publicly available
+<p>All of the data used to train and test <code class="docutils literal notranslate"><span class="pre">SEDflow</span></code> is also publicly available
 at: 10.5281/zenodo.6337945</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">data.v1.*</span></code>: training data</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">test.v1.*</span></code>: test data</p></li>
+</ul>
 </div>
 
 

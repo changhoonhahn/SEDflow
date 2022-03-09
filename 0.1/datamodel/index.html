@@ -74,8 +74,8 @@ Estimation. For more details on this catalog and <code class="docutils literal n
     <span class="n">Calzetti</span> <span class="p">(</span><span class="mi">2001</span><span class="p">)</span> <span class="n">dust</span> <span class="n">index</span>
 </pre></div>
 </div>
-<p>For more details on the specific galaxy properties, see <a class="reference external" href="https://ui.adsabs.harvard.edu/abs/2020ApJS..250....2V/abstract/">Hahn <em>et al.</em> (2022a)</a>.</p>
-<p>A small fraction fo NSA galaxies have photometry or uncertainties outside
+<p>For more details on the galaxy properties, see <a class="reference external" href="https://ui.adsabs.harvard.edu/abs/2020ApJS..250....2V/abstract/">Hahn <em>et al.</em> (2022a)</a>.</p>
+<p>A small fraction of NSA galaxies have photometry or uncertainties outside
 of the <code class="docutils literal notranslate"><span class="pre">SEDflow</span></code> training data.
 For these galaxies, <code class="docutils literal notranslate"><span class="pre">SEDflow</span></code> does not produce sensible posteriors.
 We estimate their posteriors using the <code class="docutils literal notranslate"><span class="pre">PROVABGS</span></code> SED model with MCMC
@@ -86,7 +86,7 @@ We mark these galaxies using:</p>
     <span class="kc">False</span> <span class="k">if</span> <span class="n">posterior</span> <span class="n">was</span> <span class="n">estimated</span> <span class="n">using</span> <span class="n">MCMC</span>
 </pre></div>
 </div>
-<p>We also include:</p>
+<p>The catalog also includes:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">NSAID</span> <span class="p">:</span>
     <span class="n">unique</span> <span class="n">ID</span> <span class="n">within</span> <span class="n">the</span> <span class="n">NSA</span> <span class="n">catalog</span>
 
@@ -101,8 +101,8 @@ We mark these galaxies using:</p>
 </div>
 <div class="section" id="download">
 <h2>Download<a class="headerlink" href="#download" title="Permalink to this headline">¶</a></h2>
-<p>Download the catalog <code class="docutils literal notranslate"><span class="pre">nsa.sedflow.hdf5</span></code>: 10.5281/zenodo.6337945</p>
-<p>The catalog is in hdf5 format and can be read using <a class="reference external" href="https://www.h5py.org/">https://www.h5py.org/</a>.</p>
+<p>Download the catalog <code class="docutils literal notranslate"><span class="pre">nsa.sedflow.hdf5</span></code> at 10.5281/zenodo.6337945</p>
+<p>The catalog is in hdf5 format and can be read in python using the <code class="docutils literal notranslate"><span class="pre">h5py</span></code> package</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">h5py</span>
 
 <span class="n">f</span> <span class="o">=</span> <span class="n">h5py</span><span class="o">.</span><span class="n">File</span><span class="p">(</span><span class="s1">&#39;nsa.sedflow.hdf5&#39;</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span>
@@ -119,7 +119,7 @@ We mark these galaxies using:</p>
 </div>
 <div class="section" id="attribution">
 <h2>Attribution<a class="headerlink" href="#attribution" title="Permalink to this headline">¶</a></h2>
-<p>Please cite <a class="reference external" href="https://ui.adsabs.harvard.edu/abs/2020ApJS..250....2V/abstract/">Hahn &amp; Melchior (2022)</a> if you use the SEDflow NSA catalog in your research.</p>
+<p>Please cite <a class="reference external" href="https://ui.adsabs.harvard.edu/abs/2020ApJS..250....2V/abstract/">Hahn &amp; Melchior (2022)</a> if you use the <code class="docutils literal notranslate"><span class="pre">SEDflow</span></code> NSA catalog in your research.</p>
 </div>
 </div>
 

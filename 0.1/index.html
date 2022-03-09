@@ -38,30 +38,34 @@
 galaxies from observed photometry or spectra.
 They require sampling from a high-dimensional space of SED model parameters and take
 &gt;10-100 CPU hours per galaxy.
-This makes them them practically infeasible for analyzing the billions of galaxies that will
+This makes them practically infeasible for analyzing the billions of galaxies that will
 be observed by upcoming galaxy surveys (e.g. DESI, PFS, Rubin, Webb, and Roman).</p>
-<p><code class="docutils literal notranslate"><span class="pre">SEDflow</span></code> is method for scalable Bayesian SED modeling that uses Amortized Neural
-Posterior Estimation (ANPE), a simulation-based inference method that employs neural networks
-to estimate the posterior probability distribution over the full range of observations.
+<p><code class="docutils literal notranslate"><span class="pre">SEDflow</span></code> enables <em>scalable</em> Bayesian SED modeling using Amortized Neural Posterior Estimation
+(ANPE), a simulation-based inference method that employs neural networks
+to estimate the posterior over the full range of observations.
 Once trained, <code class="docutils literal notranslate"><span class="pre">SEDflow</span></code> requires no additional model evaluations to estimate the posterior.</p>
 <p><code class="docutils literal notranslate"><span class="pre">SEDflow</span></code> takes <em>∼1 second per galaxy</em> to obtain the posteriors of the <a class="reference external" href="https://ui.adsabs.harvard.edu/abs/2020ApJS..250....2V/abstract/">Hahn <em>et al.</em> (2022a)</a> SED model parameters, all of which are in excellent agreement with traditional Markov Chain Monte Carlo sampling results.</p>
 <div class="section" id="provabgs-sed-model">
 <h2><code class="docutils literal notranslate"><span class="pre">PROVABGS</span></code> SED Model<a class="headerlink" href="#provabgs-sed-model" title="Permalink to this headline">¶</a></h2>
-<p><code class="docutils literal notranslate"><span class="pre">SEDflow</span></code> applies ANPE to Bayesian galaxy SED modeling using the
-recent <a class="reference external" href="https://ui.adsabs.harvard.edu/abs/2020ApJS..250....2V/abstract/">Hahn <em>et al.</em> (2022a)</a> SED model, the state-of-the-art SPS model of the <a class="reference external" href="http://desi.lbl.gov/">DESI</a>
-PRObabilistic Value-Added Bright Galaxy Survey (<code class="docutils literal notranslate"><span class="pre">PROVABGS</span></code>).
+<p><code class="docutils literal notranslate"><span class="pre">SEDflow</span></code> applies ANPE to SED modeling using the recent <a class="reference external" href="https://ui.adsabs.harvard.edu/abs/2020ApJS..250....2V/abstract/">Hahn <em>et al.</em> (2022a)</a> SED model,
+the state-of-the-art SPS model of the <a class="reference external" href="http://desi.lbl.gov/">DESI</a> PRObabilistic Value-Added Bright
+Galaxy Survey (<code class="docutils literal notranslate"><span class="pre">PROVABGS</span></code>).
 The SED of a galaxy is modeled as a composite of stellar populations defined by
 stellar evolution theory, its star formation and chemical enrichment histories
 (SFH and ZH), and dust attenuation.
-The <a class="reference external" href="https://ui.adsabs.harvard.edu/abs/2020ApJS..250....2V/abstract/">Hahn <em>et al.</em> (2022a)</a> model, in particular, utilizes a non-parametric SFH with a
-starburst, a non-parametric ZH that varies with time, and a flexible dust
-attenuation prescription.</p>
+The <a class="reference external" href="https://ui.adsabs.harvard.edu/abs/2020ApJS..250....2V/abstract/">Hahn <em>et al.</em> (2022a)</a> model  utilizes a non-parametric SFH with a starburst, a
+non-parametric ZH that varies with time, and a flexible dust attenuation
+prescription.</p>
 </div>
 <div class="section" id="nsa-sedflow-catalog">
 <h2>NSA <code class="docutils literal notranslate"><span class="pre">SEDflow</span></code> Catalog<a class="headerlink" href="#nsa-sedflow-catalog" title="Permalink to this headline">¶</a></h2>
 <p>We apply <code class="docutils literal notranslate"><span class="pre">SEDflow</span></code> to 33,884 galaxies in the NASA-Sloan Atlas and construct
 a probabilistic value-added catalog.
 For more details on the catalog and how to download it, see [<a class="reference internal" href="datamodel/#datamodel"><span class="std std-ref">NSA SEDflow Catalog</span></a>]</p>
+</div>
+<div class="section" id="questions-or-feedback">
+<h2>Questions or Feedback<a class="headerlink" href="#questions-or-feedback" title="Permalink to this headline">¶</a></h2>
+<p>If you have any questions or feedback, please feel free to reach out at <a class="reference external" href="mailto:changhoon&#46;hahn&#37;&#52;&#48;princeton&#46;edu">changhoon<span>&#46;</span>hahn<span>&#64;</span>princeton<span>&#46;</span>edu</a></p>
 <div class="toctree-wrapper compound">
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="training/"><code class="docutils literal notranslate"><span class="pre">SEDflow</span></code> Training</a></li>
