@@ -76,7 +76,7 @@ The catalog also includes:
 
 Download
 --------
-Download the catalog ``nsa.sedflow.hdf5`` at 10.5281/zenodo.6337945
+Download the catalog ``nsa.sedflow.hdf5`` at |zenodo|_ 
 
 The catalog is in hdf5 format and can be read in python using the ``h5py`` package
 ::
@@ -104,3 +104,6 @@ Please cite |sedflow|_ if you use the ``SEDflow`` NSA catalog in your research.
 
 .. _sedflow: https://ui.adsabs.harvard.edu/abs/2022arXiv220201809H
 .. |sedflow| replace:: Hahn & Melchior (2022) 
+
+.. _zenodo:  https://doi.org/10.5281/zenodo.6337945
+.. |zenodo| image:: https://zenodo.org/badge/DOI/10.5281/zenodo.6337945.svg
