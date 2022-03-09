@@ -45,9 +45,9 @@ For each galaxy, the catalog provides 10,000 samples drawn from the posteriors o
     n_dust : 
         Calzetti (2001) dust index
 
-For more details on the specific galaxy properties, see |provabgs|_. 
+For more details on the galaxy properties, see |provabgs|_. 
 
-A small fraction fo NSA galaxies have photometry or uncertainties outside 
+A small fraction of NSA galaxies have photometry or uncertainties outside 
 of the ``SEDflow`` training data. 
 For these galaxies, ``SEDflow`` does not produce sensible posteriors. 
 We estimate their posteriors using the ``PROVABGS`` SED model with MCMC 
@@ -59,7 +59,7 @@ We mark these galaxies using:
         True if posterior was estimated using SEDflow. 
         False if posterior was estimated using MCMC
 
-We also include: 
+The catalog also includes:  
 ::
 
     NSAID : 
@@ -76,9 +76,9 @@ We also include:
 
 Download
 --------
-Download the catalog ``nsa.sedflow.hdf5``: 10.5281/zenodo.6337945
+Download the catalog ``nsa.sedflow.hdf5`` at 10.5281/zenodo.6337945
 
-The catalog is in hdf5 format and can be read using https://www.h5py.org/.
+The catalog is in hdf5 format and can be read in python using the ``h5py`` package
 ::
 
     import h5py 
@@ -96,7 +96,7 @@ The catalog is in hdf5 format and can be read using https://www.h5py.org/.
 
 Attribution
 -----------
-Please cite |sedflow|_ if you use the SEDflow NSA catalog in your research.
+Please cite |sedflow|_ if you use the ``SEDflow`` NSA catalog in your research.
 
 
 .. _provabgs: https://ui.adsabs.harvard.edu/abs/2020ApJS..250....2V/abstract/
