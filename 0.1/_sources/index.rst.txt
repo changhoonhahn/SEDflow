@@ -18,13 +18,15 @@ be observed by upcoming galaxy surveys (e.g. DESI, PFS, Rubin, Webb, and Roman).
 to estimate the posterior over the full range of observations. 
 Once trained, ``SEDflow`` requires no additional model evaluations to estimate the posterior. 
 
-``SEDflow`` takes *∼1 second per galaxy* to obtain the posteriors of the |provabgs|_ SED model parameters, all of which are in excellent agreement with traditional Markov Chain Monte Carlo sampling results.
+``SEDflow`` takes *∼1 second per galaxy* to obtain the posteriors of the |provabgs|_ SED 
+model parameters, all of which are in excellent agreement with traditional Markov Chain Monte 
+Carlo sampling results.
 
 ``PROVABGS`` SED Model
 ----------------------
 ``SEDflow`` applies ANPE to SED modeling using the recent |provabgs|_ SED model, 
 the state-of-the-art SPS model of the |desi|_ PRObabilistic Value-Added Bright 
-Galaxy Survey (``PROVABGS``). 
+Galaxy Survey (``PROVABGS``) catalog. 
 The SED of a galaxy is modeled as a composite of stellar populations defined by 
 stellar evolution theory, its star formation and chemical enrichment histories 
 (SFH and ZH), and dust attenuation. 
@@ -45,10 +47,10 @@ If you have any questions or feedback, please feel free to reach out at changhoo
 .. _sbi: https://github.com/mackelab/sbi/
 .. |sbi| replace:: ``sbi``
 
-.. _provabgs: https://ui.adsabs.harvard.edu/abs/2020ApJS..250....2V/abstract/
+.. _provabgs: https://ui.adsabs.harvard.edu/abs/2022arXiv220201809H
 .. |provabgs| replace:: Hahn *et al.* (2022a) 
 
-.. _sedflow: https://ui.adsabs.harvard.edu/abs/2020ApJS..250....2V/abstract/
+.. _sedflow: https://ui.adsabs.harvard.edu/abs/2022arXiv220201809H
 .. |sedflow| replace:: Hahn & Melchior (2022) 
 
 .. _desi: http://desi.lbl.gov/
