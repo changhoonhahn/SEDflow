@@ -9,7 +9,7 @@ github repo: https://github.com/changhoonhahn/SEDflow . It includes:
 *   ``docs/nb/``: notebooks used to generate all the results for |sedflow|_. 
 
 All of the data used to train and test ``SEDflow`` is also publicly available 
-at: 10.5281/zenodo.6337945 
+at |zenodo|_.
 
 *   ``data.v1.*``: training data 
 *   ``test.v1.*``: test data 
@@ -25,3 +25,6 @@ at: 10.5281/zenodo.6337945
 
 .. _desi: http://desi.lbl.gov/
 .. |desi| replace:: DESI 
+
+.. _zenodo:  https://doi.org/10.5281/zenodo.6337945
+.. |zenodo| image:: https://zenodo.org/badge/DOI/10.5281/zenodo.6337945.svg
