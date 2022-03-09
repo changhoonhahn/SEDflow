@@ -99,8 +99,8 @@ Attribution
 Please cite |sedflow|_ if you use the ``SEDflow`` NSA catalog in your research.
 
 
-.. _provabgs: https://ui.adsabs.harvard.edu/abs/2020ApJS..250....2V/abstract/
+.. _provabgs: https://ui.adsabs.harvard.edu/abs/2022arXiv220201809H
 .. |provabgs| replace:: Hahn *et al.* (2022a) 
 
-.. _sedflow: https://ui.adsabs.harvard.edu/abs/2020ApJS..250....2V/abstract/
+.. _sedflow: https://ui.adsabs.harvard.edu/abs/2022arXiv220201809H
 .. |sedflow| replace:: Hahn & Melchior (2022) 
