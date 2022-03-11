@@ -4,7 +4,7 @@
     \caption{\label{fig:corner}
     A comparison of the posteriors of the 12 SED model parameters derived from
     standard MCMC sampling (black) and our \sedflow~(blue) for an arbitrarily
-    selected NSA galaxy ($\mathtt{NSAID} = 72$).
+    selected NSA galaxy ($\mathtt{NSAID} = 72$; red in Figure~\ref{fig:data}).
     The posteriors are in excellent agreement for all of the SED parameters. 
     In the bottom panel, we present the SEDs of the the best-fit parameter
     values from the \sedflow~(blue) and MCMC posteriors (black dotted), which
@@ -67,7 +67,7 @@ Meanwhile, after training, \emph{the \sedflow~posterior takes $1$ second ---
 
 \begin{figure}
 \begin{center}
-    \includegraphics[width=0.5\textwidth]{figs/ppplot.pdf}
+    \includegraphics[width=0.45\textwidth]{figs/ppplot.pdf}
     \caption{\label{fig:pp}
     Probability-probability (p-p) plot of the \sedflow~posteriors for 1000
     synthetic test observations, with known true parameter values. 
@@ -184,7 +184,6 @@ To maximize the utility of the posteriors further, we use them to derive
 posteriors on the following additional galaxy properties: SFR averaged over
 1Gyr, mass-weighted metallicity, and mass-weighted stellar age (see
 Eq. 17 in \citealt{hahn2022} for the exact calculation).
-We publicly release all of the posteriors for our NSA sample at 
+We publicly release all of the posteriors for our NSA sample as well as all of
+the software and data used to train and validate \sedflow~at 
 \url{https://changhoonhahn.github.io/SEDflow/}.
-Furthermore, \sedflow~model and all of the software used to train it are
-publicly available at \url{https://github.com/changhoonhahn/SEDflow/}. 
