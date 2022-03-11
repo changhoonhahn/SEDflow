@@ -26,5 +26,5 @@ at |zenodo|_.
 .. _desi: http://desi.lbl.gov/
 .. |desi| replace:: DESI 
 
-.. _zenodo:  https://doi.org/10.5281/zenodo.6337945
-.. |zenodo| image:: https://zenodo.org/badge/DOI/10.5281/zenodo.6337945.svg
+.. _zenodo: https://doi.org/10.5281/zenodo.6345467
+.. |zenodo| image:: https://zenodo.org/badge/DOI/10.5281/zenodo.6345467.svg
