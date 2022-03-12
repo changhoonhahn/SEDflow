@@ -36,9 +36,9 @@ We note that when we decrease $N_{\rm train}$ to below 500,000,
 \sedflow~posteriors are significantly less accurate. 
 A more realistic forward model may reduce this $N_{\rm train}$ threshold for
 accurate posteriors. 
-However, generating $N_{\rm train}{\sim}1,000,000$ training has a negligible
-computational cost compared to MCMC SED modeling, so we do not consider it
-necessary to explore this further. 
+However, generating $N_{\rm train}{\sim}1,000,000$ training SEDs has a
+negligible computational cost compared to MCMC SED modeling, so we do not
+consider it necessary to explore this further. 
 
 Next, we consider limitations in the PROVABGS SPS model used in our forward
 model. 
@@ -81,10 +81,9 @@ Some of these may be observational artifacts or problematic photometry.
 Nevertheless, \sedflow~fails because we cannot construct training data near
 them with our limited noise and SPS models. 
 Since this only affects a small fraction of the NSA galaxies, we flag them in
-our catalog and, fore completeness, infer their galaxy properties by applying
+our catalog and, for completeness, infer their galaxy properties by applying
 PROVABGS with MCMC sampling.
-For more details on these failures, we refer readers to
-Appendix~\ref{sec:fail}.
+For more details, we refer readers to Appendix~\ref{sec:fail}.
 
 To test for limitations of the forward model, we can construct additional tests
 of posteriors derived from ANPE. 
@@ -106,7 +105,7 @@ any ANPE posteriors.
 \subsection{Advantages of \sedflow} 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 The primary advantage of \sedflow~is its computational speed. 
-This becomes even more relevant if we want to add additional parameters to
+This becomes even more pertinent if we want to add additional parameters to
 address concerns about the choices in current SPS models, described above.
 To relax these assumptions, SPS models would need to introduce additional
 parameters that flexibly model these uncertainties~\citep{conroy2009,

@@ -66,12 +66,12 @@ Each PROVABGS model evaluation takes ${\sim}340$ ms.
 
 \begin{figure}
 \begin{center}
-\includegraphics[width=0.9\textwidth]{figs/training.pdf}
+\includegraphics[width=0.85\textwidth]{figs/training.pdf}
     \caption{\label{fig:data}
     The distribution of SED model parameters, redshift, photometric
     magnitudes, and uncertainties of the data used to train \sedflow.
-    We plot only a subset of the parameters ($\log M_*$, $\beta_1$) and
-    photometric bands for clarity.
+    We plot a subset of the parameters ($\log M_*$, $\beta_1$) and photometric
+    bands for clarity.
     The training data was constructed by sampling SED model parameters from the
     prior and forward modeling optical photometry using the PROVABGS and noise
     models (Section~\ref{sec:sedflow}). 
@@ -88,7 +88,7 @@ Each PROVABGS model evaluation takes ${\sim}340$ ms.
 \subsection{Training Data} \label{sec:training}
 In this section, we describe how we construct the training data for
 \sedflow~using the PROVABGS SED model.
-First, we sample $N_{\rm train}$ SED model parameters from a prior: $\theta'\sim p(\theta)$. 
+First, we sample $N_{\rm train}$ model parameters from a prior: $\theta'\sim p(\theta)$. 
 We use the same priors as \cite{hahn2022}: uniform priors over $M_*,
 t_{\rm burst}, f_{\rm burst}, \gamma_1, \gamma_2, \tau_{\rm BC}, \tau_{\rm ISM},
 n_{\rm dust}$ with broad conservative ranges and Dirichlet prior over $\beta_1,
@@ -116,8 +116,8 @@ For our estimate of $p(\sigma_X | f_X)$, we use an empirical estimate based on
 NSA photometry and measured uncertainties. 
 For each of the five optical bands, we separately estimate  
 \begin{equation}
-    \hat{p}(\sigma_X | f_X) = \mathcal{N} \left( \mu_{\sigma_X}(f_X),
-    \sigma_{\sigma_X}(f_X) \right)
+    \hat{p}(\sigma_X | f_X) = \mathcal{N} \big( \mu_{\sigma_X}(f_X),
+    \sigma_{\sigma_X}(f_X) \big)
 \end{equation}
 as a Gaussian in magnitude-space. 
 $\mu_{\sigma_X}$ and $\sigma_{\sigma_X}$ are the median and standard deviation

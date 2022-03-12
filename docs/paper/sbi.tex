@@ -4,8 +4,8 @@ The goal of Bayesian SED modeling, and probabilistic inference more
 broadly, is to infer the posterior probability distributions
 $p(\btheta\given\bfi{x})$ of galaxy properties, $\btheta$, given observations, 
 $\bfi{x}$.
-For a specific $\btheta$ and $\bfi{x}$, we can evaluate the posterior using
-Bayes' rule, 
+For a specific $\btheta$ and $\bfi{x}$, we typically evaluate the posterior
+using Bayes' rule, 
 $p(\btheta\given\bfi{x}) \propto p(\btheta)~p(\bfi{x}\given\btheta)$, where 
 $p(\btheta)$ denotes the prior distribution and $p(\bfi{x}\given\btheta)$ the
 likelihood, which is typically assumed to have a Gaussian functional form: 
@@ -48,9 +48,9 @@ This makes MCMC approaches for SED modeling of upcoming surveys computationally
 infeasible.
 
 With density estimation SBI, we require a large number (${\sim}10^6$) of model
-evaluations only initially to train a neural density estimator (NDE), 
-\emph{i.e.} a neural network with parameters $\bphi$ that is trained to
-estimate the density $p_\phi(\btheta \given \bfi{x}')$.
+evaluations only initially to train a neural density estimator (NDE), a neural
+network with parameters $\bphi$ that is trained to estimate the density
+$p_\phi(\btheta \given \bfi{x}')$.
 If the training covers the entire or the practically relevant portions of the
 $\btheta$ and $\bfi{x}$ spaces, we can evaluate
 $p_\phi(\btheta\given\bfi{x}_i)$ for each galaxy $i$ with minimal computational
@@ -73,7 +73,7 @@ same requirement as any probabilistic modeling approach.
 But unlike likelihood-based evaluations, such as conventional MCMC, data
 generated for SBI need to include all relevant noise terms as well. 
 We address both aspects in Sections \ref{sec:training} and \ref{sec:forward-model}.
-Second, ANPE assumes that the NDE is trained well: 
+Second, ANPE assumes that the NDE is well trained: 
 $p_\phi(\btheta \given \bfi{x}')$ is a good approximation of 
 $p(\btheta \given \bfi{x}')$, and therefore of $p(\btheta \given \bfi{x})$. 
 We assess this in Section~\ref{sec:results}.
@@ -91,12 +91,13 @@ tractable Jacobian.
 This is so that we can evaluate the target distribution from $\pi(\bfi{z})$ by
 a change of variable:  
 \begin{equation} \label{eq:normflow}
-    p(\btheta \given {\bf x}) = \pi(\bfi{z}) \Bigl|{\rm det} \left(\frac{\partial
+    p(\btheta \given \bfi{x}) = \pi(\bfi{z}) \Bigl|{\rm det} \left(\frac{\partial
     f^{-1}}{\partial \btheta} \right)\Bigr|.
 \end{equation} 
 Since the base distribution is easy to evaluate, we can also easily evaluate
 the target distribution.  
-A neural network is trained to obtain $f$, the collection of its parameters form $\bphi$.
+A neural network is trained to obtain $f$ and the collection of its parameters
+form $\bphi$.
 The network typically consists of a series of simple transforms (\emph{e.g.}
 shift and scale transforms) that are each invertible and whose Jacobians are
 easily calculated. 

@@ -38,7 +38,7 @@ and PROVABGS, a flexible SED model that uses a compact non-parameteric SFH and
 ZH prescriptions and was recently validated in \cite{hahn2022}.
 Furthermore, we apply {\sc SEDflow} to optical photometry from the NASA-Sloan
 Atlas as demonstration and validation of our ANPE approach.  
-We present the following key results from our analysis.
+We present the following key results from our analysis. \vspace{2mm}
 \begin{compactitem}
     \item We train {\sc SEDflow} using a data set of ${\sim}1$ million SED
         model parameters and forward model synthetic SEDs.
@@ -61,14 +61,14 @@ We present the following key results from our analysis.
         posteriors. 
     \item Lastly, we demonstrate the advantages of {\sc SEDflow} by applying it
         to the NASA-Sloan Atlas.
-        Estimating the posterior of ${\sim}33,000$ galaxies takes <12 CPU hours. 
+        Estimating the posterior of ${\sim}33,000$ galaxies takes $\sim$12 CPU
+        hours.
         We make the catalog of posteriors publicly available at
         \url{https://changhoonhahn.github.io/SEDflow/}. 
-        For each galaxy, the catalog contains posteriors on all 12 PROVABGS
-        SED model parameters.
-        In terms of galaxy properties, the catalog includes posteriors of
-        $M_*$, average SFR over 1Gyr, mass-weighted metallicity, mass-weighted
-        age, and dust optical depth. 
+        For each galaxy, the catalog contains posteriors of all 12 PROVABGS
+        SED model parameters as well as the galaxy properties: $M_*$, 
+        average SFR over 1Gyr, mass-weighted metallicity, and mass-weighted
+        stellar age. \vspace{2mm}
 \end{compactitem}
 
 This work highlights the advantages of using an ANPE approach to Bayesian SED
@@ -91,11 +91,11 @@ redshifts, where we marginalize over our understanding of galaxies rather than
 using templates. 
 
 The ANPE approach to SED modeling can also be extended to galaxy spectra. 
-Constructing an ANPE for the full data space of spectra, however, requires
+Constructing an ANPE for the full data space of spectra would requires
 estimating a dramatically higher dimensional probability distribution. 
 SDSS spectra, for instance, have ${\sim}3,600$ spectral elements.  
-Furthermore, in our approach we include the uncertainties of observables as
-conditional variables, which double the curse of dimensionality.
+In our approach we include the uncertainties of observables as conditional
+variables, which doubles the curse of dimensionality.
 Recent works, however, have demonstrated that galaxy spectra can be represented
 in a compact low-dimensional space using autoencoders~\citep[][Melchior \&
 Hahn, in prep.]{portillo2020}.
