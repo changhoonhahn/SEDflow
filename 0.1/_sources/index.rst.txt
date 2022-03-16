@@ -50,7 +50,7 @@ If you have any questions or feedback, please feel free to reach out at changhoo
 .. _provabgs: https://ui.adsabs.harvard.edu/abs/2022arXiv220201809H
 .. |provabgs| replace:: Hahn *et al.* (2022a) 
 
-.. _sedflow: https://ui.adsabs.harvard.edu/abs/2022arXiv220201809H
+.. _sedflow: https://arxiv.org/abs/2203.07391
 .. |sedflow| replace:: Hahn & Melchior (2022) 
 
 .. _desi: http://desi.lbl.gov/

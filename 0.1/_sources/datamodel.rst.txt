@@ -102,7 +102,7 @@ Please cite |sedflow|_ if you use the ``SEDflow`` NSA catalog in your research.
 .. _provabgs: https://ui.adsabs.harvard.edu/abs/2022arXiv220201809H
 .. |provabgs| replace:: Hahn *et al.* (2022a) 
 
-.. _sedflow: https://ui.adsabs.harvard.edu/abs/2022arXiv220201809H
+.. _sedflow: https://arxiv.org/abs/2203.07391
 .. |sedflow| replace:: Hahn & Melchior (2022) 
 
 .. _zenodo: https://doi.org/10.5281/zenodo.6345467

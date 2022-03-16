@@ -20,7 +20,7 @@ at |zenodo|_.
 .. _provabgs: https://ui.adsabs.harvard.edu/abs/2020ApJS..250....2V/abstract/
 .. |provabgs| replace:: Hahn *et al.* (2022a) 
 
-.. _sedflow: https://ui.adsabs.harvard.edu/abs/2020ApJS..250....2V/abstract/
+.. _sedflow: https://arxiv.org/abs/2203.07391
 .. |sedflow| replace:: Hahn & Melchior (2022) 
 
 .. _desi: http://desi.lbl.gov/
