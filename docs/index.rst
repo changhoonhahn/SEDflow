@@ -40,9 +40,19 @@ We apply ``SEDflow`` to 33,884 galaxies in the NASA-Sloan Atlas and construct
 a probabilistic value-added catalog. 
 For more details on the catalog and how to download it, see [:ref:`datamodel`] 
 
+Authors
+-------
+|chang|_ and |peter|_.
+
 Questions or Feedback
 ---------------------
 If you have any questions or feedback, please feel free to reach out at changhoon.hahn@princeton.edu
+
+.. _chang: https://changhoonhahn.github.io/
+.. |chang| replace:: ChangHoon Hahn
+
+.. _peter: https://pmelchior.net/
+.. |peter| replace:: Peter Melchior 
 
 .. _sbi: https://github.com/mackelab/sbi/
 .. |sbi| replace:: ``sbi``
