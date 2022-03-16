@@ -20,7 +20,7 @@ Once trained, ``SEDflow`` requires no additional model evaluations to estimate t
 
 ``SEDflow`` takes *∼1 second per galaxy* to obtain the posteriors of the |provabgs|_ SED 
 model parameters, all of which are in excellent agreement with traditional Markov Chain Monte 
-Carlo sampling results.
+Carlo sampling results. For more details, check out |sedflow|_.
 
 ``PROVABGS`` SED Model
 ----------------------
