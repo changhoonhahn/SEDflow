@@ -8,6 +8,8 @@ import os, sys
 import numpy as np 
 
 import torch
+from torch.utils.tensorboard.writer import SummaryWriter
+
 from sbi import utils as Ut
 from sbi import inference as Inference
 
@@ -57,7 +59,8 @@ fanpe = os.path.join(dat_dir, f'sdss_ivar.noise_nde.{best_arch}.pt')
 
 anpe = Inference.SNPE(prior=prior,
                       density_estimator=Ut.posterior_nn('maf', hidden_features=nhidden, num_transforms=nblocks),
-                      device='cpu')
+                      device='cpu', 
+                      summary_writer=SummaryWriter('/home/chhahn/projects/SEDflow/bin/training_data/sbi-logs/h_Aivar.nde.%i.%iof10' % (ibatch, isplit+1)))
 # load ANPE
 anpe.append_simulations(
     torch.as_tensor(y_train.astype(np.float32)),
@@ -78,4 +81,5 @@ for i in range(len(zred)):
     h_Aivar.append(np.array(_y.detach().to('cpu')[0]))
 h_Aivar = np.array(h_Aivar)
 
-np.save(os.path.join('/scratch/network/chhahn/sedflow/spectra/', 'h_Aivar.nde.%iof10.npy' % (isplit+1)), h_Aivar)
+np.save(os.path.join('/scratch/network/chhahn/sedflow/spectra/', 
+    'h_Aivar.nde.%i.%iof10.npy' % (ibatch, isplit+1)), h_Aivar)

@@ -33,8 +33,9 @@ w_sdss = 10**rawspec['wave']
 # read in (h, Aivar) values 
 h_Aivar = np.zeros((seds.shape[0], 6))
 for isplit in range(10): 
-    _hA = np.load(os.path.join('/scratch/network/chhahn/sedflow/spectra/', 'h_Aivar.nde.%iof10.npy' % (isplit+1)))
+    _hA = np.load(os.path.join('/scratch/network/chhahn/sedflow/spectra/', 'h_Aivar.nde.%i.%iof10.npy' % (ibatch, isplit+1)))
     h_Aivar[isplit::10] = _hA
+np.save(os.path.join('/scratch/network/chhahn/sedflow/spectra/', 'h_Aivar.nde.%i.npy' % (ibatch)))
 
 # load in ivar decoder 
 i_best = 6
@@ -69,4 +70,5 @@ seds_sdss = np.empty((seds.shape[0], len(w_sdss)))
 for i in range(seds.shape[0]): 
     seds_sdss[i,:] = UT.trapz_rebin(wave[i], seds[i], w_sdss) + ivar[i]**-0.5 * np.random.normal(size=len(w_sdss))
 
+np.save(os.path.join(dat_dir, f'train.v0.1.{ibatch}.ivar.vae_noise.npy'), ivar) 
 np.save(os.path.join(dat_dir, f'train.v0.1.{ibatch}.seds.vae_noise.npy'), seds_sdss)
