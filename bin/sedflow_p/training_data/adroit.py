@@ -62,7 +62,7 @@ def sample_sdssivar_nde(ibatch, isplit):
         "source ~/.bashrc", 
         "conda activate torch-env", 
         "",
-        "python /home/chhahn/projects/SEDflow/bin/training_data/sample_sdss_ivar_nde.py %i %i"  % (ibatch, isplit),
+        "python /home/chhahn/projects/SEDflow/bin/sedflow_p/training_data/sample_sdss_ivar_nde.py %i %i"  % (ibatch, isplit),
         "",
         'now=$(date +"%T")', 
         'echo "end time ... $now"', 
@@ -97,7 +97,7 @@ def apply_sdssivar_nde(ibatch):
         "source ~/.bashrc", 
         "conda activate torch-env", 
         "",
-        "python /home/chhahn/projects/SEDflow/bin/training_data/apply_sdss_ivar_nde.py %i"  % (ibatch),
+        "python /home/chhahn/projects/SEDflow/bin/sedflow_p/training_data/apply_sdss_ivar_nde.py %i"  % (ibatch),
         "",
         'now=$(date +"%T")', 
         'echo "end time ... $now"', 
@@ -133,7 +133,7 @@ def encode_training_sed(ibatch):
         "source ~/.bashrc", 
         "conda activate torch-env", 
         "",
-        "python /home/chhahn/projects/SEDflow/bin/training_data/encode_sed_sdss_ivar_nde.py %i"  % (ibatch),
+        "python /home/chhahn/projects/SEDflow/bin/sedflow_p/training_data/encode_sed_sdss_ivar_nde.py %i"  % (ibatch),
         "",
         'now=$(date +"%T")', 
         'echo "end time ... $now"', 
@@ -217,22 +217,63 @@ def compile_training():
     os.system('rm _train.slurm')
     return None 
 
+
+def compile_test(): 
+    ''' deploy encode_sed_sdss_ivar_nde.py on adroit 
+    '''
+    cntnt = '\n'.join([
+        "#!/bin/bash", 
+        "#SBATCH -J compile.train", 
+        "#SBATCH --partition=general",
+        "#SBATCH --time=23:59:59", 
+        "#SBATCH --mem-per-cpu=32G", 
+        "#SBATCH --export=ALL", 
+        "#SBATCH --output=o/compile.test.o", 
+        "#SBATCH --mail-type=all", 
+        "#SBATCH --mail-user=chhahn@princeton.edu", 
+        "", 
+        'now=$(date +"%T")', 
+        'echo "start time ... $now"', 
+        "", 
+        "source ~/.bashrc", 
+        "conda activate torch-env", 
+        "",
+        "python /home/chhahn/projects/SEDflow/bin/sedflow_p/training_data/compile_test.py",
+        "",
+        'now=$(date +"%T")', 
+        'echo "end time ... $now"', 
+        ""]) 
+
+    # create the slurm script execute it and remove it
+    f = open('_train.slurm','w')
+    f.write(cntnt)
+    f.close()
+    os.system('sbatch _train.slurm')
+    os.system('rm _train.slurm')
+    return None 
+
+
 #for i in range(10): 
 #    training_sed(i, nsample=100000, ncpu=16)
 #training_sed(101, nsample=100000, ncpu=16)
-
 
 # sample sdssivar NDE in 10 different chunks 
 #for ibatch in range(2, 10): 
 #    for i in range(10): 
 #        sample_sdssivar_nde(ibatch, i)
+#for i in range(10): 
+#    sample_sdssivar_nde(101, i)
 
 #for i in range(10): 
 #    apply_sdssivar_nde(i)
+#apply_sdssivar_nde(101)
 
 #for i in range(10): 
 #    encode_training_sed(i)
+#encode_training_sed(101)
 
 #encode_sdss()
 
-compile_training()
+#compile_training()
+
+compile_test()

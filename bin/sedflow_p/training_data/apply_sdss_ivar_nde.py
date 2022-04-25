@@ -35,7 +35,7 @@ h_Aivar = np.zeros((seds.shape[0], 6))
 for isplit in range(10): 
     _hA = np.load(os.path.join('/scratch/network/chhahn/sedflow/spectra/', 'h_Aivar.nde.%i.%iof10.npy' % (ibatch, isplit+1)))
     h_Aivar[isplit::10] = _hA
-np.save(os.path.join('/scratch/network/chhahn/sedflow/spectra/', 'h_Aivar.nde.%i.npy' % (ibatch)))
+np.save(os.path.join('/scratch/network/chhahn/sedflow/spectra/', 'h_Aivar.nde.%i.npy' % (ibatch)), h_Aivar)
 
 # load in ivar decoder 
 i_best = 6
