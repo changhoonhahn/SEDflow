@@ -16,7 +16,7 @@ seed    = int(sys.argv[2])
 band    = sys.argv[3] 
 
 n_cpu   = psutil.cpu_count(logical=False)
-dat_dir = '/pscratch/sd/c/chahah/sedflow/seds/'
+dat_dir = '/pscratch/sd/c/chahah/sedflow/seds/modela/'
 
 #############################################
 # set bandpasses 

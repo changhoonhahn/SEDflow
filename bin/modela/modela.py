@@ -61,8 +61,8 @@ with mp.Pool(n_cpu) as p:
 waves   = np.array([wfp[0] for wfp in wfps])
 seds    = np.array([wfp[1] for wfp in wfps]) 
 
-np.savez_compressed(os.path.join(dat_dir, 'train_sed.modela.%i.thetas_sps.npz' % seed), thetas_sps)
-np.savez_compressed(os.path.join(dat_dir, 'train_sed.modela.%i.thetas_unt.npz' % seed), thetas_unt)
-np.savez_compressed(os.path.join(dat_dir, 'train_sed.modela.%i.redshifts.npz' % seed), redshifts)
-np.savez_compressed(os.path.join(dat_dir, 'train_sed.modela.%i.waves.npz' % seed), waves)
-np.savez_compressed(os.path.join(dat_dir, 'train_sed.modela.%i.seds.npz' % seed), seds)
+np.savez_compressed(os.path.join(dat_dir, 'modela', 'train_sed.modela.%i.thetas_sps.npz' % seed), thetas_sps)
+np.savez_compressed(os.path.join(dat_dir, 'modela', 'train_sed.modela.%i.thetas_unt.npz' % seed), thetas_unt)
+np.savez_compressed(os.path.join(dat_dir, 'modela', 'train_sed.modela.%i.redshifts.npz' % seed), redshifts)
+np.savez_compressed(os.path.join(dat_dir, 'modela', 'train_sed.modela.%i.waves.npz' % seed), waves)
+np.savez_compressed(os.path.join(dat_dir, 'modela', 'train_sed.modela.%i.seds.npz' % seed), seds)
