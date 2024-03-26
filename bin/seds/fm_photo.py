@@ -81,9 +81,8 @@ def fm_maggies(ii):
 with mp.Pool(n_cpu) as p: 
     wfps = p.map(fm_maggies, np.arange(seds.shape[0]))
 
-maggies = np.array(wfps)
-mags = 22.5 - 2.5 * np.log10(maggies * 1e9) # convert maggies to magnitudes 
+maggies = np.array(wfps) * 1e9 # to nMgy
+#mags = 22.5 - 2.5 * np.log10(maggies) # convert maggies to magnitudes 
 
 # save to file 
-np.savez_compressed(os.path.join(dat_dir, 'train_sed.%s.%i.mags_%s.npz' % (name, seed, band)), 
-                    mags)
+np.save(os.path.join(dat_dir, 'train_sed.%s.%i.nmgy_%s.npy' % (name, seed, band)), maggies)

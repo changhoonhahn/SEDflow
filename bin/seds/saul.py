@@ -42,7 +42,7 @@ def modela_sed(nsample, seed):
 def modela_photo(seed, bands): 
     cntnt = '\n'.join([
         "#!/bin/bash",
-        "#SBATCH --qos=regular",
+        "#SBATCH --qos=debug",
         "#SBATCH --time=00:09:59",
         "#SBATCH --constraint=cpu",
         "#SBATCH -N 1",
@@ -74,6 +74,6 @@ def modela_photo(seed, bands):
 #for i in range(10): 
 #    modela_sed(100000, i)
 
-for i in range(1, 10): 
-    modela_photo(i, 'grzW1W2') 
+for i in [1]: #range(1, 10): 
+    #modela_photo(i, 'grzW1W2') 
     modela_photo(i, 'ugrizJ') 
