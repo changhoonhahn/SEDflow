@@ -45,7 +45,7 @@ def load_modela(train_or_test, bands='grzW1W2', infer_redshift=False):
     theta[:,7] = np.log10(theta[:,7])
 
     zred = np.concatenate(zred) 
-    nmgy = np.concatenate(nmgy)
+    nmgy = np.log10(np.concatenate(nmgy)) # convert to log-nanomaggies to reduce dynamic range 
     sigs = np.concatenate(sigs)
 
 
