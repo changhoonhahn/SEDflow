@@ -109,7 +109,7 @@ def Objective(trial):
 
     p_x_y_est = anpe.train(
             training_batch_size=50,
-            learning_rate=lr, #clip_max_norm=clip_max, 
+            learning_rate=lr, 
             show_train_summary=True)
 
     # save trained NPE  

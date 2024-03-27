@@ -25,7 +25,7 @@ def modela_sed(nsample, seed):
         "source ~/.bashrc",
         "conda activate gqp",
         "",
-        "python /global/homes/c/chahah/projects/SEDflow/bin/seds/modela.py %i %i" % (nsample, seed),
+        "python /global/homes/c/chahah/projects/SEDflow/bin/modela/modela.py %i %i" % (nsample, seed),
         'now=$(date +"%T")',
         'echo "end time ... $now"',
         ""])
@@ -55,7 +55,7 @@ def modela_photo(seed, bands):
         "source ~/.bashrc",
         "conda activate gqp",
         "",
-        "python /global/homes/c/chahah/projects/SEDflow/bin/seds/fm_photo.py modela %i %s" % (seed, bands),
+        "python /global/homes/c/chahah/projects/SEDflow/bin/modela/fm_photo.py modela %i %s" % (seed, bands),
         'now=$(date +"%T")',
         'echo "end time ... $now"',
         ""])
@@ -77,7 +77,7 @@ def modela_anpe(seed, bands):
         "#SBATCH -A desi", 
         "#SBATCH -C gpu",
         "#SBATCH -q shared",
-        "#SBATCH -t 05:59:59",
+        "#SBATCH -t 07:59:59",
         "#SBATCH -n 1",
         '#SBATCH --gpus-per-task=1', 
         "#SBATCH -J modela%i_%s_anpe" % (seed, bands),
@@ -89,7 +89,7 @@ def modela_anpe(seed, bands):
         "source ~/.bashrc",
         "conda activate sbi",
         "",
-        "python /global/homes/c/chahah/projects/SEDflow/bin/seds/anpe.py %s False" % bands,
+        "python /global/homes/c/chahah/projects/SEDflow/bin/modela/anpe.py %s False" % bands,
         'now=$(date +"%T")',
         'echo "end time ... $now"',
         ""])
@@ -116,7 +116,7 @@ def modela_anpe(seed, bands):
 #modela_photo(999, 'grzW1W2') 
 #modela_photo(999, 'ugrizJ') 
 
-for i in range(1, 10): 
+for i in range(10): 
     modela_anpe(i, 'grzW1W2')
     modela_anpe(i, 'ugrizJ')
 
