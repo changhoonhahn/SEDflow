@@ -70,7 +70,7 @@ n_jobs     = 1
 if not os.path.isdir(os.path.join(output_dir, study_name)): 
     os.system('mkdir %s' % os.path.join(output_dir, study_name))
 storage    = 'sqlite:///%s/%s/%s.db' % (output_dir, study_name, study_name)
-n_startup_trials = 100
+n_startup_trials = 20
 
 n_blocks_min, n_blocks_max = 2, 10
 n_transf_min, n_transf_max = 2, 10
