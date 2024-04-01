@@ -156,8 +156,8 @@ def valid_train(sample, ntrain, itrain, nhidden, nblocks):
 for ntrain in [50000, 200000, 500000]: 
     for i in range(5): 
         time.sleep(1) 
-        anpe_train('toy', ntrain, i, 500, 10)
-#    valid_train('toy', 100000, i, 500, 10)
+        #anpe_train('toy', ntrain, i, 500, 10)
+        valid_train('toy', ntrain, i, 500, 10)
 #    anpe('toy', i, 500, 10)
 #    valid('toy', i, 500, 10)
 
