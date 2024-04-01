@@ -1,4 +1,9 @@
 \section{methods}
 
 we want
-\begin{equation}
+\begin{align}
+    p(\theta \given f_\lambda) &\propto& p(\theta) p(f_\lambda | \theta) \\
+     &\propto& p(\theta) p(f_{\lambda_s} | \theta) p(f_{\lambda_m} | \theta) \\
+     &\propto& p(\theta) p(f_{\lambda_s} | \theta) \int p(f_{\lambda_m} \given
+     f_{\lambda_s}) p(f_{\lambda_s}\given\theta)\,{\rm d}f_{\lambda_s} \\
+\end{align} 
