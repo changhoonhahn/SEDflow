@@ -117,7 +117,7 @@ def Objective(trial):
     fqphi   = os.path.join(output_dir, study_name, '%s.%i.pt' % (study_name, trial.number))
     torch.save(qphi, fqphi)
         
-    best_valid_log_prob = anpe._summary['best_validation_log_prob'][0]
+    best_valid_log_prob = anpe._summary['best_validation_log_probs'][0]
 
     anpe._summary_writer.add_hparams(
             {'n_blocks': n_blocks, 'n_transf': n_transf, 'n_hidden': n_hidden, 'lr': lr, 'p_drop': p_drop},
