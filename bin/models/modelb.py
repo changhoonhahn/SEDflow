@@ -25,7 +25,7 @@ print('using %i CPUs to run %i SEDs' % (n_cpu, Nsample))
 
 # SPS parameter priors 
 prior_sps = Infer.load_priors([
-    Infer.UniformPrior(7., 13., label='sed'),
+    Infer.UniformPrior(6., 13., label='sed'),
     Infer.FlatDirichletPrior(4, label='sed'),           # flat dirichilet priors
     Infer.UniformPrior(0., 1., label='sed'),            # burst fraction
     Infer.UniformPrior(1e-2, 13.27, label='sed'),       # tburst

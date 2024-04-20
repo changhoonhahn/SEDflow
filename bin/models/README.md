@@ -22,3 +22,12 @@ standard deviation over the range set by BGS:
 - $0.047 < \sigma_z < 15$
 - $0.11 < \sigma_{W1} < 10$
 - $0.23 < \sigma_{W2} < 15$
+
+
+
+# work flow
+1. Generate SEDs (perlmutter)
+2. Generate forward modeled photometry (specific to some observation) (perlmutter)
+3. Compare synthetic photometry to observations to ensure sufficient coverage (perlmutter)
+4. Train ANPEs (della) 
+5. Validate ANPEs (della) 

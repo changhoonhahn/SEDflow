@@ -11,6 +11,8 @@ import multiprocessing as mp
 
 from speclite import filters as specFilter
 
+from sedflow import util as U
+
 name    = sys.argv[1]
 seed    = int(sys.argv[2])
 band    = sys.argv[3] 
