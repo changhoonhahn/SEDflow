@@ -11,6 +11,8 @@ import multiprocessing as mp
 
 from speclite import filters as specFilter
 
+from astropy import units as aU
+
 from sedflow import util as U
 
 name    = sys.argv[1]
@@ -67,17 +69,14 @@ else:
 wave = np.load(os.path.join(dat_dir, 'train_sed.%s.%i.waves.npz' % (name, seed)))['arr_0']
 seds = np.load(os.path.join(dat_dir, 'train_sed.%s.%i.seds.npz' % (name, seed)))['arr_0']
 
-# convert flux  units 
-fl = seds / (3.34e4) / wave**2 # ergs/s/cm^2/A
-
 #############################################
 # calcluate magnitudes 
 #############################################
 def fm_maggies(ii): 
     # convolve redshifted SEds with bnadpasses
-    _maggies = np.array([np.array(list(arr)) 
-                         for arr in bandpasses.get_ab_maggies(fl[ii], wavelength=wave[ii]).as_array()])
-    return _maggies 
+    _maggies = bandpasses.get_ab_maggies(seds[ii] * 1e-17*aU.erg/aU.s/aU.cm**2/aU.Angstrom, 
+                                         wavelength=wave[ii] * aU.Angstrom)
+    return np.array(list(_maggies[0])) 
 
 
 with mp.Pool(n_cpu) as p: 
