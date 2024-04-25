@@ -27,7 +27,7 @@ standard deviation over the range set by BGS:
 # work flow
 Below is the workflow for training SEDflow: 
 
-1. Generate SEDs (perlmutter). `1_modela.py` and `1_modelb.py`
+1. Generate SEDs (perlmutter). `1_modela.py` and `1_modelb.py`. For demo see `1_nb_modela.ipynb`
 2. Generate photometry for specified photometric bandpasses (perlmutter): `2_fm_photo.py`. For demo see `2_nb_fm_photo.ipynb`. 
 3. Forward model noise specific to some observation: `3_fm_noise.ipynb`. In `3_nb_grzW1W2_noise.ipynb` we examine the noises in DESI to set the noise model.
 4. Compare forward modled synthetic photometry to observations to ensure sufficient coverage (perlmutter): `4_check_data.ipynb`.
