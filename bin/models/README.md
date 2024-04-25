@@ -24,10 +24,12 @@ standard deviation over the range set by BGS:
 - $0.23 < \sigma_{W2} < 15$
 
 
-
 # work flow
-1. Generate SEDs (perlmutter)
-2. Generate forward modeled photometry (specific to some observation) (perlmutter)
-3. Compare synthetic photometry to observations to ensure sufficient coverage (perlmutter)
-4. Train ANPEs (della) 
-5. Validate ANPEs (della) 
+Below is the workflow for training SEDflow: 
+
+1. Generate SEDs (perlmutter). `1_modela.py` and `1_modelb.py`
+2. Generate photometry for specified photometric bandpasses (perlmutter): `2_fm_photo.py`. For demo see `2_nb_fm_photo.ipynb`. 
+3. Forward model noise specific to some observation: `3_fm_noise.ipynb`. In `3_nb_grzW1W2_noise.ipynb` we examine the noises in DESI to set the noise model.
+4. Compare forward modled synthetic photometry to observations to ensure sufficient coverage (perlmutter): `4_check_data.ipynb`.
+5. Train ANPEs (della): `5_anpe.py` or `5_anpe_della.py`. For demo see `5_nb_anpe_adroit.ipynb`
+6. Validate ANPEs (della): `6_qphi_valid_della.ipynb`. Check optuna hyperparameter optimization results: `6_nb_optuna_della.ipynb`. 

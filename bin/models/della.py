@@ -7,16 +7,16 @@ import os, sys
 import time 
 
 
-def anpe(seed, bands, study, gpu=False):
+def anpe(seed, bands, model, study, gpu=False):
     ''' deploy ANPE training 
     '''
     cntnt = '\n'.join([
         "#!/bin/bash", 
-        "#SBATCH -J modela%s%i_%s_anpe%s" % (study, seed, bands, ['', '_gpu'][gpu]),
+        "#SBATCH -J %s%s%i_%s_anpe%s" % (model, study, seed, bands, ['', '_gpu'][gpu]),
         "#SBATCH --time=95:59:59", 
         #"#SBATCH --time=00:29:59", 
         "#SBATCH --export=ALL", 
-        "#SBATCH -o ofiles/modela%s%i_%s_anpe%s.o" % (study, seed, bands, ['', '_gpu'][gpu]),
+        "#SBATCH -o ofiles/%s%s%i_%s_anpe%s.o" % (model, study, seed, bands, ['', '_gpu'][gpu]),
         "#SBATCH --mail-type=all", 
         "#SBATCH --mail-user=chhahn@princeton.edu", 
         ["", "#SBATCH --gres=gpu:1"][gpu], 
@@ -28,7 +28,7 @@ def anpe(seed, bands, study, gpu=False):
         "source ~/.bashrc", 
         "conda activate sbi", 
         "",
-        "python /home/chhahn/projects/SEDflow/bin/modela/anpe_della.py  %s False %s" % (bands, study), 
+        "python /home/chhahn/projects/SEDflow/bin/models/anpe_della.py %s False %s %s" % (bands, model, study), 
         "",
         'now=$(date +"%T")', 
         'echo "end time ... $now"', 
@@ -43,7 +43,14 @@ def anpe(seed, bands, study, gpu=False):
     return None 
 
 for i in range(10): 
-    anpe(i, 'ugrizJ', '.cdf', gpu=False)
-    anpe(i, 'grzW1W2', '.cdf', gpu=False)
-    anpe(i, 'ugrizJ', '.cdf', gpu=True)
-    anpe(i, 'grzW1W2', '.cdf', gpu=True)
+    anpe(i, 'grzW1W2', 'modelb', '.cdf', gpu=False)
+    anpe(i, 'grzW1W2', 'modelb', '.cdf', gpu=True)
+
+for i in range(10,30): 
+    anpe(i, 'grzW1W2', 'modelb', '.cdf', gpu=False)
+
+#for i in range(10): 
+#    anpe(i, 'ugrizJ', '.cdf', gpu=False)
+#    anpe(i, 'grzW1W2', '.cdf', gpu=False)
+#    anpe(i, 'ugrizJ', '.cdf', gpu=True)
+#    anpe(i, 'grzW1W2', '.cdf', gpu=True)
