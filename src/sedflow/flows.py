@@ -12,119 +12,6 @@ from sbi import inference as Inference
 from . import util as U
 
 
-
-class DESIflow(Flow): 
-    ''' SEDflow specifically designed for DESI 
-    '''
-    def __init__(self, name='modelb.lowz.grzW1W2', device=None): 
-        ''' load ensemble of SEDflows, specificially designed for analyzing DESI photometry.  
-
-        parameters
-        ----------
-        name : str
-            Name of DESI flow set up. Currently only Model B Low z (0 < z < 1) implemented. 
-
-        device : str
-            specify 'cpu' or 'cuda' if using gpu
-
-        notes
-        -----
-        * currently only Model B low 0<z<1 implemented. 
-        '''
-        if name not in ['modelb.lowz.grzW1W2']: 
-            raise NotImplementedError("currently only Model B low 0 < z < 1 implemented") 
-        # model name that specifies the SED model, the redshift range, and the
-        # photometric bands. 
-        self._name = name 
-        
-        super().__init__(device=device) 
-
-        self._load_desi_flow()
-
-    def run(self, nmgy, sig_nmgy, zred, Nsample=10000, progress_bar=False): 
-        ''' run DESIflow on specified photometry, photometric noise, and redshift 
-
-        parameters
-        ----------
-        nmgy : array_like
-            photometric flux in nanomaggies
-        sig_nmgy : array_like 
-            photometric noise in nanomaggies 
-        zred : float
-            redshift 
-
-        returns
-        -------
-        thetas : array_like 
-            Nsample x Ntheta array of samples drawn from the posterior 
-    
-        notes
-        -----
-
-        '''
-        if self._name == 'modelb.lowz.grzW1W2':
-            #this model is trained to take log10(flux), sig_flux, zred as input 
-            assert len(nmgy) == 5, 'only grzW1W2 band photometry is supported for this model'
-            assert len(sig_nmgy) == 5, 'only grzW1W2 band photometry is supported for this model'
-            assert zred > 0.: 'only 0 < z < 1 is supported for this model' 
-            assert zred < 1.: 'only 0 < z < 1 is supported for this model' 
-        
-            x_photo = np.concatenate([np.log10(nmgy), sig_nmgy, [zred]]) 
-        else: 
-            raise NotImplementedError
-
-        _thetas = self.flow.sample((Nsample,), x=torch.as_tensor(sed).to(self.device), 
-                show_progress_bars=progress_bar)
-        _thetas = _thetas.detach().cpu().numpy()
-
-        if self.flow._prior_type == 'uniform':
-            # for uniform priors, SEDflow implements a default inverse CDF
-            # transform. This transforms it back. 
-            thetas = np.empty(_thetas.shape)
-            for i in range(_thetas.shape[1]): 
-                thetas[:,i] = U.cdf_transform(_thetas[:,i], [self.prior_low[i], self.prior_high[i]])
-        else: 
-            thetas = _thetas
-
-        if self._name == 'modelb.lowz.grzW1W2':
-            # Model B uses provabgs SED model, which requires the SFH NMF basis
-            # coefficients to add up to one. SEDflow is trained in a
-            # transformed space based on Betnacourt (2010): https://arxiv.org/abs/1010.3436
-            # Here we transform it back to the original provabgs SED model
-            # parameter space. 
-            thetas = self._provabgs_sfh_dirichlet_transform(thetas)
-        else: 
-            raise NotImplementedError
-
-        return thetas
-
-    def _load_desi_flow(self): 
-        ''' load flow trained specifically for DESI 
-        '''
-        fqphis = glob.glob(os.path.join(os.path.dirname(os.path.realpath(__file__)), 'dat', name, '*'))
-        if len(fqphis) > 1: raise ValueError('currently only supports a single flow')
-
-        _ = self.load_flow(fqphis[0]) 
-        return None 
-
-    def _provabgs_sfh_dirichlet_transform(self, tt): 
-        ''' For models where we use the provabgs SED model, we transform the
-        four SFH NMF basis coefficients, which are sampled using a Dirichlet
-        distribuiton, to three values that are sampled from a uniform distribution.
-        We use a warped manifold transform as specified in Betnacourt (2010): 
-        https://arxiv.org/abs/1010.3436. This function transforms them back to 
-        the original SFH NMF basis coefficients. 
-        '''
-        assert tt.shape[-1] == 3
-        tt_d = np.empty(tt.shape[:-1]+(4,)) 
-    
-        tt_d[...,0] = 1. - tt[...,0]
-        for i in range(1,3): 
-            tt_d[...,i] = np.prod(tt[...,:i], axis=-1) * (1. - tt[...,i]) 
-        tt_d[...,-1] = np.prod(tt, axis=-1) 
-        return tt_d 
-
-
 class Flow(object): 
     ''' Load/train/evaluate flows for SEDflow. This is basically a wrapper for `sbi` tailored for SED modeling 
     to make it easier to use. It is recommended 
@@ -297,3 +184,117 @@ class Flow(object):
             raise NotImplementedError 
 
         return self.prior
+
+
+class DESIflow(Flow): 
+    ''' SEDflow specifically designed for DESI 
+    '''
+    def __init__(self, name='modelb.lowz.grzW1W2', device=None): 
+        ''' load ensemble of SEDflows, specificially designed for analyzing DESI photometry.  
+
+        parameters
+        ----------
+        name : str
+            Name of DESI flow set up. Currently only Model B Low z (0 < z < 1) implemented. 
+
+        device : str
+            specify 'cpu' or 'cuda' if using gpu
+
+        notes
+        -----
+        * currently only Model B low 0<z<1 implemented. 
+        '''
+        if name not in ['modelb.lowz.grzW1W2']: 
+            raise NotImplementedError("currently only Model B low 0 < z < 1 implemented") 
+        # model name that specifies the SED model, the redshift range, and the
+        # photometric bands. 
+        self._name = name 
+        
+        super().__init__(device=device) 
+
+        self._load_desi_flow()
+
+    def run(self, nmgy, sig_nmgy, zred, Nsample=10000, progress_bar=False): 
+        ''' run DESIflow on specified photometry, photometric noise, and redshift 
+
+        parameters
+        ----------
+        nmgy : array_like
+            photometric flux in nanomaggies
+        sig_nmgy : array_like 
+            photometric noise in nanomaggies 
+        zred : float
+            redshift 
+
+        returns
+        -------
+        thetas : array_like 
+            Nsample x Ntheta array of samples drawn from the posterior 
+    
+        notes
+        -----
+
+        '''
+        if self._name == 'modelb.lowz.grzW1W2':
+            #this model is trained to take log10(flux), sig_flux, zred as input 
+            assert len(nmgy) == 5, 'only grzW1W2 band photometry is supported for this model'
+            assert len(sig_nmgy) == 5, 'only grzW1W2 band photometry is supported for this model'
+            assert zred > 0., 'only 0 < z < 1 is supported for this model' 
+            assert zred < 1., 'only 0 < z < 1 is supported for this model' 
+        
+            x_photo = np.concatenate([np.log10(nmgy), sig_nmgy, [zred]]) 
+        else: 
+            raise NotImplementedError
+
+        _thetas = self.flow.sample((Nsample,), x=torch.as_tensor(x_photo).to(self.device), 
+                show_progress_bars=progress_bar)
+        _thetas = _thetas.detach().cpu().numpy()
+
+        if self.flow._prior_type == 'uniform':
+            # for uniform priors, SEDflow implements a default inverse CDF
+            # transform. This transforms it back. 
+            thetas = np.empty(_thetas.shape)
+            for i in range(_thetas.shape[1]): 
+                thetas[:,i] = U.cdf_transform(_thetas[:,i], [self.prior_low[i], self.prior_high[i]])
+        else: 
+            thetas = _thetas
+
+        if self._name == 'modelb.lowz.grzW1W2':
+            # Model B uses provabgs SED model, which requires the SFH NMF basis
+            # coefficients to add up to one. SEDflow is trained in a
+            # transformed space based on Betnacourt (2010): https://arxiv.org/abs/1010.3436
+            # Here we transform it back to the original provabgs SED model
+            # parameter space. 
+            thetas_sfh = self._provabgs_sfh_dirichlet_transform(thetas[:,1:4])
+
+            thetas = np.concatenate([thetas[:,0][:,None], thetas_sfh, thetas[:,4:]], axis=1) 
+        else: 
+            raise NotImplementedError
+
+        return thetas
+
+    def _load_desi_flow(self): 
+        ''' load flow trained specifically for DESI 
+        '''
+        fqphis = glob.glob(os.path.join(os.path.dirname(os.path.realpath(__file__)), 'dat', self._name, '*'))
+        if len(fqphis) != 1: raise ValueError('currently only supports a single flow')
+
+        _ = self.load_flow(fqphis[0]) 
+        return None 
+
+    def _provabgs_sfh_dirichlet_transform(self, tt): 
+        ''' For models where we use the provabgs SED model, we transform the
+        four SFH NMF basis coefficients, which are sampled using a Dirichlet
+        distribuiton, to three values that are sampled from a uniform distribution.
+        We use a warped manifold transform as specified in Betnacourt (2010): 
+        https://arxiv.org/abs/1010.3436. This function transforms them back to 
+        the original SFH NMF basis coefficients. 
+        '''
+        assert tt.shape[-1] == 3
+        tt_d = np.empty(tt.shape[:-1]+(4,)) 
+    
+        tt_d[...,0] = 1. - tt[...,0]
+        for i in range(1,3): 
+            tt_d[...,i] = np.prod(tt[...,:i], axis=-1) * (1. - tt[...,i]) 
+        tt_d[...,-1] = np.prod(tt, axis=-1) 
+        return tt_d 
