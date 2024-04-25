@@ -12,6 +12,41 @@ from sbi import inference as Inference
 from . import util as U
 
 
+def DESIflows(name='modelb.lowz.grzW1W2', device='cpu'): 
+    ''' load ensemble of SEDflows, specificially designed for analyzing DESI photometry.  
+
+    parameters
+    ----------
+    name : str
+        Name of DESI flow set up. Currently only Model B Low z (0 < z < 1) implemented. 
+
+    device : str
+        specify 'cpu' or 'cuda' if using gpu
+
+    returns
+    ------
+    flos : list
+        ensemble of Flow objects 
+
+
+    notes
+    -----
+    * currently only Model B low 0<z<1 implemented. 
+    '''
+    if name not in ['modelb.lowz.grzW1W2']: 
+        raise NotImplementedError("currently only Model B low 0 < z < 1 implemented") 
+
+    fqphis = glob.glob(os.path.join(os.path.dirname(os.path.realpath(__file__)), 'dat', name, '*'))
+
+    flos = []     
+    for fqphi in fqphis: 
+        _flo = Flow(device=device) 
+        _flo.load_flow(fqphi)
+
+        flos.append(_flo)
+    return flos 
+
+
 class Flow(object): 
     ''' Load/train/evaluate flows for SEDflow. This is basically a wrapper for `sbi` tailored for SED modeling 
     to make it easier to use. It is recommended 
@@ -98,6 +133,10 @@ class Flow(object):
         # if prior are uniform distributions perform inverse CDF transform. This is to help with the hard border edges. 
         # See Li et al (2024) POPSED paper.
         if self.prior_type == 'uniform': 
+            # check that the thetas are within the prior range; otherwise this will give nonsense
+            assert np.all(np.min(theta_train, axis=0) - np.array(self.prior_low) > 0), 'theta is outside of prior range' 
+            assert np.all(np.max(theta_train, axis=0) - np.array(self.prior_high) < 0), 'theta is outside of prior range' 
+
             _theta_train = np.empty(theta_train.shape)
             for i in range(theta_train.shape[1]): 
                 _theta_train[:,i] = U.inv_cdf_transform(theta_train[:,i], [self.prior_low[i], self.prior_high[i]])
@@ -181,17 +220,4 @@ class Flow(object):
 
         return self.prior
 
-
-def read_EnsembleFlow(study_name, n_ensemble=5, device='cpu', name='modela'): 
-    ''' read in ensemble of best flows
-    '''
-    fqphis = U.read_best_fqphi(study_name, n_ensemble=n_ensemble, name=name)
-
-    flos = []     
-    for fqphi in fqphis: 
-        _flo = Flow(device=device) 
-        _flo.load_flow(fqphi)
-
-        flos.append(_flo)
-    return flos 
 
