@@ -11,7 +11,7 @@ import multiprocessing as mp
 from provabgs import infer as Infer
 from provabgs import models as Models
 # -- SEDflow --- 
-from sedflow import util as U
+import util as U
 
 ####################################################
 # input 

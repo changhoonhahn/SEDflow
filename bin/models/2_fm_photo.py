@@ -13,7 +13,7 @@ from speclite import filters as specFilter
 
 from astropy import units as aU
 
-from sedflow import util as U
+import util as U
 
 name    = sys.argv[1]
 seed    = int(sys.argv[2])
