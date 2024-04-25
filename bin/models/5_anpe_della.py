@@ -18,8 +18,7 @@ import optuna
 from sbi import utils as Ut
 from sbi import inference as Inference
 
-from sedflow import data as D
-from sedflow import util as U
+import util as U
 from sedflow import flows as F
 
 ##################################################################################
@@ -27,8 +26,9 @@ from sedflow import flows as F
 ##################################################################################
 bands = sys.argv[1] # which bands passes
 freez = (sys.argv[2] == True) 
+model = sys.argv[3]
 try: 
-    study = sys.argv[3]
+    study = sys.argv[4]
 except: 
     study = ''
 ##################################################################################
@@ -42,19 +42,34 @@ if cuda:
 ##################################################################################
 # load data 
 ##################################################################################
-theta_train, X_train = D.load_modela('train', bands=bands, infer_redshift=freez)
+if model == 'modela': 
+    theta_train, X_train = U.load_modela('train', bands=bands, infer_redshift=freez)
+elif model == 'modelb': 
+    theta_train, X_train = U.load_modelb('train', bands=bands, infer_redshift=freez)
+else:
+    raise ValueError
 
 print('Ntrain + Nvalid = %i' % (theta_train.shape[0]))
 
 ##################################################################################
 # set prior range
 ##################################################################################
-if not freez: 
-    prior_low   = [7, 0., 0., 0., 0., 1e-2, np.log10(4.5e-5), np.log10(4.5e-5), 0, 0., -2.]
-    prior_high  = [13.0, 1., 1., 1., 1., 13.27, np.log10(1.5e-2), np.log10(1.5e-2), 3., 3., 1.]
-else: 
-    prior_low   = [7, 0., 0., 0., 0., 1e-2, np.log10(4.5e-5), np.log10(4.5e-5), 0, 0., -2., 0]
-    prior_high  = [13.0, 1., 1., 1., 1., 13.27, np.log10(1.5e-2), np.log10(1.5e-2), 3., 3., 1., 1.]
+if model == 'modela': 
+    if not freez: 
+        prior_low   = [7, 0., 0., 0., 0., 1e-2, np.log10(4.5e-5), np.log10(4.5e-5), 0, 0., -2.]
+        prior_high  = [13.0, 1., 1., 1., 1., 13.27, np.log10(1.5e-2), np.log10(1.5e-2), 3., 3., 1.]
+    else: 
+        prior_low   = [7, 0., 0., 0., 0., 1e-2, np.log10(4.5e-5), np.log10(4.5e-5), 0, 0., -2., 0]
+        prior_high  = [13.0, 1., 1., 1., 1., 13.27, np.log10(1.5e-2), np.log10(1.5e-2), 3., 3., 1., 1.]
+elif model == 'modelb': 
+    if not freez: 
+        prior_low   = [6, 0., 0., 0., 0., 1e-2, np.log10(4.5e-5), np.log10(4.5e-5), 0, 0., -2., 0.1, 0.0, 0.1]
+        prior_high  = [13.0, 1., 1., 1., 1., 13.27, np.log10(1.5e-2), np.log10(1.5e-2), 3., 3., 1., 15., 0.15, 0.7]
+    else: 
+        prior_low   = [6, 0., 0., 0., 0., 1e-2, np.log10(4.5e-5), np.log10(4.5e-5), 0, 0., -2., 0, 0.1, 0.0, 0.1]
+        prior_high  = [13.0, 1., 1., 1., 1., 13.27, np.log10(1.5e-2), np.log10(1.5e-2), 3., 3., 1., 1., 15.0, 0.15, 0.7]
+
+ 
 assert len(prior_low) == theta_train.shape[1], "prior and data dimension mismatch"  
 
 flo = F.Flow(device=device) 
@@ -62,13 +77,13 @@ flo.set_prior('uniform', low=prior_low, high=prior_high)
 ##################################################################################
 # OPTUNA
 ##################################################################################
-output_dir = os.path.join(U.data_dir(), 'qphi', 'modela') 
+output_dir = os.path.join(U.data_dir(), 'qphi', model) 
 
 n_trials    = 1000
 if not freez: 
-    study_name  = 'qphi.modela%s.%s.theta.nmgysigz' % (study, bands)
+    study_name  = 'qphi.%s%s.%s.theta.nmgysigz' % (model, study, bands)
 else: 
-    study_name  = 'qphi.modela%s.%s.thetaz.nmgysig' % (study, bands)
+    study_name  = 'qphi.%s%s.%s.thetaz.nmgysig' % (model, study, bands)
 
 n_jobs     = 1
 if not os.path.isdir(os.path.join(output_dir, study_name)): 
@@ -76,9 +91,9 @@ if not os.path.isdir(os.path.join(output_dir, study_name)):
 storage    = 'sqlite:///%s/%s/%s.db' % (output_dir, study_name, study_name)
 n_startup_trials = 20
 
-n_blocks_min, n_blocks_max = 2, 10
-n_transf_min, n_transf_max = 2, 10
-n_hidden_min, n_hidden_max = 64, 512
+n_blocks_min, n_blocks_max = 4, 20
+n_transf_min, n_transf_max = 4, 20
+n_hidden_min, n_hidden_max = 64, 1024 
 p_drop_min, p_drop_max = 0., 1.
 
 
