@@ -9,7 +9,10 @@ and redshift 0 < z < 1. This model, however, doesn't include dust emission prope
 ## Model B 
 `modelb.py`: standard `provabgs` setup plus nebular emission and dust emission. Has 3 
 additional parameters. The SEDs will span the observed-frame wavelength range of 0.1 to 30 micron 
-and redshift 0 < z < 1. This model, however, doesn't include dust emission properly. 
+and redshift 0 < z < 1.  
+
+## Model C
+`modelc.py`: same as Model B but for redshift range 1 < z < 2. 
 
 ### photometric uncertainties  
 $ugrizJ$ photometry: we'll use the magnitude uncertainties from Figure 2 of
@@ -33,3 +36,4 @@ Below is the workflow for training SEDflow:
 4. Compare forward modled synthetic photometry to observations to ensure sufficient coverage (perlmutter): `4_check_data.ipynb`.
 5. Train ANPEs (della): `5_anpe.py` or `5_anpe_della.py`. For demo see `5_nb_anpe_adroit.ipynb`
 6. Validate ANPEs (della): `6_qphi_valid_della.ipynb`. Check optuna hyperparameter optimization results: `6_nb_optuna_della.ipynb`. 
+7. Train emulator for calculating the surviving stellar mass: `7_modelb_msurv.py` 
