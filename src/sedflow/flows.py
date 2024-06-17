@@ -298,3 +298,72 @@ class DESIflow(Flow):
             tt_d[...,i] = np.prod(tt[...,:i], axis=-1) * (1. - tt[...,i]) 
         tt_d[...,-1] = np.prod(tt, axis=-1) 
         return tt_d 
+    
+    # galaxy properties 
+    def _msurv(self, tt, tage): 
+        ''' calculate survivng mass fraction used to calculate M* from total
+        formed mass
+
+        parameters
+        ----------
+        - 
+
+        '''
+        return None 
+
+
+    def _load_msurv(self): 
+        self._msurv_nmf_theta_shift = np.load(os.path.join(
+            os.path.dirname(os.path.realpath(__file__)), 'dat', 'thetas_shift.nmf.npy'))
+        self._msurv_nmf_theta_scale = np.load(os.path.join(
+            os.path.dirname(os.path.realpath(__file__)), 'dat', 'thetas_scale.nmf.npy'))
+        
+        self._msurv_nmf_msurv_shift = np.load(os.path.join(
+            os.path.dirname(os.path.realpath(__file__)), 'dat', 'msurv_nmf_shift.npy'))
+        self._msurv_nmf_msurv_scale = np.load(os.path.join(
+            os.path.dirname(os.path.realpath(__file__)), 'dat', 'msurv_nmf_scale.npy'))
+        self._msurv_nmf_emu = MLP(6, 1, n_hidden=[128, 128, 128, 128, 128])
+        self._msurv_nmf_emu.load_state_dict(
+                torch.load(os.path.join(os.path.dirname(os.path.realpath(__file__)), 
+                    'dat', 'emu_msurv.nmf.1.pt')) )
+        self._msurv_nmf_emu.to(self.device)
+        return None
+
+
+class MLP(nn.Sequential):
+    """Multi-Layer Perceptron
+    A simple implementation with a configurable number of hidden layers and
+    activation functions.
+    Parameters
+    ----------
+    n_in: int
+        Input dimension
+    n_out: int
+        Output dimension
+    n_hidden: list of int
+        Dimensions for every hidden layer
+    act: list of callables
+        Activation functions after every layer. Needs to have len(n_hidden) + 1
+        If `None`, will be set to `LeakyReLU` for every layer.
+    dropout: float
+        Dropout probability
+    """
+    def __init__(self,
+                 n_in,
+                 n_out,
+                 n_hidden=(16, 16, 16),
+                 act=None,
+                 dropout=0):
+
+        if act is None:
+            act = [ nn.LeakyReLU(), ] * (len(n_hidden) + 1)
+        assert len(act) == len(n_hidden) + 1
+
+        layer = []
+        n_ = [n_in, *n_hidden, n_out]
+        for i in range(len(n_)-1):
+                layer.append(nn.Linear(n_[i], n_[i+1]))
+                layer.append(act[i])
+                layer.append(nn.Dropout(p=dropout))
+
+        super(MLP, self).__init__(*layer)
