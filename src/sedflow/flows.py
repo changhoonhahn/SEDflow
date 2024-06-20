@@ -187,7 +187,15 @@ class Flow(object):
 
 
 class DESIflow(Flow): 
-    ''' SEDflow specifically designed for DESI 
+    ''' SEDflow specifically designed for DESI. It assumes the inputs are grzW1W2 photometry 
+    and spectroscopic redshift
+
+    DESIflow curentlys upports the following models: 
+    * `modelb.lowz.grzW1W2`: standard `provabgs` setup plus nebular emission and dust emission,
+        which adds 3 additional parameters. Only supports redshift range: 0 < z < 1. The 
+        parameters are: Mform, beta1, beta2, beta3, beta4, f_burst, t_burst, gamma1, gamma2, 
+        tau_bc, tau_ism, dust_index, Umin, gamma_e, Q_PAH. 
+
     '''
     def __init__(self, name='modelb.lowz.grzW1W2', device=None): 
         ''' load ensemble of SEDflows, specificially designed for analyzing DESI photometry.  
@@ -298,35 +306,171 @@ class DESIflow(Flow):
             tt_d[...,i] = np.prod(tt[...,:i], axis=-1) * (1. - tt[...,i]) 
         tt_d[...,-1] = np.prod(tt, axis=-1) 
         return tt_d 
+
+    def _provabgs_sfh_dirichlet_transform_inverse(self, tt): 
+        ''' For models where we use the provabgs SED model, we transform the
+        four SFH NMF basis coefficients, which are sampled using a Dirichlet
+        distribuiton, to three values that are sampled from a uniform distribution.
+        We use a warped manifold transform as specified in Betnacourt (2010): 
+        https://arxiv.org/abs/1010.3436. This function transforms the original 
+        SFH NMF basis coefficients to the uniform basis. 
+        '''
+        tt_u = np.zeros((tt.shape[0],3))
+        tt_u[:,0] = (1. - tt[:,0]).clip(1e-8, None)
+        for i in range(1,3):
+            tt_u[:,i] = 1. - (tt[:,i] / np.prod(tt_u[:,:i], axis=1))
+        return tt_u
     
     # galaxy properties 
-    def _msurv(self, tt, tage): 
+    def _msurv(self, thetas, tage): 
         ''' calculate survivng mass fraction used to calculate M* from total
         formed mass
 
         parameters
         ----------
-        - 
-
+        thetas : array-like
+            parameters for SED model. See class description for details.  
+        tage : array-like
+            age of the galaxy in Gyrs
+        
+        returns
+        -------
+        logmsurv : array-like
+            log10 (surviving stellar mass)
         '''
-        return None 
+        if self._name == 'modelb.lowz.grzW1W2':
+            pass
+        else: 
+            raise NotImplementedError
 
+        if self._msurv_nmf_emu is None or self._msurv_burst_emu is None: 
+            self._load_msurv()
+    
+        # nmf contribution 
+        fsurv_nmf = self._msurv_nmf(thetas, tage)
+    
+        # burst contribution 
+        fsurv_burst = self._msurv_burst(thetas, tage)
+        # if tburst is older than the age of the galaxy. This should by construction 
+        # never happen... 
+        fsurv_burst[thetas[:,6] > tage] = 0. 
+    
+        fsurv = (1. - thetas[:,5]) * fsurv_nmf + thetas[:,5] * fsurv_burst 
+        
+        logmsurv = thetas[:,0] + np.log10(fsurv) 
+        return logmsurv
+
+    def _msurv_nmf(self, thetas, tage): 
+        ''' calculate survivng mass fraction used to calculate M* from total formed 
+        mass for the NMF contribution 
+
+        parameters
+        ----------
+        thetas : array
+            Parameters of the SED model, provided in the same format as the output of the
+            NPE.
+
+        tage : array 
+            age of the galaxy in Gyrs. 
+
+        returns
+        -------
+        fsurv : array
+            surviving mass fraction 
+        '''
+        # parse and transform input parameters  
+        thetas = np.atleast_2d(thetas)[:,1:9] # extract SFH and ZH parameters only 
+        
+        # transform dirichlet prior back to uniform 
+        thetas_sfh = self._provabgs_sfh_dirichlet_transform_inverse(thetas[:,:4])
+
+        # gamma1, gamma2 to log10 
+        thetas[:,6] = np.log10(thetas[:,6]) 
+        thetas[:,7] = np.log10(thetas[:,7]) 
+        
+        thetas = np.concatenate([thetas_sfh, thetas[:,6:], np.atleast_2d(tage)], axis=1) 
+        
+        # whiten theta and select columns 
+        thetas[:,:3] = (thetas[:,:3] - self._msurv_theta_shift[:3]) / self._msurv_theta_scale[:3]
+        thetas[:,3:] = (thetas[:,3:] - self._msurv_theta_shift[5:]) / self._msurv_theta_scale[5:]
+        thetas = torch.tensor(thetas.astype(np.float32)).to(self.device)
+
+        # evaluate emulator 
+        with torch.no_grad(): 
+            _msurv = self._msurv_nmf_emu(thetas).cpu().numpy()
+
+        return (_msurv * self._msurv_nmf_scale) + self._msurv_nmf_shift
+
+    def _msurv_burst(self, thetas, tage): 
+        ''' calculate survivng mass fraction used to calculate M* from total formed 
+        mass for the burst contribution 
+
+        parameters
+        ----------
+        thetas : array
+            Parameters of the SED model, provided in the same format as the output of the
+            NPE.
+
+        tage : array 
+            age of the galaxy in Gyrs. 
+
+        returns
+        -------
+        fsurv : array
+            surviving mass fraction 
+        '''
+        # parse and transform input parameters  
+        thetas = np.atleast_2d(thetas)[:,1:9] # extract SFH and ZH parameters only 
+        
+        # gamma1, gamma2 to log10 
+        thetas[:,6] = np.log10(thetas[:,6]) 
+        thetas[:,7] = np.log10(thetas[:,7]) 
+        
+        thetas = np.concatenate([thetas[:,5:], np.atleast_2d(tage)], axis=1) 
+        
+        # whiten theta and select columns 
+        thetas = (thetas - self._msurv_theta_shift[4:]) / self._msurv_theta_scale[4:]
+        thetas = torch.tensor(thetas.astype(np.float32)).to(self.device)
+
+        # evaluate emulator 
+        with torch.no_grad(): 
+            _msurv = self._msurv_burst_emu(thetas).cpu().numpy()
+
+        return (_msurv * self._msurv_burst_scale) + self._msurv_burst_shift
 
     def _load_msurv(self): 
-        self._msurv_nmf_theta_shift = np.load(os.path.join(
-            os.path.dirname(os.path.realpath(__file__)), 'dat', 'thetas_shift.nmf.npy'))
-        self._msurv_nmf_theta_scale = np.load(os.path.join(
-            os.path.dirname(os.path.realpath(__file__)), 'dat', 'thetas_scale.nmf.npy'))
+        ''' load files necessary to run the surviving mass fraction emulator: 
+        shift/scale arrays, emulator for NMF contribution, emulator for burst contribution. 
+        '''
+
+        if len(fqphis) != 1: raise ValueError('currently only supports a single flow')
+        # load shift/scale arrays
+        self._msurv_theta_shift = np.load(os.path.join(
+            os.path.dirname(os.path.realpath(__file__)), 'dat', self._name, 'thetas_shift.npy'))
+        self._msurv_theta_scale = np.load(os.path.join(
+            os.path.dirname(os.path.realpath(__file__)), 'dat', self._name, 'thetas_scale.npy'))
         
-        self._msurv_nmf_msurv_shift = np.load(os.path.join(
-            os.path.dirname(os.path.realpath(__file__)), 'dat', 'msurv_nmf_shift.npy'))
-        self._msurv_nmf_msurv_scale = np.load(os.path.join(
-            os.path.dirname(os.path.realpath(__file__)), 'dat', 'msurv_nmf_scale.npy'))
-        self._msurv_nmf_emu = MLP(6, 1, n_hidden=[128, 128, 128, 128, 128])
-        self._msurv_nmf_emu.load_state_dict(
-                torch.load(os.path.join(os.path.dirname(os.path.realpath(__file__)), 
-                    'dat', 'emu_msurv.nmf.1.pt')) )
+        self._msurv_nmf_shift = np.load(os.path.join(
+            os.path.dirname(os.path.realpath(__file__)), 'dat', self._name, 'msurv_nmf_shift.npy'))
+        self._msurv_nmf_scale = np.load(os.path.join(
+            os.path.dirname(os.path.realpath(__file__)), 'dat', self._name, 'msurv_nmf_scale.npy'))
+        
+        self._msurv_burst_shift = np.load(os.path.join(
+            os.path.dirname(os.path.realpath(__file__)), 'dat', self._name, 'msurv_burst_shift.npy'))
+        self._msurv_burst_scale = np.load(os.path.join(
+            os.path.dirname(os.path.realpath(__file__)), 'dat', self._name, 'msurv_burst_scale.npy'))
+        
+        # load Msurv emulator for NMF
+        self._msurv_nmf_emu = torch.load(os.path.join(
+            os.path.dirname(os.path.realpath(__file__)), 'dat', self._name, 'emu_msurv.v2.nmf.pt'), 
+            map_location=device)
         self._msurv_nmf_emu.to(self.device)
+
+        # load Msurv emulator for burst 
+        self._msurv_burst_emu = torch.load(os.path.join(
+            os.path.dirname(os.path.realpath(__file__)), 'dat', self._name, 'emu_msurv.v2.burst.pt'), 
+            map_location=device)
+        self._msurv_burst_emu.to(self.device)
         return None
 
 
