@@ -199,6 +199,10 @@ class DESIflow(Flow):
         parameters are: Mform, beta1, beta2, beta3, beta4, f_burst, t_burst, gamma1, gamma2, 
         tau_bc, tau_ism, dust_index, Umin, gamma_e, Q_PAH. 
 
+    * `modelb.highz.grzW1W2`: standard `provabgs` setup plus nebular emission and dust emission,
+        which adds 3 additional parameters. Only supports redshift range: 1 < z < 2. The 
+        parameters are: Mform, beta1, beta2, beta3, beta4, f_burst, t_burst, gamma1, gamma2, 
+        tau_bc, tau_ism, dust_index, Umin, gamma_e, Q_PAH. 
     '''
     def __init__(self, name='modelb.lowz.grzW1W2', device=None): 
         ''' load ensemble of SEDflows, specificially designed for analyzing DESI photometry.  
@@ -206,7 +210,8 @@ class DESIflow(Flow):
         parameters
         ----------
         name : str
-            Name of DESI flow set up. Currently only Model B Low z (0 < z < 1) implemented. 
+            Name of DESI flow set up. Currently only Model B Low z (0 < z < 1) and Model B 
+            High z (1 < z < 2) implemented. 
 
         device : str
             specify 'cpu' or 'cuda' if using gpu
@@ -215,8 +220,8 @@ class DESIflow(Flow):
         -----
         * currently only Model B low 0<z<1 implemented. 
         '''
-        if name not in ['modelb.lowz.grzW1W2']: 
-            raise NotImplementedError("currently only Model B low 0 < z < 1 implemented") 
+        if name not in ['modelb.lowz.grzW1W2', 'modelb.highz.grzW1W2']: 
+            raise NotImplementedError("currently only Model B for 0 < z < 1 and 1 < z < 2 implemented") 
         # model name that specifies the SED model, the redshift range, and the
         # photometric bands. 
         self._name = name 
@@ -257,6 +262,14 @@ class DESIflow(Flow):
             assert zred < 1., 'only 0 < z < 1 is supported for this model' 
         
             x_photo = np.concatenate([np.log10(nmgy), sig_nmgy, [zred]]) 
+        elif self._name == 'modelb.highz.grzW1W2':
+            #this model is trained to take log10(flux), sig_flux, zred as input 
+            assert len(nmgy) == 5, 'only grzW1W2 band photometry is supported for this model'
+            assert len(sig_nmgy) == 5, 'only grzW1W2 band photometry is supported for this model'
+            assert zred > 1., 'only 1 < z < 2 is supported for this model' 
+            assert zred < 2., 'only 1 < z < 2 is supported for this model' 
+        
+            x_photo = np.concatenate([np.log10(nmgy), sig_nmgy, [zred]]) 
         else: 
             raise NotImplementedError
 
@@ -273,7 +286,7 @@ class DESIflow(Flow):
         else: 
             thetas = _thetas
 
-        if self._name == 'modelb.lowz.grzW1W2':
+        if self._name in ['modelb.lowz.grzW1W2', 'modelb.highz.grzW1W2']:
             # Model B uses provabgs SED model, which requires the SFH NMF basis
             # coefficients to add up to one. SEDflow is trained in a
             # transformed space based on Betnacourt (2010): https://arxiv.org/abs/1010.3436
@@ -345,9 +358,7 @@ class DESIflow(Flow):
         logmsurv : array-like
             log10 (surviving stellar mass)
         '''
-        if self._name == 'modelb.lowz.grzW1W2':
-            pass
-        else: 
+        if self._name not in ['modelb.lowz.grzW1W2', 'modelb.highz.grzW1W2']:
             raise NotImplementedError
 
         if self._msurv_nmf_emu is None or self._msurv_burst_emu is None: 

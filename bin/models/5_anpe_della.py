@@ -46,6 +46,8 @@ if model == 'modela':
     theta_train, X_train = U.load_modela('train', bands=bands, infer_redshift=freez)
 elif model == 'modelb': 
     theta_train, X_train = U.load_modelb('train', bands=bands, infer_redshift=freez)
+elif model == 'modelc': 
+    theta_train, X_train = U.load_modelc('train', bands=bands, infer_redshift=freez)
 else:
     raise ValueError
 
@@ -62,6 +64,13 @@ if model == 'modela':
         prior_low   = [7, 0., 0., 0., 0., 1e-2, np.log10(4.5e-5), np.log10(4.5e-5), 0, 0., -2., 0]
         prior_high  = [13.0, 1., 1., 1., 1., 13.27, np.log10(1.5e-2), np.log10(1.5e-2), 3., 3., 1., 1.]
 elif model == 'modelb': 
+    if not freez: 
+        prior_low   = [6, 0., 0., 0., 0., 1e-2, np.log10(4.5e-5), np.log10(4.5e-5), 0, 0., -2., 0.1, 0.0, 0.1]
+        prior_high  = [13.0, 1., 1., 1., 1., 13.27, np.log10(1.5e-2), np.log10(1.5e-2), 3., 3., 1., 15., 0.15, 0.7]
+    else: 
+        prior_low   = [6, 0., 0., 0., 0., 1e-2, np.log10(4.5e-5), np.log10(4.5e-5), 0, 0., -2., 0, 0.1, 0.0, 0.1]
+        prior_high  = [13.0, 1., 1., 1., 1., 13.27, np.log10(1.5e-2), np.log10(1.5e-2), 3., 3., 1., 1., 15.0, 0.15, 0.7]
+elif model == 'modelc': 
     if not freez: 
         prior_low   = [6, 0., 0., 0., 0., 1e-2, np.log10(4.5e-5), np.log10(4.5e-5), 0, 0., -2., 0.1, 0.0, 0.1]
         prior_high  = [13.0, 1., 1., 1., 1., 13.27, np.log10(1.5e-2), np.log10(1.5e-2), 3., 3., 1., 15., 0.15, 0.7]
