@@ -18,7 +18,10 @@ class Flow(object):
     '''
     
     def __init__(self, device=None): 
-        self.device = device
+        if device is None: 
+            self.device = torch.device('cpu') 
+        else: 
+            self.device = device
 
         self.prior = None 
 
@@ -221,6 +224,9 @@ class DESIflow(Flow):
         super().__init__(device=device) 
 
         self._load_desi_flow()
+        
+        self._msurv_nmf_emu = None 
+        self._msurv_burst_emu = None
 
     def run(self, nmgy, sig_nmgy, zred, Nsample=10000, progress_bar=False): 
         ''' run DESIflow on specified photometry, photometric noise, and redshift 
@@ -284,8 +290,9 @@ class DESIflow(Flow):
     def _load_desi_flow(self): 
         ''' load flow trained specifically for DESI 
         '''
-        fqphis = glob.glob(os.path.join(os.path.dirname(os.path.realpath(__file__)), 'dat', self._name, '*'))
-        if len(fqphis) != 1: raise ValueError('currently only supports a single flow')
+        fqphis = glob.glob(os.path.join(os.path.dirname(os.path.realpath(__file__)), 'dat', self._name, 'qphi*'))
+        if len(fqphis) != 1: 
+            raise ValueError('currently only supports a single flow')
 
         _ = self.load_flow(fqphis[0]) 
         return None 
@@ -328,9 +335,9 @@ class DESIflow(Flow):
 
         parameters
         ----------
-        thetas : array-like
+        thetas : [N, Ndim] array-like
             parameters for SED model. See class description for details.  
-        tage : array-like
+        tage : [N,] array-like
             age of the galaxy in Gyrs
         
         returns
@@ -345,6 +352,9 @@ class DESIflow(Flow):
 
         if self._msurv_nmf_emu is None or self._msurv_burst_emu is None: 
             self._load_msurv()
+
+        thetas = np.atleast_2d(thetas).copy()
+        tage = tage[:,None].copy()
     
         # nmf contribution 
         fsurv_nmf = self._msurv_nmf(thetas, tage)
@@ -353,24 +363,24 @@ class DESIflow(Flow):
         fsurv_burst = self._msurv_burst(thetas, tage)
         # if tburst is older than the age of the galaxy. This should by construction 
         # never happen... 
-        fsurv_burst[thetas[:,6] > tage] = 0. 
-    
-        fsurv = (1. - thetas[:,5]) * fsurv_nmf + thetas[:,5] * fsurv_burst 
+        fsurv_burst[thetas[:,6] > tage[:,0]] = 0. 
+
+        fsurv = (1. - thetas[:,5]) * fsurv_nmf.flatten() + thetas[:,5] * fsurv_burst.flatten()
         
         logmsurv = thetas[:,0] + np.log10(fsurv) 
         return logmsurv
 
-    def _msurv_nmf(self, thetas, tage): 
+    def _msurv_nmf(self, _thetas, tage): 
         ''' calculate survivng mass fraction used to calculate M* from total formed 
         mass for the NMF contribution 
 
         parameters
         ----------
-        thetas : array
+        thetas : [N x Ndim] array
             Parameters of the SED model, provided in the same format as the output of the
             NPE.
 
-        tage : array 
+        tage : [N x 1] array 
             age of the galaxy in Gyrs. 
 
         returns
@@ -379,7 +389,7 @@ class DESIflow(Flow):
             surviving mass fraction 
         '''
         # parse and transform input parameters  
-        thetas = np.atleast_2d(thetas)[:,1:9] # extract SFH and ZH parameters only 
+        thetas = _thetas[:,1:9].copy() # extract SFH and ZH parameters only 
         
         # transform dirichlet prior back to uniform 
         thetas_sfh = self._provabgs_sfh_dirichlet_transform_inverse(thetas[:,:4])
@@ -388,7 +398,7 @@ class DESIflow(Flow):
         thetas[:,6] = np.log10(thetas[:,6]) 
         thetas[:,7] = np.log10(thetas[:,7]) 
         
-        thetas = np.concatenate([thetas_sfh, thetas[:,6:], np.atleast_2d(tage)], axis=1) 
+        thetas = np.concatenate([thetas_sfh, thetas[:,6:], tage], axis=1) 
         
         # whiten theta and select columns 
         thetas[:,:3] = (thetas[:,:3] - self._msurv_theta_shift[:3]) / self._msurv_theta_scale[:3]
@@ -407,11 +417,11 @@ class DESIflow(Flow):
 
         parameters
         ----------
-        thetas : array
+        thetas : [N, Ndim] array
             Parameters of the SED model, provided in the same format as the output of the
             NPE.
 
-        tage : array 
+        tage : [N, 1] array 
             age of the galaxy in Gyrs. 
 
         returns
@@ -420,13 +430,13 @@ class DESIflow(Flow):
             surviving mass fraction 
         '''
         # parse and transform input parameters  
-        thetas = np.atleast_2d(thetas)[:,1:9] # extract SFH and ZH parameters only 
+        thetas = thetas[:,1:9].copy() # extract SFH and ZH parameters only 
         
         # gamma1, gamma2 to log10 
         thetas[:,6] = np.log10(thetas[:,6]) 
         thetas[:,7] = np.log10(thetas[:,7]) 
         
-        thetas = np.concatenate([thetas[:,5:], np.atleast_2d(tage)], axis=1) 
+        thetas = np.concatenate([thetas[:,5:], tage], axis=1) 
         
         # whiten theta and select columns 
         thetas = (thetas - self._msurv_theta_shift[4:]) / self._msurv_theta_scale[4:]
@@ -442,13 +452,11 @@ class DESIflow(Flow):
         ''' load files necessary to run the surviving mass fraction emulator: 
         shift/scale arrays, emulator for NMF contribution, emulator for burst contribution. 
         '''
-
-        if len(fqphis) != 1: raise ValueError('currently only supports a single flow')
         # load shift/scale arrays
         self._msurv_theta_shift = np.load(os.path.join(
-            os.path.dirname(os.path.realpath(__file__)), 'dat', self._name, 'thetas_shift.npy'))
+            os.path.dirname(os.path.realpath(__file__)), 'dat', self._name, 'theta_shift.npy'))
         self._msurv_theta_scale = np.load(os.path.join(
-            os.path.dirname(os.path.realpath(__file__)), 'dat', self._name, 'thetas_scale.npy'))
+            os.path.dirname(os.path.realpath(__file__)), 'dat', self._name, 'theta_scale.npy'))
         
         self._msurv_nmf_shift = np.load(os.path.join(
             os.path.dirname(os.path.realpath(__file__)), 'dat', self._name, 'msurv_nmf_shift.npy'))
@@ -463,13 +471,13 @@ class DESIflow(Flow):
         # load Msurv emulator for NMF
         self._msurv_nmf_emu = torch.load(os.path.join(
             os.path.dirname(os.path.realpath(__file__)), 'dat', self._name, 'emu_msurv.v2.nmf.pt'), 
-            map_location=device)
+            map_location=self.device)
         self._msurv_nmf_emu.to(self.device)
 
         # load Msurv emulator for burst 
         self._msurv_burst_emu = torch.load(os.path.join(
             os.path.dirname(os.path.realpath(__file__)), 'dat', self._name, 'emu_msurv.v2.burst.pt'), 
-            map_location=device)
+            map_location=self.device)
         self._msurv_burst_emu.to(self.device)
         return None
 
