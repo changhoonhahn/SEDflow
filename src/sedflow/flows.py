@@ -39,6 +39,7 @@ class Flow(object):
         self.prior_type = self.flow._prior_type
         self.prior_low = self.flow._prior_low
         self.prior_high = self.flow._prior_high
+        self.flow._device = self.device
         return None 
 
     def sample(self, sed, Nsample=10000, progress_bar=False): 
@@ -297,7 +298,7 @@ class DESIflow(Flow):
                 show_progress_bars=progress_bar)
 
         if log_prob: # calculate the log probability 
-            logp = self.flow.log_prob(_thetas, x=torch.as_tensor(x_photo).to(self.device))
+            logp = self.flow.log_prob(_thetas.to(self.device), x=torch.as_tensor(x_photo).to(self.device))
             logp = logp.detach().cpu().numpy() 
 
         _thetas = _thetas.detach().cpu().numpy()
