@@ -197,12 +197,26 @@ class DESIflow(Flow):
     * `modelb.lowz.grzW1W2`: standard `provabgs` setup plus nebular emission and dust emission,
         which adds 3 additional parameters. Only supports redshift range: 0 < z < 1. The 
         parameters are: Mform, beta1, beta2, beta3, beta4, f_burst, t_burst, gamma1, gamma2, 
-        tau_bc, tau_ism, dust_index, Umin, gamma_e, Q_PAH. 
+        tau_bc, tau_ism, dust_index, Umin, gamma_e, Q_PAH with the following prior: 
+
+        UniformPrior(6., 13., label='sed'),
+        FlatDirichletPrior(4, label='sed'),           # flat dirichilet priors
+        UniformPrior(0., 1., label='sed'),            # burst fraction
+        UniformPrior(1e-2, 13.27, label='sed'),       # tburst
+        LogUniformPrior(4.5e-5, 1.5e-2, label='sed'), # log uniform priors on ZH coeff
+        LogUniformPrior(4.5e-5, 1.5e-2, label='sed'), # log uniform priors on ZH coeff
+        UniformPrior(0., 3., label='sed'),            # uniform priors on dust1
+        UniformPrior(0., 3., label='sed'),            # uniform priors on dust2
+        UniformPrior(-2., 1., label='sed'),           # uniform priors on dust_index
+        UniformPrior(0.1, 15., label='sed'),          # uniform priors on Umin based on Leja+(2017)
+        UniformPrior(0.0, 0.15, label='sed'),         # uniform priors on gamma_e based on Leja+(2017)
+        UniformPrior(0.1, 0.7, label='sed')           # uniform priors on Q_PAH based on Leja+(2017)
+    ])
 
     * `modelb.highz.grzW1W2`: standard `provabgs` setup plus nebular emission and dust emission,
         which adds 3 additional parameters. Only supports redshift range: 1 < z < 2. The 
         parameters are: Mform, beta1, beta2, beta3, beta4, f_burst, t_burst, gamma1, gamma2, 
-        tau_bc, tau_ism, dust_index, Umin, gamma_e, Q_PAH. 
+        tau_bc, tau_ism, dust_index, Umin, gamma_e, Q_PAH. Same prior as above.
     '''
     def __init__(self, name='modelb.lowz.grzW1W2', device=None): 
         ''' load ensemble of SEDflows, specificially designed for analyzing DESI photometry.  
@@ -233,7 +247,7 @@ class DESIflow(Flow):
         self._msurv_nmf_emu = None 
         self._msurv_burst_emu = None
 
-    def run(self, nmgy, sig_nmgy, zred, Nsample=10000, progress_bar=False): 
+    def run(self, nmgy, sig_nmgy, zred, Nsample=10000, log_prob=False, progress_bar=False): 
         ''' run DESIflow on specified photometry, photometric noise, and redshift 
 
         parameters
@@ -244,6 +258,12 @@ class DESIflow(Flow):
             photometric noise in nanomaggies 
         zred : float
             redshift 
+        Nsample : int 
+            number of sampels tod raw from the neural posterior estimate. (Default: 10000) 
+        log_prob : bool 
+            If True, also return log probabilities of the posterior samples. (Default: False) 
+        progress_bar : bool
+            If True display progress bar
 
         returns
         -------
@@ -275,6 +295,11 @@ class DESIflow(Flow):
 
         _thetas = self.flow.sample((Nsample,), x=torch.as_tensor(x_photo).to(self.device), 
                 show_progress_bars=progress_bar)
+
+        if log_prob: # calculate the log probability 
+            logp = self.flow.log_prob(_thetas, x=torch.as_tensor(x_photo).to(self.device))
+            logp = logp.detach().cpu().numpy() 
+
         _thetas = _thetas.detach().cpu().numpy()
 
         if self.flow._prior_type == 'uniform':
@@ -295,10 +320,14 @@ class DESIflow(Flow):
             thetas_sfh = self._provabgs_sfh_dirichlet_transform(thetas[:,1:4])
 
             thetas = np.concatenate([thetas[:,0][:,None], thetas_sfh, thetas[:,4:]], axis=1) 
+            thetas[:,7:9] = 10**thetas[:,7:9] # revert log10(gamma_1) and log10(gamma_2)
         else: 
             raise NotImplementedError
-
-        return thetas
+    
+        if not log_prob: 
+            return thetas
+        else: 
+            return thetas, logp
 
     def _load_desi_flow(self): 
         ''' load flow trained specifically for DESI 
