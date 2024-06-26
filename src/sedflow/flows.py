@@ -8,7 +8,6 @@ from torch import nn
 from sbi import utils as Ut
 from sbi import inference as Inference
 
-
 from . import util as U
 
 
@@ -49,12 +48,13 @@ class Flow(object):
         ----------
         sed : array_like
             SED photometry
-        
         Nsample : int
             number of samples to draw 
-
         progress_bar : bool
             toggle progress bar 
+
+        returns
+        -------
 
 
         '''
@@ -194,60 +194,32 @@ class DESIflow(Flow):
     ''' SEDflow specifically designed for DESI. It assumes the inputs are grzW1W2 photometry 
     and spectroscopic redshift
 
-    DESIflow curentlys upports the following models: 
-    * `modelb.lowz.grzW1W2`: standard `provabgs` setup plus nebular emission and dust emission,
-        which adds 3 additional parameters. Only supports redshift range: 0 < z < 1. The 
-        parameters are: Mform, beta1, beta2, beta3, beta4, f_burst, t_burst, gamma1, gamma2, 
-        tau_bc, tau_ism, dust_index, Umin, gamma_e, Q_PAH with the following prior: 
-
-        UniformPrior(6., 13., label='sed'),
-        FlatDirichletPrior(4, label='sed'),           # flat dirichilet priors
-        UniformPrior(0., 1., label='sed'),            # burst fraction
-        UniformPrior(1e-2, 13.27, label='sed'),       # tburst
-        LogUniformPrior(4.5e-5, 1.5e-2, label='sed'), # log uniform priors on ZH coeff
-        LogUniformPrior(4.5e-5, 1.5e-2, label='sed'), # log uniform priors on ZH coeff
-        UniformPrior(0., 3., label='sed'),            # uniform priors on dust1
-        UniformPrior(0., 3., label='sed'),            # uniform priors on dust2
-        UniformPrior(-2., 1., label='sed'),           # uniform priors on dust_index
-        UniformPrior(0.1, 15., label='sed'),          # uniform priors on Umin based on Leja+(2017)
-        UniformPrior(0.0, 0.15, label='sed'),         # uniform priors on gamma_e based on Leja+(2017)
-        UniformPrior(0.1, 0.7, label='sed')           # uniform priors on Q_PAH based on Leja+(2017)
-    ])
-
-    * `modelb.highz.grzW1W2`: standard `provabgs` setup plus nebular emission and dust emission,
-        which adds 3 additional parameters. Only supports redshift range: 1 < z < 2. The 
-        parameters are: Mform, beta1, beta2, beta3, beta4, f_burst, t_burst, gamma1, gamma2, 
-        tau_bc, tau_ism, dust_index, Umin, gamma_e, Q_PAH. Same prior as above.
     '''
-    def __init__(self, name='modelb.lowz.grzW1W2', device=None): 
+    def __init__(self, gsed=None, device=None): 
         ''' load ensemble of SEDflows, specificially designed for analyzing DESI photometry.  
 
         parameters
         ----------
-        name : str
-            Name of DESI flow set up. Currently only Model B Low z (0 < z < 1) and Model B 
-            High z (1 < z < 2) implemented. 
+        gsed : object 
+            galaxy.galaxySED object that specifies the SED model 
 
         device : str
             specify 'cpu' or 'cuda' if using gpu
 
         notes
         -----
-        * currently only Model B low 0<z<1 implemented. 
         '''
-        if name not in ['modelb.lowz.grzW1W2', 'modelb.highz.grzW1W2']: 
-            raise NotImplementedError("currently only Model B for 0 < z < 1 and 1 < z < 2 implemented") 
-        # model name that specifies the SED model, the redshift range, and the
-        # photometric bands. 
-        self._name = name 
+        self._gsed = gsed
+        self._bands = 'grzW1W2'
+        self._name = '%s.%s' % (self._gsed._name, self._bands)
+
+        if self._name not in ['modelb.lowz.grzW1W2', 'modelb.highz.grzW1W2']:
+            raise NotImplementedError
         
         super().__init__(device=device) 
 
         self._load_desi_flow()
         
-        self._msurv_nmf_emu = None 
-        self._msurv_burst_emu = None
-
     def run(self, nmgy, sig_nmgy, zred, Nsample=10000, log_prob=False, progress_bar=False): 
         ''' run DESIflow on specified photometry, photometric noise, and redshift 
 
@@ -275,24 +247,12 @@ class DESIflow(Flow):
         -----
 
         '''
-        if self._name == 'modelb.lowz.grzW1W2':
-            #this model is trained to take log10(flux), sig_flux, zred as input 
+        assert self._gsed._redshift_check(zred) 
+
+        if self._bands == 'grzW1W2': 
             assert len(nmgy) == 5, 'only grzW1W2 band photometry is supported for this model'
             assert len(sig_nmgy) == 5, 'only grzW1W2 band photometry is supported for this model'
-            assert zred > 0., 'only 0 < z < 1 is supported for this model' 
-            assert zred < 1., 'only 0 < z < 1 is supported for this model' 
-        
             x_photo = np.concatenate([np.log10(nmgy), sig_nmgy, [zred]]) 
-        elif self._name == 'modelb.highz.grzW1W2':
-            #this model is trained to take log10(flux), sig_flux, zred as input 
-            assert len(nmgy) == 5, 'only grzW1W2 band photometry is supported for this model'
-            assert len(sig_nmgy) == 5, 'only grzW1W2 band photometry is supported for this model'
-            assert zred > 1., 'only 1 < z < 2 is supported for this model' 
-            assert zred < 2., 'only 1 < z < 2 is supported for this model' 
-        
-            x_photo = np.concatenate([np.log10(nmgy), sig_nmgy, [zred]]) 
-        else: 
-            raise NotImplementedError
 
         _thetas = self.flow.sample((Nsample,), x=torch.as_tensor(x_photo).to(self.device), 
                 show_progress_bars=progress_bar)
@@ -303,7 +263,7 @@ class DESIflow(Flow):
 
         _thetas = _thetas.detach().cpu().numpy()
 
-        if self.flow._prior_type == 'uniform':
+        if self._gsed._prior_type == 'uniform':
             # for uniform priors, SEDflow implements a default inverse CDF
             # transform. This transforms it back. 
             thetas = np.empty(_thetas.shape)
@@ -318,7 +278,7 @@ class DESIflow(Flow):
             # transformed space based on Betnacourt (2010): https://arxiv.org/abs/1010.3436
             # Here we transform it back to the original provabgs SED model
             # parameter space. 
-            thetas_sfh = self._provabgs_sfh_dirichlet_transform(thetas[:,1:4])
+            thetas_sfh = self._gsed._provabgs_sfh_dirichlet_transform(thetas[:,1:4])
 
             thetas = np.concatenate([thetas[:,0][:,None], thetas_sfh, thetas[:,4:]], axis=1) 
             thetas[:,7:9] = 10**thetas[:,7:9] # revert log10(gamma_1) and log10(gamma_2)
@@ -339,188 +299,6 @@ class DESIflow(Flow):
 
         _ = self.load_flow(fqphis[0]) 
         return None 
-
-    def _provabgs_sfh_dirichlet_transform(self, tt): 
-        ''' For models where we use the provabgs SED model, we transform the
-        four SFH NMF basis coefficients, which are sampled using a Dirichlet
-        distribuiton, to three values that are sampled from a uniform distribution.
-        We use a warped manifold transform as specified in Betnacourt (2010): 
-        https://arxiv.org/abs/1010.3436. This function transforms them back to 
-        the original SFH NMF basis coefficients. 
-        '''
-        assert tt.shape[-1] == 3
-        tt_d = np.empty(tt.shape[:-1]+(4,)) 
-    
-        tt_d[...,0] = 1. - tt[...,0]
-        for i in range(1,3): 
-            tt_d[...,i] = np.prod(tt[...,:i], axis=-1) * (1. - tt[...,i]) 
-        tt_d[...,-1] = np.prod(tt, axis=-1) 
-        return tt_d 
-
-    def _provabgs_sfh_dirichlet_transform_inverse(self, tt): 
-        ''' For models where we use the provabgs SED model, we transform the
-        four SFH NMF basis coefficients, which are sampled using a Dirichlet
-        distribuiton, to three values that are sampled from a uniform distribution.
-        We use a warped manifold transform as specified in Betnacourt (2010): 
-        https://arxiv.org/abs/1010.3436. This function transforms the original 
-        SFH NMF basis coefficients to the uniform basis. 
-        '''
-        tt_u = np.zeros((tt.shape[0],3))
-        tt_u[:,0] = (1. - tt[:,0]).clip(1e-8, None)
-        for i in range(1,3):
-            tt_u[:,i] = 1. - (tt[:,i] / np.prod(tt_u[:,:i], axis=1))
-        return tt_u
-    
-    # galaxy properties 
-    def _msurv(self, thetas, tage): 
-        ''' calculate survivng mass fraction used to calculate M* from total
-        formed mass
-
-        parameters
-        ----------
-        thetas : [N, Ndim] array-like
-            parameters for SED model. See class description for details.  
-        tage : [N,] array-like
-            age of the galaxy in Gyrs
-        
-        returns
-        -------
-        logmsurv : array-like
-            log10 (surviving stellar mass)
-        '''
-        if self._name not in ['modelb.lowz.grzW1W2', 'modelb.highz.grzW1W2']:
-            raise NotImplementedError
-
-        if self._msurv_nmf_emu is None or self._msurv_burst_emu is None: 
-            self._load_msurv()
-
-        thetas = np.atleast_2d(thetas).copy()
-        tage = tage[:,None].copy()
-    
-        # nmf contribution 
-        fsurv_nmf = self._msurv_nmf(thetas, tage)
-    
-        # burst contribution 
-        fsurv_burst = self._msurv_burst(thetas, tage)
-        # if tburst is older than the age of the galaxy. This should by construction 
-        # never happen... 
-        fsurv_burst[thetas[:,6] > tage[:,0]] = 0. 
-
-        fsurv = (1. - thetas[:,5]) * fsurv_nmf.flatten() + thetas[:,5] * fsurv_burst.flatten()
-        
-        logmsurv = thetas[:,0] + np.log10(fsurv) 
-        return logmsurv
-
-    def _msurv_nmf(self, _thetas, tage): 
-        ''' calculate survivng mass fraction used to calculate M* from total formed 
-        mass for the NMF contribution 
-
-        parameters
-        ----------
-        thetas : [N x Ndim] array
-            Parameters of the SED model, provided in the same format as the output of the
-            NPE.
-
-        tage : [N x 1] array 
-            age of the galaxy in Gyrs. 
-
-        returns
-        -------
-        fsurv : array
-            surviving mass fraction 
-        '''
-        # parse and transform input parameters  
-        thetas = _thetas[:,1:9].copy() # extract SFH and ZH parameters only 
-        
-        # transform dirichlet prior back to uniform 
-        thetas_sfh = self._provabgs_sfh_dirichlet_transform_inverse(thetas[:,:4])
-
-        # gamma1, gamma2 to log10 
-        thetas[:,6] = np.log10(thetas[:,6]) 
-        thetas[:,7] = np.log10(thetas[:,7]) 
-        
-        thetas = np.concatenate([thetas_sfh, thetas[:,6:], tage], axis=1) 
-        
-        # whiten theta and select columns 
-        thetas[:,:3] = (thetas[:,:3] - self._msurv_theta_shift[:3]) / self._msurv_theta_scale[:3]
-        thetas[:,3:] = (thetas[:,3:] - self._msurv_theta_shift[5:]) / self._msurv_theta_scale[5:]
-        thetas = torch.tensor(thetas.astype(np.float32)).to(self.device)
-
-        # evaluate emulator 
-        with torch.no_grad(): 
-            _msurv = self._msurv_nmf_emu(thetas).cpu().numpy()
-
-        return (_msurv * self._msurv_nmf_scale) + self._msurv_nmf_shift
-
-    def _msurv_burst(self, thetas, tage): 
-        ''' calculate survivng mass fraction used to calculate M* from total formed 
-        mass for the burst contribution 
-
-        parameters
-        ----------
-        thetas : [N, Ndim] array
-            Parameters of the SED model, provided in the same format as the output of the
-            NPE.
-
-        tage : [N, 1] array 
-            age of the galaxy in Gyrs. 
-
-        returns
-        -------
-        fsurv : array
-            surviving mass fraction 
-        '''
-        # parse and transform input parameters  
-        thetas = thetas[:,1:9].copy() # extract SFH and ZH parameters only 
-        
-        # gamma1, gamma2 to log10 
-        thetas[:,6] = np.log10(thetas[:,6]) 
-        thetas[:,7] = np.log10(thetas[:,7]) 
-        
-        thetas = np.concatenate([thetas[:,5:], tage], axis=1) 
-        
-        # whiten theta and select columns 
-        thetas = (thetas - self._msurv_theta_shift[4:]) / self._msurv_theta_scale[4:]
-        thetas = torch.tensor(thetas.astype(np.float32)).to(self.device)
-
-        # evaluate emulator 
-        with torch.no_grad(): 
-            _msurv = self._msurv_burst_emu(thetas).cpu().numpy()
-
-        return (_msurv * self._msurv_burst_scale) + self._msurv_burst_shift
-
-    def _load_msurv(self): 
-        ''' load files necessary to run the surviving mass fraction emulator: 
-        shift/scale arrays, emulator for NMF contribution, emulator for burst contribution. 
-        '''
-        # load shift/scale arrays
-        self._msurv_theta_shift = np.load(os.path.join(
-            os.path.dirname(os.path.realpath(__file__)), 'dat', self._name, 'theta_shift.npy'))
-        self._msurv_theta_scale = np.load(os.path.join(
-            os.path.dirname(os.path.realpath(__file__)), 'dat', self._name, 'theta_scale.npy'))
-        
-        self._msurv_nmf_shift = np.load(os.path.join(
-            os.path.dirname(os.path.realpath(__file__)), 'dat', self._name, 'msurv_nmf_shift.npy'))
-        self._msurv_nmf_scale = np.load(os.path.join(
-            os.path.dirname(os.path.realpath(__file__)), 'dat', self._name, 'msurv_nmf_scale.npy'))
-        
-        self._msurv_burst_shift = np.load(os.path.join(
-            os.path.dirname(os.path.realpath(__file__)), 'dat', self._name, 'msurv_burst_shift.npy'))
-        self._msurv_burst_scale = np.load(os.path.join(
-            os.path.dirname(os.path.realpath(__file__)), 'dat', self._name, 'msurv_burst_scale.npy'))
-        
-        # load Msurv emulator for NMF
-        self._msurv_nmf_emu = torch.load(os.path.join(
-            os.path.dirname(os.path.realpath(__file__)), 'dat', self._name, 'emu_msurv.v2.nmf.pt'), 
-            map_location=self.device)
-        self._msurv_nmf_emu.to(self.device)
-
-        # load Msurv emulator for burst 
-        self._msurv_burst_emu = torch.load(os.path.join(
-            os.path.dirname(os.path.realpath(__file__)), 'dat', self._name, 'emu_msurv.v2.burst.pt'), 
-            map_location=self.device)
-        self._msurv_burst_emu.to(self.device)
-        return None
 
 
 class MLP(nn.Sequential):
