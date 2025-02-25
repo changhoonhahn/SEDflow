@@ -75,8 +75,8 @@ for igal in range(len(lowz)):
     if not np.all(np.isfinite(sig_fluxes[igal])): continue 
     if redshift[igal] < 0.: continue 
     if redshift[igal] > 1.: continue 
-    if fluxes[igal][-2] == 0: continue # has W1 
-    if fluxes[igal][-1] == 0: continue # has W2 
+    if fluxes[igal][-2] <= 0: continue # has W1 
+    if fluxes[igal][-1] <= 0: continue # has W2 
 
     fpost = os.path.join('/tigress/chhahn/sedflow/alexamon_lowz/',
                          'desi_lowz.sedflow.modelb.lowz.cdf.grzW1W2.%i.npy' % lowz['igal'][igal])
